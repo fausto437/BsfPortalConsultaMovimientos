@@ -314,11 +314,9 @@
 					    <div class="col-sm-6">
 					    	<nav class="pull-right">
 							<ul class="pagination" sd:pagination="pager">
-								<!-- Pagination created by SpringDataDialect, this content is just for mockup -->
-								<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-							   	<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-							   	<li class="active"><a href="#">2 <span class="sr-only"></span></a></li>
-							   	<li class="active"><a href="#">3 <span class="sr-only"></span></a></li>
+								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+							   	<li th:each="numeroPagina : ${#numbers.sequence(0, Model.acuerdos.size()/5)}"><a href="#"><span th:text="${numeroPagina + 1}"></span></a></li>
+							   	<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
 							</ul>
 						</nav>
 					    </div>
