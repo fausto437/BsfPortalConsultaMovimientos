@@ -17,7 +17,10 @@ public class ConsultaPrincipalDTO {
 	private String numCuenta;
 	@Getter @Setter
 	private String cliente;
-	//DATOS DE ANOTACIONES
 	@Getter @Setter
 	private List<GralMovimientoDTO> acuerdos;
+	@Getter @Setter
+	private List<GralMovimientoDTO> bloqueos;
+	@Getter @Setter
+	private List<GralMovimientoDTO> retenciones;
 }

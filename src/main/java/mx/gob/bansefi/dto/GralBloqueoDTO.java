@@ -6,30 +6,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Created by AppWhere on 4/28/2017.
+ * Created by AppWhere on 12/09/2017.
  */
 @AllArgsConstructor
 @NoArgsConstructor
 public class GralBloqueoDTO {
 	@Getter @Setter
-	private String numCuenta;
-	@Getter @Setter
-	private String cliente;
-	//DATOS DE ANOTACIONES
-	@Getter @Setter
 	private String tipo;
 	@Getter @Setter
-	private String subcodigo;
+	private String estado;
 	@Getter @Setter
-	private String area;
+	private String fecAlta;
 	@Getter @Setter
-	private String fecha;
+	private String fecVto;
+	@Getter @Setter
+	private String motivo;
+	@Getter @Setter
+	private String empleado;
 	@Getter	@Setter
-	private String descripcion;
+	private String centro;
 	@Getter	@Setter
-	private String codEmpleado;
-	@Getter	@Setter
-	private String nombreEmpleado;
-	@Getter	@Setter
-	private String nota;
+	private String importe;
 }

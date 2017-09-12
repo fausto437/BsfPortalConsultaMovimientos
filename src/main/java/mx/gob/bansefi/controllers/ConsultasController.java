@@ -14,7 +14,7 @@ import mx.gob.bansefi.dto.Request.ReqConsultaDTO;
 import mx.gob.bansefi.dto.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.*;
 import mx.gob.bansefi.dto.Response.ResDatosPersonaFisicaDTO;
-import mx.gob.bansefi.process.SetReporteProccess;
+import mx.gob.bansefi.process.SetConsultaPrincipalProccess;
 import mx.gob.bansefi.services.SecurityWS;
 import mx.gob.bansefi.services.WsServicios;
 import mx.gob.bansefi.utils.Util;
@@ -144,128 +144,8 @@ public class ConsultasController {
     @RequestMapping(value = "/principalMovimientos")
     public ModelAndView PrincipalMovimientos() {
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
-    	List<GralMovimientoDTO> lstAcuerdos = new ArrayList<GralMovimientoDTO>();
-    	GralMovimientoDTO acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("1.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("2.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("3.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("4.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("5.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("6.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("7.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("8.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("9.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("10.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("11.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	acuerdo = new GralMovimientoDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("12.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
-    	
-    	detalles.setAcuerdos(lstAcuerdos);
+    	SetConsultaPrincipalProccess construct= new SetConsultaPrincipalProccess();
+    	detalles = construct.SetConsultaPrincipal();
     	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
     }
     
