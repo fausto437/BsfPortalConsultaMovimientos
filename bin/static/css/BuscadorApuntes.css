@@ -1,0 +1,46 @@
+@CHARSET "ISO-8859-1";
+.btnBuscador{
+	width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+.btn-circle{
+	border-radius: 50%;
+	width:35px;
+	height:35px;
+}
+.fa-16{
+	font-size:16px;
+}
+.fa-bars{
+	font-size:10px;
+}
+.opt-radio{
+	display: flex;
+    align-items: center;
+}
+.opt-radio>span{
+	margin-left:50px;
+}
+.modal-footer{
+	border:none;
+}
+.text-alert{
+	margin: auto;
+    width: 50%;
+    padding-top: 5%;
+}
+.alertDoc, .alertDoc>.modal-dialog, 
+.alertDoc>.modal-dialog>.modal-content>.modal-body>.bootbox-body{
+	height:100%;
+}
+ .alertDoc>.modal-dialog>.modal-content{
+	height:90%;
+}
+ .alertDoc>.modal-dialog>.modal-content>.modal-body{
+	height:85%;
+}
+.alertNoDoc{
+	margin: 5px;
+}

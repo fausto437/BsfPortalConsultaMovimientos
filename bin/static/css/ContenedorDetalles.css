@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+.fondo{
+	background-color: #FFF;
+}
+.tabla-titulos{
+	padding: 20px 0;
+	margin:0 8px;
+	background-color: #007CBA;
+	color:#FFF;
+}
+.datos-informacion{
+	font-weight:bold;
+	color:#FFF;
+}
+.renglon-datos{
+	padding: 20px 0;
+	margin:0 8px;
+	background-color: #E4E5E3;
+}

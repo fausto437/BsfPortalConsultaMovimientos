@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+	<div th:fragment="anotaciones">
+        <div class="contenedor-campos">
+            <br/>
+             <div class="row tabla-titulos">
+	             <div class="col-md-3 col-xs-3">
+	             	<span>TIPO: </span>
+	             	<label class="datos-informacion">INFORMATIVA</label>
+	             </div>
+	             <div class="col-md-6 col-xs-6">
+	             	<span>SUBC&Oacute;DIGO: </span>
+	             	<label class="datos-informacion">ANOTACION GENERAL EXPEDIENTE</label>
+	             </div>
+	             <div class="col-md-3 col-xs-3">
+	             	<span>&Aacute;REA: </span>
+	             	<label class="datos-informacion">COMERCIAL</label>
+	             </div>
+             </div>
+             <div class="row renglon-datos">
+             	<div class="col-md-2 col-xs-2">
+             		<label>04/05/2014</label>
+             	</div>
+             	<div class="col-md-10 col-xs-10">
+             		<h3 class="textAzul">asociacion tarjeta incompleta</h3>
+             		<br/>
+             		<label>Empleado: </label><label> E1661194,</label><label>ALEXA EN LPARC</label>
+             		<br/>
+             		<label>No se pudo realizar la asociaci&oacute;n de la tarjeta</label>
+             	</div>
+             </div>
+        </div>
+    </div>
+    <div th:fragment="apunte">
+        <div class="contenedor-campos">
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+	            	<label>Titular de la cuenta: </label>
+	            	<input value="MARIA DE LOS ANGELES PEREZ FRAGA" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-3 col-xs-3">
+            		<label>Prod. Vendible: </label>
+            		<input value="Cuenta ahorro" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-3 col-xs-3">
+            		<label>Tipo cuenta: </label>
+            		<input value="01" readonly="readonly" style="width:30px;"/>
+            		<input value="Cliente" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label>N&uacute;mero: </label>	
+            		<input value="25" readonly="readonly" style="width:30px;"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-3 col-xs-3">
+            		<label>Fecha Contable: </label>
+            		<input value="07/03/2014" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<label>Fecha Valor: </label>	
+            		<input value="10/03/2014" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-3 col-xs-3">
+            		<label>Importe: </label>
+            		<input value="65,000.00" readonly="readonly" />
+            		<input value="H" readonly="readonly" style="width:30px;"/>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<label>Moneda: </label>	
+            		<input value="MXN" readonly="readonly"/>
+            	</div>
+            </div>
+			<br/>
+           	<div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<table class="table table-bordered" 
+             				id="tblIndicadores"
+             				style="width:50%;margin:0 auto;background-color:#FFF;">
+                        <thead>
+	                        <tr>
+	                            <th>Indicador</th>
+	                            <th>Situación del apunte</th>
+	                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- 
+	                        <tr th:each="anotaciones,iterationStatus : ${Model}" th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.noanotacion} + '\',\'a\' );'">
+	                            <td th:text="${anotaciones.noanotacion}"></td>
+	                            <td th:text="${anotaciones.descr}"></td>
+	                            <td th:text="${anotaciones.tipoanotacion}"></td>
+	                            <td th:text="${anotaciones.fechactivacion}"></td>
+	                            <td th:text="${anotaciones.prioridad}"></td>
+	                        </tr> -->
+	                        <tr>
+	                        	<td>COMUNICACION CLIENTE</td>
+	                        	<td>NORMAL</td>
+	                        </tr>
+	                        <tr>
+	                        	<td>SIT. DE EXTRACTO</td>
+	                        	<td>EXTRACT</td>
+	                        </tr>
+	                        <tr>
+	                        	<td>SIT. DE ANULACION</td>
+	                        	<td>NORMAL</td>
+	                        </tr>
+	                        <tr>
+	                        	<td>CONTRAPARTIDA</td>
+	                        	<td>AUTOMATICA</td>
+	                        </tr>
+                        </tbody>
+                    </table>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-6 col-xs-6">
+            		<label>Tipo Operaci&oacute;n: </label>
+            		<input value="360001" readonly="readonly" />
+            		<label>: </label>
+            		<input value="LIQUIDACION CUENTAS VISTAS" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-6 col-xs-6">
+            		<label>Concepto: </label>
+            		<input value="LIQ. CTA. VISTAS 0034873" readonly="readonly" />
+            	</div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+        	<div class="col-md-3 col-xs-3">
+        		<button class="btn btn-default detalle-apunte">Salir</button>
+        	</div>
+        	<div class="col-md-3 col-xs-3 text-center">
+        		<button class="btn btn-default detalle-apunte">Auditor&iacute;a</button>
+        	</div>
+        	<div class="col-md-3 col-xs-3 text-center">
+        		<button class="btn btn-default detalle-apunte">M&aacute;s</button>
+        	</div>
+        	<div class="col-md-3 col-xs-3 text-right">
+        		<button class="btn btn-default detalle-apunte">Origen</button>
+        	</div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+	<div th:fragment="breadcum">
+		<div class="titulo centrar-objeto btn-inline-set">
+			<button id="breadcum" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only" role="button" aria-disabled="false">
+				<span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+				<span class="ui-button-text ui-c">ui-button</span>
+			</button>
+			<h2 id="labelBreadcumReturn" class="gris-b" th:text="${titulo}"></h2>
+			&nbsp;&nbsp;
+			<h2 id="nombre" class="azul-b" th:text="${nombre}"></h2>
+			&nbsp;&nbsp;
+			<h3 id="ife" class="gris-b" th:text="${idExt}"></h3>
+		</div>
+	</div>
+</body>
+</html>

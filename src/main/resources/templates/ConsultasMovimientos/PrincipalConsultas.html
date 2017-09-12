@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/ConsultasMovimientos.css}" rel="stylesheet"/>
+    
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <!--<script th:src="@{/js/DatoGenerales.js}"></script>
+    <script th:src="@{/js/page/Documentos.js}"></script>
+    <script th:src="@{/js/page/digitalizarAlta.js}"></script>  
+    -->
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
+    
+    <title>Consulta de Movimientos</title>
+</head>
+<body>
+	<script th:inline="javascript">
+		var lstAcuerdos = [[${Model.acuerdos}]]
+	</script>
+<form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
+    <input id="BSFOPERADOR" name="BSFOPERADOR"/>
+    <input id="idIntPM" name="idIntPM"/>
+    <input id="titulo" name="titulo"/>
+    <input id="tipo" name="tipo"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+                <button id="breadcum" name="breadcum"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                    <span class="ui-button-text ui-c">ui-button</span>
+                </button>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo">Consulta de Movimientos</label>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="row">
+    	<div class="contenedor-campos conteiner">
+    		<div class="seccion">
+	    		<label>N&uacute;mero de cuenta</label>
+		    	<br/>
+		    	<label class="textRojo">43445873</label>
+		    	<br/>
+		    	<label>Cliente</label>
+		    	<br/>
+		    	<label class="textRojo">MARIA DE LOS ANGELES PEREZ FRAGA</label>
+		    	<br/>
+		    	<div class="contenedor-anotaciones">
+		    		<h2>ANOTACIONES</h2>
+		    		<div class="row">
+		    			<div class="col-md-4 col-xs-4">
+		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			</div>
+		    			<div class="col-md-4 col-xs-4">
+		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			</div>
+		    			<div class="col-md-4 col-xs-4">
+		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			</div>
+		    			<div class="col-md-4 col-xs-4">
+		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			</div>
+		    			<div class="col-md-4 col-xs-4">
+		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			</div>
+		    			<div class="col-md-4 col-xs-4">
+		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			</div>
+		    		</div>
+	    		</div>
+    		</div>
+    		<br/>
+    		<br/>
+    		<!-- SECCION DE BLOQUEOS -->
+    		<div class="seccion">
+	            <div class="Datos">
+	            	<h2 class="textAzul">Bloqueos</h2>
+	            	<br/>
+	            	<table class="table table-bordered table-striped" 
+	            			id="tblBloqueos" 
+		             		style="width: 100%">
+	                        <thead>
+	                        <tr>
+	                            <th>Tipo</th>
+	                            <th>Estado</th>
+	                            <th>Fecha Alta</th>
+	                            <th>Fecha VTO.</th>
+	                            <th>Motivo de bloqueo</th>
+	                            <th>Empleado</th>
+	                            <th>Centro</th>
+	                            <th>Importe</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody>
+	                        <tr id="bloqueo1" onclick="seleccionado('bloqueo1');">
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                        </tr>
+	                        <tr id="bloqueo2" onclick="seleccionado('bloqueo2');">
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                        </tr>
+	                        <tr id="bloqueo3" onclick="seleccionado('bloqueo3');">
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                    	</tr>
+	                    	<tr id="bloqueo4" onclick="seleccionado('bloqueo4');">
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                    	</tr>
+	                    	<tr id="bloqueo5" onclick="seleccionado('bloqueo5');">
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                    	</tr>
+	                	</tbody>
+	                </table>
+	                <br/>
+	                <br/>
+	                <div class="text-center">
+	                	<label class="textAzul cargar-registros" onclick="alert('se cargan mas registros');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+	                	<br/>
+	                	<br/>
+	                	<button onclick="alert();" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
+	                </div>
+	            </div>
+        	</div>
+        	<br/>
+    		<br/>
+    		<!-- SECCION DE RETENCIONES -->
+    		<div class="seccion">
+	            <div class="Datos">
+	            	<h2 class="textAzul">Retenciones</h2>
+	            	<br/>
+	            	<table class="table table-bordered table-striped" 
+	            			id="tblRetenciones" 
+		             		style="width: 100%">
+	                        <thead>
+	                        <tr>
+	                            <th>Tipo</th>
+	                            <th>Estado</th>
+	                            <th>Fecha Alta</th>
+	                            <th>Fecha VTO.</th>
+	                            <th>Concepto</th>
+	                            <th>Empleado</th>
+	                            <th>Origen</th>
+	                            <th>Importe</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody>
+	                        <tr>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                        </tr>
+	                        <tr>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                        </tr>
+	                        <tr>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                            <td th:text="E"></td>
+	                            <td th:text="A"></td>
+	                            <td th:text="Y"></td>
+	                            <td th:text="K"></td>
+	                    	</tr>
+	                	</tbody>
+	                </table>
+	                <br/>
+	                <br/>
+	                <div class="text-center">
+	                	<label class="textAzul cargar-registros" onclick="alert('se cargan mas registros');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+	                	<br/>
+	                	<br/>
+	                	<button onclick="alert();" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
+	                </div>
+	            </div>
+        	</div>
+        	<br/>
+    		<br/>
+    		<!-- SECCION DE MOVIMIENTOS -->
+    		<div class="seccion">
+	            <div class="Datos">
+	            	<h2 class="textAzul">Movimientos</h2>
+	            	<br/>
+	            	<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+							  <th><a class="sorted" sd:pagination-sort="username" >Username</a></th>
+							  <th><a class="sorted" sd:pagination-sort="firstName" >First name</a></th>
+							  <th>Last Name</th>
+							  <th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="row : ${Model.acuerdos}">
+							  <th scope="row" th:text="${row.concepto}">Username</th>
+							</tr>
+						</tbody>
+					</table>
+					
+					<div class="row">
+					    <div class="col-sm-6">
+					    	<div sd:pagination-summary=""></div>
+					    </div>
+					    <div class="col-sm-6">
+					    	<nav class="pull-right">
+							<ul class="pagination" sd:pagination="pager">
+								<!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+								<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+							   	<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+							</ul>
+						</nav>
+					    </div>
+					</div>
+	            	<table class="table table-bordered table-striped" 
+	            			id="tblApuntes" 
+		             		style="width: 100%">
+	                        <thead>
+	                        <tr>
+	                            <th>Concepto</th>
+	                            <th>F. Operaci&oacute;n</th>
+	                            <th>F. Valor</th>
+	                            <th>Of. Terminal</th>
+	                            <th>S</th>
+	                            <th>Importe</th>
+	                            <th>Saldo</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody id="listaAcuerdos">
+	                        <tr th:onclick="'seleccionado(\'movimiento' + ${iter.count} + '\', \'ap\');'" 
+	                        	th:each="acuerdo,iter : ${Model.acuerdos}" 
+	                        	th:id="${'movimiento'+iter.count}" 
+	                        	th:if="${iter.count}  &lt; 11">
+	                            <td th:text="*{acuerdo.concepto}"></td>
+	                            <td th:text="*{acuerdo.fecOperacion}"></td>
+	                            <td th:text="*{acuerdo.fecValor}"></td>
+	                            <td th:text="*{acuerdo.ofTerminal}"></td>
+	                            <td th:text="*{acuerdo.signo}"></td>
+	                            <td th:text="*{acuerdo.importe}"></td>
+	                            <td th:text="*{acuerdo.saldo}"></td>
+	                        </tr>
+	                	</tbody>
+	                </table>
+	                <div class="row">
+					    <div class="col-sm-6">
+					    	<div sd:pagination-summary=""></div>
+					    </div>
+					    <div class="col-sm-6">
+					    	<nav class="pull-right">
+							<ul class="pagination" sd:pagination="pager">
+								<!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+								<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
+							   	<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+							   	<li class="active"><a href="#">2 <span class="sr-only"></span></a></li>
+							   	<li class="active"><a href="#">3 <span class="sr-only"></span></a></li>
+							</ul>
+						</nav>
+					    </div>
+					</div>
+	                <br/>
+	                <br/>
+	                <div class="text-center">
+	                	<label class="textAzul cargar-registros" onclick="verMas();">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+	                	<br/>
+	                	<br/>
+	                	<button onclick="detalleConsulta('','ap' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
+	                </div>
+	            </div>
+        	</div>
+    	</div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div class="row" style="margin-bottom:50px;">
+        <div class="col-md-4 col-xs-4">
+            <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;">Salir</button>
+        </div>
+        <div class="col-md-4 col-xs-4 text-center">
+            <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+        </div>
+        <div class="col-md-4 col-xs-4 text-right">
+            <button onclick="alert('asd');" type="button" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

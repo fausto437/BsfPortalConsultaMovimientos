@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/Wizard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/PersonasMorales.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/ConsultasMovimientos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/ContenedorDetalles.css}" rel="stylesheet"/>
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
+    
+    <title>Consulta de Movimientos</title>
+    <script th:inline="javascript">
+      console.log([[${Model}]]);
+    </script>
+</head>
+<body>
+<form id="formMasDetalles" method="POST" th:action="@{/detalles}" class="hidden">
+    <input id="bsfoperador" name="bsfoperador"/>
+    <input id="idIntPM" name="idIntPM"/>
+    <input id="titulo" name="titulo"/>
+    <input id="identificacionPM" name="identificacionPM"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+                <button onclick="window.history.go(-1);"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                    <span class="ui-button-text ui-c">ui-button</span>
+                </button>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo">Consulta <span th:text="${Model.titulo}"></span></label><h2 class="textRojo" th:if="${Model.tipo} eq 'a'">49787748</h2>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/> <br/>
+    <!--
+	===========================================================================================
+									Detalles de anotaciones
+	===========================================================================================
+	-->
+	<div class="row" th:if="${Model.tipo} eq 'a'">
+		<th:block th:include="fragments/contenedorDetalles :: anotaciones"></th:block>
+	</div>
+	<!--
+	===========================================================================================
+									Detalles de apuntes
+	===========================================================================================
+	-->
+	<div class="row" th:if="${Model.tipo} eq 'ap'">
+		<th:block th:include="fragments/contenedorDetalles :: apunte"></th:block>
+	</div>
+</div>
+</body>
+</html>
