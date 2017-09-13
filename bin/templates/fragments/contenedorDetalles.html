@@ -39,57 +39,77 @@
     <div th:fragment="apunte">
         <div class="contenedor-campos">
             <div class="row">
-            	<div class="col-md-12 col-xs-12">
-	            	<label>Titular de la cuenta: </label>
-	            	<input value="MARIA DE LOS ANGELES PEREZ FRAGA" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Titular de la cuenta: </label>
+            	</div>
+            	<div class="col-md-10 col-xs-10">
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
             <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Prod. Vendible: </label>
+            	</div>
             	<div class="col-md-3 col-xs-3">
-            		<label>Prod. Vendible: </label>
-            		<input value="Cuenta ahorro" readonly="readonly"/>
+            		<input class="form-control" th:value="${Model.prodVendible}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
-            <div class="row">
-            	<div class="col-md-3 col-xs-3">
-            		<label>Tipo cuenta: </label>
-            		<input value="01" readonly="readonly" style="width:30px;"/>
-            		<input value="Cliente" readonly="readonly"/>
+            <div class="row">	
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo cuenta: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.idTipoCuenta}" readonly="readonly"/>
             	</div>
             	<div class="col-md-2 col-xs-2">
-            		<label>N&uacute;mero: </label>	
-            		<input value="25" readonly="readonly" style="width:30px;"/>
+            		<input class="form-control" th:value="${Model.tipoCuenta}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">N&uacute;mero: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.numero}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-3 col-xs-3">
-            		<label>Fecha Contable: </label>
-            		<input value="07/03/2014" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Contable: </label>
             	</div>
             	<div class="col-md-3 col-xs-3">
-            		<label>Fecha Valor: </label>	
-            		<input value="10/03/2014" readonly="readonly"/>
+					<input class="form-control" th:value="${Model.fechaContable}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Valor: </label>
             	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.fechaValor}" readonly="readonly"/>
+	            </div>
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-3 col-xs-3">
-            		<label>Importe: </label>
-            		<input value="65,000.00" readonly="readonly" />
-            		<input value="H" readonly="readonly" style="width:30px;"/>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Importe: </label>
             	</div>
-            	<div class="col-md-3 col-xs-3">
-            		<label>Moneda: </label>	
-            		<input value="MXN" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.importe}" readonly="readonly" />
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.estatus}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Moneda: </label>	
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
             	</div>
             </div>
 			<br/>
            	<div class="row">
             	<div class="col-md-12 col-xs-12">
-            		<table class="table table-bordered" 
+            		<table class="table table-striped table-bordered" 
              				id="tblIndicadores"
              				style="width:50%;margin:0 auto;background-color:#FFF;">
                         <thead>
@@ -99,29 +119,9 @@
 	                        </tr>
                         </thead>
                         <tbody>
-                        <!-- 
-	                        <tr th:each="anotaciones,iterationStatus : ${Model}" th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.noanotacion} + '\',\'a\' );'">
-	                            <td th:text="${anotaciones.noanotacion}"></td>
-	                            <td th:text="${anotaciones.descr}"></td>
-	                            <td th:text="${anotaciones.tipoanotacion}"></td>
-	                            <td th:text="${anotaciones.fechactivacion}"></td>
-	                            <td th:text="${anotaciones.prioridad}"></td>
-	                        </tr> -->
-	                        <tr>
-	                        	<td>COMUNICACION CLIENTE</td>
-	                        	<td>NORMAL</td>
-	                        </tr>
-	                        <tr>
-	                        	<td>SIT. DE EXTRACTO</td>
-	                        	<td>EXTRACT</td>
-	                        </tr>
-	                        <tr>
-	                        	<td>SIT. DE ANULACION</td>
-	                        	<td>NORMAL</td>
-	                        </tr>
-	                        <tr>
-	                        	<td>CONTRAPARTIDA</td>
-	                        	<td>AUTOMATICA</td>
+	                        <tr th:each="sit : ${Model.sitApunte}">
+	                            <td th:text="${sit.indicador}"></td>
+	                            <td th:text="${sit.situacion}"></td>
 	                        </tr>
                         </tbody>
                     </table>
@@ -129,18 +129,26 @@
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-6 col-xs-6">
-            		<label>Tipo Operaci&oacute;n: </label>
-            		<input value="360001" readonly="readonly" />
-            		<label>: </label>
-            		<input value="LIQUIDACION CUENTAS VISTAS" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo Operaci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" value="360001" readonly="readonly" />
+            	</div>
+            	<div class="col-md-1 col-xs-1 entre-inputs">
+            		<label class="form-control vertical-align">: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" value="LIQUIDACION CUENTAS VISTAS" readonly="readonly"/>
             	</div>
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-6 col-xs-6">
-            		<label>Concepto: </label>
-            		<input value="LIQ. CTA. VISTAS 0034873" readonly="readonly" />
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Concepto: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" value="LIQ. CTA. VISTAS 0034873" readonly="readonly" />
             	</div>
             </div>
         </div>
@@ -159,6 +167,7 @@
         		<button class="btn btn-default detalle-apunte">Origen</button>
         	</div>
         </div>
+        <br/>
     </div>
 </body>
 </html>

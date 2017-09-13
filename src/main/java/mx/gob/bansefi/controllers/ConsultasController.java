@@ -14,6 +14,7 @@ import mx.gob.bansefi.dto.Request.ReqConsultaDTO;
 import mx.gob.bansefi.dto.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.*;
 import mx.gob.bansefi.dto.Response.ResDatosPersonaFisicaDTO;
+import mx.gob.bansefi.process.SetConsultaDetallesProccess;
 import mx.gob.bansefi.process.SetConsultaPrincipalProccess;
 import mx.gob.bansefi.services.SecurityWS;
 import mx.gob.bansefi.services.WsServicios;
@@ -65,6 +66,8 @@ public class ConsultasController {
     SecurityWS securityWs;
     @Autowired
     private DocumentosClient documentosClient;
+    @Autowired
+    private SetConsultaDetallesProccess setDetalles;
     
     private String packageTemplates = "ConsultasMovimientos";
     public String operador;
@@ -168,7 +171,7 @@ public class ConsultasController {
     			detalles.setTitulo("de Retención");
     		}break;
     		case "ap":{
-    			detalles.setTitulo("de Apunte");
+    			detalles = setDetalles.SetConsultaDetallesApunte();
     		}break;
     	}
     	

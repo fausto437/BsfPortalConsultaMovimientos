@@ -99,7 +99,7 @@ function validarId(){
 	            	$.ajax({
 	            	type : 'POST',
 	            	data : datos,
-	            	url : window.location.protocol + "//" + window.location.host + "/documentos";
+	            	url : window.location.protocol + "//" + window.location.host + "/documentos"
 	                });
 	            }
 	            else{

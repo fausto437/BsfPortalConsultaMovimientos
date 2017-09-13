@@ -23,42 +23,9 @@ public class WsServicios {
 	 */
 	@Value("${domain.servicesU}")
 	private String urlRootContext;
-	@Value("${url.altaPersonaMoral}")
-	private String urlAltaPersonaMoral;
-	@Value("${url.altaRelacionesPerfilTransaccional}")
-	private String urlAltaRelacionesPerfilTransaccional;
-	@Value("${url.altaRelacionDocumentoPersona}")
-	private String urlAltaRelacionDocumentoPersona;
-	@Value("${url.consultaPaisNacionalidad}")
-	private String urlConsultaPaisNacionalidad;
-	@Value("${url.consultaDocumentosRelacionados}")
-	private String urlConsultaDocumentosRelacionados;
-	@Value("${url.validaIdExterno}")
-	private String urlValidaIdExterno;
+	
 	@Value("${url.consultaCatalogosPM}")
 	private String urlConsultaCatalogosPM;
-	@Value("${url.consultaMedioAltoRiesgo}")
-	private String urlConsultaMedioAltoRiesgo;
-	@Value("${url.consultaFechaRelacionPersonaPersona}")
-	private String urlConsultaFechaRelacionPersonaPersona;
-	@Value("${url.consultaCriterioBusqueda}")
-	private String urlConsultaCriterioBusqueda;
-	@Value("${url.consultaDatosPersonaMoral}")
-	private String urlConsultaDatosPersonaMoral;
-	@Value("${url.consultaCedulaBajoRiesgo}")
-	private String urlConsultaCedulaBajoRiesgo;
-	@Value("${url.consultaRelaciones}")
-	private String urlConsultaRelaciones;
-	@Value("${url.ConsultaFichaPersonaMoral}")
-	private String urlConsultaFichaPersonaMoral;
-	@Value("${url.consultaCedulaMedioAltoRiesgo}")
-	private String urlConsultaCedulaMedioAltoRiesgo;
-	@Value("${url.modificacionRelaciones}")
-	private String urlModificacionRelaciones;
-	@Value("${url.consultaDatosPersonaFisica}")
-	private String urlConsultaDatosPersonaFisica;
-	@Value("${url.modificaDatosPersonaMoral}")
-	private String urlmodificaDatosPersonaMoral;
 
 	/*
 	 * Definicion de variables mensajes de servicios
@@ -72,18 +39,18 @@ public class WsServicios {
     private static final Logger log = LogManager.getLogger(WsServicios.class);
     private static Util util = Util.getInstance();
 
-	public static GetLocalidadResponseDTO Localidad(GetLocalidadRequestDTO Request, String Url)
+    /*CONSULTA DE RETENCIONES*/
+	public static ResConsultaRetencionDTO consultaRetencion(GetConsultaRetencionReqDTO Request, String Url)
 	{
 		Util util = Util.getInstance();
-		GetLocalidadResponseDTO Datos=new GetLocalidadResponseDTO();
+		ResConsultaRetencionDTO Datos=new ResConsultaRetencionDTO();
 		try
 		{
-
 			ArrayList<String> Nodos=new ArrayList<String>();
-			Nodos.add("getLocalidadResp");
-			Nodos.add("Localidad");
+			Nodos.add("cabecera");
+			Nodos.add("retenciones");
 			String jsonRepuesta= util.callRestPost(Request,Url);
-			Datos=(GetLocalidadResponseDTO)util.jsonToObject(Datos,jsonRepuesta,Nodos);
+			Datos=(ResConsultaRetencionDTO)util.jsonToObject(Datos,jsonRepuesta,Nodos);
 		}
 		catch(Exception ex)
 		{
@@ -96,7 +63,7 @@ public class WsServicios {
 
 	/*
 	 * Metodo para consulta de datos de persona fisica
-	 */
+	 *
 	public ResDatosPersonaFisicaDTO consultaDatosPersonaFisica(ReqConsultaDTO req) {
 
 		ResDatosPersonaFisicaDTO personaFisica = new ResDatosPersonaFisicaDTO();
@@ -110,7 +77,7 @@ public class WsServicios {
 	}
 	/*
 	 * Método para consumir servicio de alta de relacion de documuentos
-	 */
+	 *
 	public static ResAltaDocTCB altaRelacioDocumento(ReqAltaRelacionDocumentoDTO req, String url) {
 		ResAltaDocTCB respuestaGeneral = new ResAltaDocTCB();
 
@@ -129,7 +96,7 @@ public class WsServicios {
 
 	/*
 	 * Consulta Datos Persona Moral
-	 */
+	 *
 	public ResConsultaDatosPersonaMoralDTO consultaDatosPersona(ReqConsultaDTO requestDTO) {
 		ResConsultaDatosPersonaMoralDTO responseDTO = null;
 		try {
@@ -164,5 +131,5 @@ public class WsServicios {
 		}
 		return Response;
 
-	}
+	}*/
 }

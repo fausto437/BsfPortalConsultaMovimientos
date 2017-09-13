@@ -1,5 +1,6 @@
 package mx.gob.bansefi.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,28 @@ public class DetalleConsultaDTO {
 	private String nombreEmpleado;
 	@Getter	@Setter
 	private String nota;
+	//DATOS DE MOVIMIENTO
+	@Getter	@Setter
+	private String titular;
+	@Getter	@Setter
+	private String prodVendible;
+	@Getter	@Setter
+	private String tipoCuenta;
+	@Getter	@Setter
+	private String idTipoCuenta;
+	@Getter	@Setter
+	private String numero;
+	@Getter	@Setter
+	private String fechaContable;
+	@Getter	@Setter
+	private String fechaValor;
+	@Getter	@Setter
+	private String importe;
+	@Getter	@Setter
+	private String estatus;
+	@Getter	@Setter
+	private String moneda;
+	@Getter	@Setter
+	private List<SituacionApunteDTO> sitApunte;
+	
 }

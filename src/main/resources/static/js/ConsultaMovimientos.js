@@ -30,10 +30,14 @@ function detalleConsulta(info, tipo){
 			valido=true;
 		}break;
 		case 'bloqueo':{
-			alert("bloque");
+			if($("#tblBloqueos").find(".seleccionado").length>0){
+				valido=true;
+			}
 		}
 		case 'retencion':{
-			alert("retencion");
+			if($("#tblRetenciones").find(".seleccionado").length>0){
+				valido=true;
+			}
 		}break;
 		case 'ap':{
 			if($("#tblApuntes").find(".seleccionado").length>0){

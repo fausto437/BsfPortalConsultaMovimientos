@@ -6,8 +6,6 @@
     <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/Wizard.css}" rel="stylesheet"/>
-    <link th:href="@{/css/PersonasMorales.css}" rel="stylesheet"/>
     <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
     <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
     <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
@@ -23,7 +21,6 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
     <script th:src="@{/js/bootstrap-select.js}"></script>
-    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
     
     <title>Consulta de Movimientos</title>
     <script th:inline="javascript">
@@ -68,6 +65,22 @@
 	-->
 	<div class="row" th:if="${Model.tipo} eq 'ap'">
 		<th:block th:include="fragments/contenedorDetalles :: apunte"></th:block>
+	</div>
+	<!--
+	===========================================================================================
+									Detalles de bloqueos
+	===========================================================================================
+	-->
+	<div class="row" th:if="${Model.tipo} eq 'b'">
+		<th:block th:include="fragments/contenedorDetalles :: bloqueo"></th:block>
+	</div>
+	<!--
+	===========================================================================================
+									Detalles de retencion
+	===========================================================================================
+	-->
+	<div class="row" th:if="${Model.tipo} eq 'r'">
+		<th:block th:include="fragments/contenedorDetalles :: retencion"></th:block>
 	</div>
 </div>
 </body>
