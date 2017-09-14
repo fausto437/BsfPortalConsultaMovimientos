@@ -56,5 +56,21 @@ public class DetalleConsultaDTO {
 	private String moneda;
 	@Getter	@Setter
 	private List<SituacionApunteDTO> sitApunte;
-	
+	//DATOS DE BLOQUEO
+	@Getter	@Setter
+	private String numAcuerdo;
+	@Getter	@Setter
+	private String centro;
+	@Getter	@Setter
+	private String idTipoBloqueo;
+	@Getter	@Setter
+	private String tipoBloqueo;
+	@Getter	@Setter
+	private String fechaAlta;
+	@Getter	@Setter
+	private String fechaVto;
+	@Getter	@Setter
+	private String motivo;
+	@Getter	@Setter
+	private String situacion;
 }

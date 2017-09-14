@@ -28,7 +28,7 @@
 	console.log([[${Model}]]);
     </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
-    <input id="bsfoperador" name="bsfoperador"/>
+    <input id="bsfoperador" name="bsfoperador" th:value="${Model.bsfoperador}"/>
     <input id="numAnotacion" name="numAnotacion"/>
     <input id="tipo" name="tipo"/>
 </form>
@@ -42,7 +42,7 @@
                         <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
                         <span class="ui-button-text ui-c">ui-button</span></button>
                     <div>
-                    <h2 class="gris-b">Consulta de Movimientos</h2>
+                    	<h2 class="gris-b">Consulta de Movimientos</h2>
                     </div>
                 </div>
                 <div class="contenedor-campos">
@@ -62,7 +62,7 @@
 	                    			<div class="row">
 	                    				<div class="col-md-3 col-xs-3">
 	                    					<label>N° de cuenta</label><span class="textRojo">*</span>
-	                    					<input th:field="*{numCuenta}" class="form-control" onblur="getNombre();"/>
+	                    					<input th:field="*{numAcuerdo}" class="form-control" onblur="getNombre();"/>
 	                    				</div>
 	                    				<div class="col-md-1 col-xs-1">
 	                    				<br/>

@@ -5,7 +5,14 @@ var contAcuerdos=0;
 var contBloqueos=0;
 var contRetenciones=0;
 var anterior="";//Variable utilizada para quitar la seleccion del renglon anterior si es que existia uno ya seleccionado.
+var actual=0;//Variable utilizada para guardar el id del elemento seleccionado
 $(document).ready(function () {
+	
+	nomPath = window.location.pathname;
+    nomPath = nomPath.substring(1, nomPath.length);
+    nomPath = nomPath.split("/", 1);
+    nomPath = nomPath + "/";
+    
 	if(lstAcuerdos!=null){
 		cargaRow("ap");
 	}
@@ -29,12 +36,15 @@ function detalleConsulta(info, tipo){
 			$("#tipo").val(tipo);
 			valido=true;
 		}break;
-		case 'bloqueo':{
+		case 'b':{
 			if($("#tblBloqueos").find(".seleccionado").length>0){
+				var str = JSON.stringify(lstBloqueos[actual]);
+				console.log(str);
+				$("#row").val(str);
 				valido=true;
 			}
 		}
-		case 'retencion':{
+		case 'r':{
 			if($("#tblRetenciones").find(".seleccionado").length>0){
 				valido=true;
 			}
@@ -49,7 +59,7 @@ function detalleConsulta(info, tipo){
 		$("#formMostrarDetalle").submit();
 	}
 	else{
-		alert("Verifique que se ha seleccionado el registro correcto.");
+		msjAlerta("Verifique que se ha seleccionado el registro correcto.");
 	}
 }
 
@@ -61,11 +71,12 @@ function continuar(){
 
 //Funcion para resaltar renglón de informacion seleccionada.
 //Se ingresan tambien los valores en los input del form a enviar 
-function seleccionado(id,tipo){
+function seleccionado(id,tipo, index){
 	if(anterior!=""){
 		$("#"+anterior).removeClass('seleccionado');
 	}
 	anterior=id;
+	actual=index;
 	$("#"+id).addClass('seleccionado');
 	//Se ingresan los valores que serán enviados para la consulta
 	$("#tipo").val(tipo);
@@ -115,7 +126,7 @@ function cargaRow(tipo){
 					if(lstBloqueos.length>i){
 						var id=i+1;
 						StrHtml+="<tr id='bloqueo"+id+"'" +
-									"onclick='seleccionado(\"bloqueo"+id+"\",\"b\")'>" +
+									"onclick='seleccionado(\"bloqueo"+id+"\",\"b\","+id+")'>" +
 									"<td>"+lstBloqueos[i].tipo+"</td>" +
 									"<td>"+lstBloqueos[i].estado+"</td>" +
 									"<td>"+lstBloqueos[i].fecAlta+"</td>" +
@@ -171,4 +182,16 @@ function cargaRow(tipo){
 			break;
 		}
 	}
+}
+
+//Funcion para pintar la ventana de mensaje emergente.
+//PARAM text Variable que contiene la cadena que se mostrara en el mensaje.
+function msjAlerta(text) {
+  bootbox.alert({
+  	message : '<p style="overflow: hidden; float: left; margin-left: 5%;" class="">' + '<img style="margin: -220px 0px -240px 0px;" src="/' + nomPath + 'img/messages-g.png" /></p>'
+		+ '<div class="text-center text-alert"><label>¡Atención!</label><br/>' + '<label>' + text + '</label></div>',
+		callback : function() {
+	
+		}
+  });
 }

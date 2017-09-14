@@ -26,8 +26,11 @@ public class WsServicios {
 	
 	@Value("${url.consultaCatalogosPM}")
 	private String urlConsultaCatalogosPM;
+	
+	@Value("${url.ConsultaNombre}")
+	private String urlConsultaNombre;
 
-	/*
+	/*url.ConsultaNombre
 	 * Definicion de variables mensajes de servicios
 	 */
 	@Value("${mensaje.errorServicioCliente}")
@@ -39,6 +42,27 @@ public class WsServicios {
     private static final Logger log = LogManager.getLogger(WsServicios.class);
     private static Util util = Util.getInstance();
 
+    /*CONSULTA DE NOMBRE*/
+    public ResConsultaNombreDTO consultaNobre(GetConsultaCuentaNombreReqDTO Request)
+	{
+		ResConsultaNombreDTO Datos=new ResConsultaNombreDTO();
+		try
+		{
+			ArrayList<String> Nodos=new ArrayList<String>();
+			Nodos.add("cabecera");
+			Nodos.add("nombre");
+			String jsonRepuesta= util.callRestPost(Request, urlRootContext+ urlConsultaNombre);
+			Datos=(ResConsultaNombreDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo Consulta(BusquedaNombreDTO Request, String Url)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+    
     /*CONSULTA DE RETENCIONES*/
 	public static ResConsultaRetencionDTO consultaRetencion(GetConsultaRetencionReqDTO Request, String Url)
 	{

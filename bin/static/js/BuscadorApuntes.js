@@ -3,13 +3,37 @@
  */
 var numId=false;
 var validId=false;
+var loading;
 $(document).ready(function(){
+	
+	nomPath = window.location.pathname;
+    nomPath = nomPath.substring(1, nomPath.length);
+    nomPath = nomPath.split("/", 1);
+    nomPath = nomPath + "/";
+    
 	startDB();
 	maskInput();
+	iniBootbox();
 	$("#cboTipoIdentificacion").change(function () {
         $("#txtTipoIdentificacion").val($("#cboTipoIdentificacion option:selected").val());
-    })
+    });
 })
+
+//Funcion para crear el mensaje de carga de las solicitudes.
+function iniBootbox(){
+	var msg = '<div class="ui-dialog-content ui-widget-content"style="text-align: center">' + '<div class="progress-container"><div class="progress" style="height: 10px"><div class="progress-bar">'
+    + '<div class="progress-shadow">' + '</div></div></div></div><br/>' + '<label class="ui-widget ui-state-default ui-corner-all">Cargando...</label></div>';
+	loading = bootbox.dialog({
+	message : msg,
+	closeButton : false,
+	show : false
+	}).css({
+	'top' : '50%',
+	'margin-top' : function() {
+	    return -(($(this).height() / 2));
+	}
+	});
+}
 
 //Funcion para llenar el combo de tipo de identificacion.
 function startDB() {
@@ -29,7 +53,7 @@ function startDB() {
 //Funcion para especificar mascaras de los input.
 function maskInput()
 {
-	$("#numCuenta").mask('0000000000', {reverse: true});
+	$("#numAcuerdo").mask('0000000000', {reverse: true});
 }
 
 //Funcion para validar la identificacion de la cuenta.
@@ -116,7 +140,7 @@ function validarId(){
 		    loading.modal('hide');
 		    bootbox.alert({
 				msjAlerta("Verifique que el número de la cuenta sea correcto.");
-				$("#numCuenta").val("");
+				$("#numAcuerdo").val("");
 			})
 	    };
     }); */
@@ -134,42 +158,47 @@ function digitalizarDoc(){
 
 //Funcion para realizar la busqueda del nombre del titular de la cuenta.
 function getNombre(){
-	console.log($("#numCuenta").val().length);
-	if($("#numCuenta").val().length<1){
+	if($("#numAcuerdo").val().length<1){
 		numId=false;
 		msjAlerta("Verificar el número de cuenta");
 		return;
 	}
-	
-	$("#titCuenta").val("TITULAR DE PRUEBA");
 	numId=true;
-	/*$.ajax({
-	type : 'POST',
-	data : datos,
-	url : window.location.protocol + "//" + window.location.host + "/" + nomPath + RequestMapping,
-	beforeSend : function() {
-	    loading.modal('show');
-	},
-	success : function(data) {
-		loading.modal('hide');
-	    $("#titCuenta").val(data);
-	},
-	error : function(e) {
-		    console.log("Error " + e);
-		    loading.modal('hide');
-		    bootbox.alert({
-				msjAlerta("Verifique que el número de la cuenta sea correcto.");
-				$("#numCuenta").val("");
-			})
-	    };
-    }); */
+	var datos ={
+			"bsfoperador":$("#bsfoperador").val(),
+			"acuerdo":$("#numAcuerdo").val()
+	}
+	$.ajax({
+		type : 'POST',
+		data : datos,
+		url : "./getNombre",
+		beforeSend : function() {
+		    loading.modal('show');
+		},
+		success : function(data) {
+			loading.modal('hide');
+			if(data!="ERROR"){
+				validId=true;
+			    $("#titCuenta").val(data);
+			}
+			else{
+				msjAlerta("Hubo un error. Verifique que el número de la cuenta sea correcto.");
+			}
+		},
+		error : function(e) {
+			    console.log("Error " + e);
+			    loading.modal('hide');
+			    msjAlerta("Verifique que el número de la cuenta sea correcto.");
+				$("#numAcuerdo").val("");
+		    }
+    });
 }
 
 //Funcion para pintar la ventana de mensaje emergente.
 //PARAM text Variable que contiene la cadena que se mostrara en el mensaje.
 function msjAlerta(text) {
     bootbox.alert({
-    	message : '<p style="overflow: hidden; float: left; margin-left: 5%;" class="">' + '<img style="margin: -220px 0px -240px 0px;" src="/' + nomPath + 'img/messages-g.png" /></p>'
+    	message : '<p style="overflow: hidden; float: left; margin-left: 5%;" class="">' + '<img style="margin: -220px 0px -240px 0px;" src="./img/messages-g.png" /></p>'
 		+ '<div class="text-center text-alert"><label>¡Atención!</label><br/>' + '<label>' + text + '</label></div>',
 		callback : function() {
 	

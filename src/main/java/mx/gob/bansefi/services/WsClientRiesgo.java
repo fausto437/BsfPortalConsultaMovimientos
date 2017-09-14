@@ -13,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 
 import mx.gob.bansefi.dto.ReqConsulRiego;
 import mx.gob.bansefi.dto.Response.ResGralDTO;
-import mx.gob.bansefi.dto.Response.ResponseAltaPM;
 import mx.gob.bansefi.utils.Util;
 
 public class WsClientRiesgo 
@@ -152,7 +151,7 @@ public class WsClientRiesgo
         {
             log.error("\nError en el metodo ConsultaMedioAltoRiegos " + "\nException Message: " + ex.getMessage());
         }
-        return Datos;*/
+        return Datos;
     }
     
     public static ResponseAltaPM AltaPersonaMoral(ResGralDTO Request, String Url)
@@ -174,7 +173,7 @@ public class WsClientRiesgo
     		oResult.setMensaje(ex.getMessage());
     		log.error("\nError en el metodo AltaPersonaMoral " + "\nException Message: " + ex.getMessage());
     	}
-    	return oResult;
+    	return oResult;*/
     }
     
     

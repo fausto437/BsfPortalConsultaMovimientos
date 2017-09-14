@@ -14,13 +14,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ConsultaPrincipalDTO {
 	@Getter @Setter
-	private String numCuenta;
+	private String numAcuerdo;
 	@Getter @Setter
 	private String cliente;
 	@Getter @Setter
 	private List<GralMovimientoDTO> acuerdos;
 	@Getter @Setter
-	private List<GralMovimientoDTO> bloqueos;
+	private List<GralBloqueoDTO> bloqueos;
 	@Getter @Setter
 	private List<GralMovimientoDTO> retenciones;
 }

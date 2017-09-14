@@ -1,5 +1,7 @@
 package mx.gob.bansefi.dto.Response;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +12,10 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class CabeceraDTO{
+public class ResConsultaNombreDTO{
 
 	@Getter @Setter
-	private String mensaje;
+	private CabeceraDTO cabecera;
 	@Getter @Setter
-	private String status;
-	@Getter @Setter
-	private String errores;
+	private String nombre;
 }

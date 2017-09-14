@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GralAnotacionDTO {
 	@Getter @Setter
-	private String numCuenta;
+	private String numAcuerdo;
 	@Getter @Setter
 	private String cliente;
 	//DATOS DE ANOTACIONES

@@ -4,8 +4,6 @@ import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.DetalleConsultaDTO;
 import mx.gob.bansefi.dto.GralMovimientoDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
-import mx.gob.bansefi.dto.Request.GetLocalidadDTO;
-import mx.gob.bansefi.dto.Request.GetLocalidadRequestDTO;
 import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
 //import scala.annotation.meta.setter;
@@ -72,5 +70,22 @@ public class SetConsultaDetallesProccess {
 		detalles.setSitApunte(lstSitApunte);
 		
         return detalles;
+    }
+    
+    public DetalleConsultaDTO SetConsultaDetallesBloqueo() {
+    	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    	detalles.setTitulo("de Retención");
+    	detalles.setNumAcuerdo("0923498");
+    	detalles.setCodEmpleado("EOJJKRF");
+    	detalles.setCentro("");
+    	detalles.setTitular("");
+    	detalles.setIdTipoBloqueo("");
+    	detalles.setTipoBloqueo("");
+    	detalles.setFechaAlta("07/03/2014");
+		detalles.setFechaVto("10/03/2014");
+		detalles.setMotivo("");
+		detalles.setSituacion("");
+		
+    	return detalles;
     }
 }

@@ -1,7 +1,5 @@
 package mx.gob.bansefi.process;
 
-import mx.gob.bansefi.dto.Request.GetLocalidadDTO;
-import mx.gob.bansefi.dto.Request.GetLocalidadRequestDTO;
 import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
 //import scala.annotation.meta.setter;

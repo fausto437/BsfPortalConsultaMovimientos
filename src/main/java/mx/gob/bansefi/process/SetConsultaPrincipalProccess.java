@@ -1,10 +1,9 @@
 package mx.gob.bansefi.process;
 
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
+import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralMovimientoDTO;
 
-import mx.gob.bansefi.dto.Request.GetLocalidadDTO;
-import mx.gob.bansefi.dto.Request.GetLocalidadRequestDTO;
 import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
 //import scala.annotation.meta.setter;
@@ -34,6 +33,56 @@ public class SetConsultaPrincipalProccess {
     private DecimalFormat df = new DecimalFormat("0.00");
     public ConsultaPrincipalDTO SetConsultaPrincipal() {
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
+    	
+    	//BLOQUEOS
+    	List<GralBloqueoDTO> lstBloqueos = new ArrayList<GralBloqueoDTO>();
+    	GralBloqueoDTO bloqueo = new GralBloqueoDTO();
+    	bloqueo.setTipo("Q7");
+    	bloqueo.setEstado("ACTIVO");
+    	bloqueo.setFecAlta("12/05/2008");
+    	bloqueo.setFecVto("");
+    	bloqueo.setMotivo("");
+    	bloqueo.setEmpleado("E1800160");
+    	bloqueo.setCentro("5028");
+    	bloqueo.setImporte("");
+    	lstBloqueos.add(bloqueo);
+    	
+    	bloqueo = new GralBloqueoDTO();
+    	bloqueo.setTipo("Q7");
+    	bloqueo.setEstado("ACTIVO");
+    	bloqueo.setFecAlta("12/05/2008");
+    	bloqueo.setFecVto("");
+    	bloqueo.setMotivo("");
+    	bloqueo.setEmpleado("E1800160");
+    	bloqueo.setCentro("5028");
+    	bloqueo.setImporte("");
+    	lstBloqueos.add(bloqueo);
+    	
+    	bloqueo = new GralBloqueoDTO();
+    	bloqueo.setTipo("Q7");
+    	bloqueo.setEstado("ACTIVO");
+    	bloqueo.setFecAlta("12/05/2008");
+    	bloqueo.setFecVto("");
+    	bloqueo.setMotivo("");
+    	bloqueo.setEmpleado("E1800160");
+    	bloqueo.setCentro("5028");
+    	bloqueo.setImporte("");
+    	lstBloqueos.add(bloqueo);
+    	
+    	bloqueo = new GralBloqueoDTO();
+    	bloqueo.setTipo("Q7");
+    	bloqueo.setEstado("ACTIVO");
+    	bloqueo.setFecAlta("12/05/2008");
+    	bloqueo.setFecVto("");
+    	bloqueo.setMotivo("");
+    	bloqueo.setEmpleado("E1800160");
+    	bloqueo.setCentro("5028");
+    	bloqueo.setImporte("");
+    	lstBloqueos.add(bloqueo);
+    	
+    	detalles.setBloqueos(lstBloqueos);
+    	
+    	//ACUERDOS
     	List<GralMovimientoDTO> lstAcuerdos = new ArrayList<GralMovimientoDTO>();
     	GralMovimientoDTO acuerdo = new GralMovimientoDTO();
     	acuerdo.setConcepto("PRUEBA FOLIO");

@@ -14,7 +14,7 @@ public class BusquedaDTO {
 	@Getter @Setter
 	private String bsfoperador;
 	@Getter @Setter
-	private String numCuenta;
+	private String numAcuerdo;
 	@Getter @Setter
 	private String titCuenta;
 	@Getter @Setter

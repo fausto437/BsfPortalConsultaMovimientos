@@ -13,7 +13,6 @@ import mx.gob.bansefi.dto.Request.*;
 import mx.gob.bansefi.dto.Request.ReqConsultaDTO;
 import mx.gob.bansefi.dto.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.*;
-import mx.gob.bansefi.dto.Response.ResDatosPersonaFisicaDTO;
 import mx.gob.bansefi.process.SetConsultaDetallesProccess;
 import mx.gob.bansefi.process.SetConsultaPrincipalProccess;
 import mx.gob.bansefi.services.SecurityWS;
@@ -46,18 +45,12 @@ public class ConsultasController {
     private String urlServU;
     @Value("${domain.services}")
     private String urlServ;
-    @Value("${url.getAltPersMoral}")
-    private String urlAltPersMoral;
     @Value("${url.decrypt}")
     private String urldecrypt;
     @Value("${url.encrypt}")
     private String urlencrypt;
     @Value("${url.context}")
     private String urlcontext;
-    @Value("${url.getLocalidad}")
-    private String urlgetLocalidad;
-    @Value("${url.EditPF}")
-    private String urlEditPersonaFisica;
 
     @Autowired
     WsServicios wsServicios;
@@ -95,10 +88,42 @@ public class ConsultasController {
             }
             return new ModelAndView(packageTemplates + "/Buscador").addObject("Model", busquedaDatos);
         } else {
-            return new ModelAndView("error/500").addObject("msgError", "ERROR A RECIBIR LOS DATOS");
+            return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
 
         }
     }
+    
+    //BUSQUEDA DEL NOMBRE
+    @RequestMapping("/getNombre")
+    public String nombre(@RequestParam("bsfoperador") String bsfOperador, @RequestParam("acuerdo") String acuerdo){
+    	if (!bsfOperador.equals("")) {
+    		BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(bsfOperador));
+	        try {
+	        	GetConsultaCuentaNombreReqDTO req = new GetConsultaCuentaNombreReqDTO();
+	        	req.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+	        	req.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+	        	req.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+	        	req.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+	        	req.setAcuerdo(acuerdo);
+	        	ResConsultaNombreDTO respuesta = wsServicios.consultaNobre(req);
+	        	System.out.println(respuesta.getCabecera().getStatus());
+	        	System.out.println(respuesta.getCabecera());
+	        	if(respuesta.getCabecera().getStatus()=="0") {
+	        		return respuesta.getNombre();	        		
+	        	}
+	        	else {
+	        		return "OCURRIÓ UN ERROR, VERIFICAR LA INFORMACIÓN E INTENTAR NUEVAMENTE";
+	        	}
+	        } catch (Exception ex) {
+	            System.out.print(ex.getMessage());
+	            return "ERROR";
+	        }
+    	}
+    	else {
+            return "ERROR AL RECIBIR LOS DATOS";
+        }
+    }
+    
     //PANTALLA PRINCIPAL DE BUSQUEDA
     @RequestMapping(value = "/busquedaApuntes")
     public ModelAndView BusquedaApunte() {
@@ -143,6 +168,7 @@ public class ConsultasController {
     	detalles.setTipo(tipo);
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
+    
     //PANTALLA PRINCIPAL DE LOS MOVIMIENTOS DE LA CUENTA
     @RequestMapping(value = "/principalMovimientos")
     public ModelAndView PrincipalMovimientos() {
@@ -161,14 +187,15 @@ public class ConsultasController {
     
   //PANTALLA PARA VERIFICAR LOS DETALLES DE MOVIMIENTOS
     @RequestMapping(value = "/detalles")
-    public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo) {
+    public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo, @RequestParam("row") String row) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	switch(tipo) {
     		case "b":{
     			detalles.setTitulo("de Bloqueo");
     		}break;
     		case "r":{
-    			detalles.setTitulo("de Retención");
+    			detalles = setDetalles.SetConsultaDetallesBloqueo();
+    			
     		}break;
     		case "ap":{
     			detalles = setDetalles.SetConsultaDetallesApunte();

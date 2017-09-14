@@ -169,5 +169,87 @@
         </div>
         <br/>
     </div>
+    <div th:fragment="bloqueo">
+        <div class="contenedor-campos">
+        	<div class="row">
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Acuerdo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">N&uacute;mero de Empleado: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.codEmpleado}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Centro: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            	</div>
+            </div>
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<label class="form-control vertical-align">Primer Titular de la cuenta: </label>
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo de bloqueo: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.idTipoBloqueo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.tipoBloqueo}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Alta: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Motivo de Bloqueo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.motivo}" readonly="readonly" />
+            	</div>
+            </div>
+			<br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Situaci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.situacion}" readonly="readonly" />
+            	</div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+        	<div class="col-md-12 col-xs-12 text-center">
+        		<button class="btn btn-default detalle-apunte">Salir</button>
+        	</div>
+        </div>
+        <br/>
+    </div>
 </body>
 </html>

@@ -17,10 +17,6 @@
     
     <!-- Agregar los scriptss   -->
     <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
-    <!--<script th:src="@{/js/DatoGenerales.js}"></script>
-    <script th:src="@{/js/page/Documentos.js}"></script>
-    <script th:src="@{/js/page/digitalizarAlta.js}"></script>  
-    -->
     <script th:src="@{/js/bootbox.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
@@ -37,9 +33,9 @@
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
     <input id="BSFOPERADOR" name="BSFOPERADOR"/>
-    <input id="idIntPM" name="idIntPM"/>
     <input id="titulo" name="titulo"/>
     <input id="tipo" name="tipo"/>
+    <input id="row" name="row"/>
 </form>
 <div class="container_48">
     <div class="contenedor">
@@ -128,7 +124,7 @@
 					    	<div sd:pagination-summary=""></div>
 					    </div>
 					    <div class="col-md-4 col-xs-4 text-center">
-		                	<label class="textAzul cargar-registros" onclick="cargaRow('ap');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('b');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
 		                	<br/>
 		                	<br/>
 		                	<button onclick="detalleConsulta('','b' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
