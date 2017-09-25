@@ -14,14 +14,19 @@
     <script th:src="@{/js/bootbox.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
-    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
+    <script th:src="@{/js/ConsultaAnotaciones.js}"></script>
     <title>Consulta de Movimientos</title>
 </head>
 <body>
+<script th:inline="javascript">
+	console.log([[${Model}]]);
+	console.log([[${cadenaDatos}]]);
+    </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
     <input id="bsfoperador" name="bsfoperador"/>
     <input id="numAnotacion" name="numAnotacion"/>
     <input id="tipo" name="tipo"/>
+    
 </form>
 <div class="container_48">
     <div class="contenedor">
@@ -33,7 +38,9 @@
                     <span class="ui-button-text ui-c">ui-button</span>
                 </button>
                 <h1>
-                    <label class="titulo h1" id="lblTitulo">Anotaciones de</label><h2 class="textAzul">KARINA MONDRAGON MARTINEZ </h2><h1><label>(IFE:1440550981111)</label></h1>
+                    <label class="titulo h1" id="lblTitulo">Anotaciones de </label>
+                    <span><h2 class="textAzul" th:text="${Model.titular}"></h2></span>
+                    <h1><label th:text="${Model.txtIdPe}"></label></h1>
                 </h1>
             </div>
         </div>
@@ -56,7 +63,7 @@
 	                        </tr>
                         </thead>
                         <tbody>
-	                        <tr th:each="anotaciones,iterationStatus : ${Model}" th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.noanotacion} + '\',\'a\' );'">
+	                        <tr th:each="anotaciones,iterationStatus : ${Model.anotaciones}" th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.noanotacion} + '\',\'a\' );'">
 	                            <td th:text="${anotaciones.noanotacion}"></td>
 	                            <td th:text="${anotaciones.descr}"></td>
 	                            <td th:text="${anotaciones.tipoanotacion}"></td>
@@ -73,6 +80,7 @@
     <div class="text-center">
     <form id="formContinuar" method="POST" th:action="@{/principalMovimientos}" class="hidden">
     	<input id="bsfoperador" name="bsfoperador"/>
+    	<input id="datos" name="datos" th:value="${cadenaDatos}"/>
     </form>
 	    <ul class="list-inline">
 	        <li>

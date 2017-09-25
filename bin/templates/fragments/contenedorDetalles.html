@@ -251,5 +251,100 @@
         </div>
         <br/>
     </div>
+    <div th:fragment="retencion">
+    	<div class="contenedor-campos">
+    		<div class="row">
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Acuerdo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Centro: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.codEmpleado}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Moneda: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            	</div>
+            </div>
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<label class="form-control vertical-align">Primer Titular de la cuenta: </label>
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo de retencion: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.idTipoBloqueo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<label class="form-control vertical-align">Situación: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.tipoBloqueo}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Importe de retencion: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-1 col-xs-1">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Cod. retenci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Origen apunte: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+    	</div>
+    	<br/>
+    	<div class="row">
+        	<div class="col-md-12 col-xs-12 text-center">
+        		<button class="btn btn-default detalle-apunte">Salir</button>
+        	</div>
+        </div>
+        <br/>
+    </div>
 </body>
 </html>

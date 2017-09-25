@@ -6,7 +6,7 @@ import mx.gob.bansefi.dto.BsfOperadorDTO;
 import mx.gob.bansefi.dto.BusquedaDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.DetalleConsultaDTO;
-import mx.gob.bansefi.dto.GralMovimientoDTO;
+import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.ReqEncryptDTO;
 import mx.gob.bansefi.dto.ReqEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Request.*;
@@ -23,6 +23,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
 import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +63,9 @@ public class ConsultasController {
     @Autowired
     private SetConsultaDetallesProccess setDetalles;
     
+    @Autowired
+    private SetConsultaPrincipalProccess setConsultaPrincipal;
+    
     private String packageTemplates = "ConsultasMovimientos";
     public String operador;
     
@@ -79,7 +83,7 @@ public class ConsultasController {
 			BusquedaDTO busquedaDatos = new BusquedaDTO();
             operador = bsfOperador;
             busquedaDatos.setBsfoperador(bsfOperador);
-            busquedaDatos.setFormato("oficina");
+            busquedaDatos.setFormato("OFICINA");
             //BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(bsfOperador));
             try {
             	System.out.print("Setear algun valor");
@@ -91,6 +95,13 @@ public class ConsultasController {
             return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
 
         }
+    }
+    
+  //PANTALLA PRINCIPAL DE BUSQUEDA
+    @RequestMapping(value = "/busquedaApuntes")
+    public ModelAndView BusquedaApunte() {
+    	
+    	return new ModelAndView(packageTemplates + "/Buscador");
     }
     
     //BUSQUEDA DEL NOMBRE
@@ -105,14 +116,12 @@ public class ConsultasController {
 	        	req.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
 	        	req.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
 	        	req.setAcuerdo(acuerdo);
-	        	ResConsultaNombreDTO respuesta = wsServicios.consultaNobre(req);
-	        	System.out.println(respuesta.getCabecera().getStatus());
-	        	System.out.println(respuesta.getCabecera());
-	        	if(respuesta.getCabecera().getStatus()=="0") {
-	        		return respuesta.getNombre();	        		
+	        	ResConsultaNombreDTO respuesta = wsServicios.consultaNombre(req);
+	        	if(respuesta.getCabecera().getErrores()==null) {
+	        		return respuesta.getNombres().get(0).getNombre();
 	        	}
 	        	else {
-	        		return "OCURRIÓ UN ERROR, VERIFICAR LA INFORMACIÓN E INTENTAR NUEVAMENTE";
+	        		return "ERROR";
 	        	}
 	        } catch (Exception ex) {
 	            System.out.print(ex.getMessage());
@@ -123,14 +132,6 @@ public class ConsultasController {
             return "ERROR AL RECIBIR LOS DATOS";
         }
     }
-    
-    //PANTALLA PRINCIPAL DE BUSQUEDA
-    @RequestMapping(value = "/busquedaApuntes")
-    public ModelAndView BusquedaApunte() {
-    	
-    	return new ModelAndView(packageTemplates + "/Buscador");
-    }
-    
     
     //PATALLA PRINCIPAL DE ANOTACIONES
     @RequestMapping(value = "/anotaciones")
@@ -162,20 +163,121 @@ public class ConsultasController {
     }
     //PANTALLA PARA VERIFICAR LOS DETALLES DE ANOTACIONES
     @RequestMapping(value = "/detalleAnotacion")
-    public ModelAndView ConsultaDetalleAnotaciones(@RequestParam("tipo") String tipo) {
+    public ModelAndView ConsultaDetalleAnotaciones(@ModelAttribute("Model") final BusquedaDTO DatosGenerales, @RequestParam("tipo") String tipo) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	detalles.setTitulo("Detalle de Anotación");
     	detalles.setTipo(tipo);
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
     
+    //PANTALLA PARA REALIZAR LA CONSULTA GENERAL DE MOVIMIENTOS
+    @RequestMapping(value = "/consultaGeneral")
+    public ModelAndView ConsultaPrincipal(@ModelAttribute("Model") final BusquedaDTO DatosGenerales, @RequestParam("tipo") String tipo) {
+    	boolean conAnotaciones=true;
+    	//Si tiene anotaciones
+    	if(conAnotaciones) {
+    		ResConsultaAnotacionesDTO res = new ResConsultaAnotacionesDTO();
+    		res.setTitular(DatosGenerales.getTitCuenta());
+    		res.setTxtIdPe("("+DatosGenerales.getTxtTipoIdentificacion()+":"+ DatosGenerales.getNumId()+")");
+    		res.setAnotaciones(setConsultaPrincipal.SetConsultaAnotaciones());
+    		
+        	
+        	String datosString= util.objectToJson(DatosGenerales);
+        	
+        	return new ModelAndView(packageTemplates + "/ConsultaAnotaciones").addObject("Model", res).addObject("cadenaDatos", datosString);
+    	}
+    	//No tiene anotaciones
+    	else {
+    		BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
+	        try {
+	        	GetConsultaMovimientosGeneralReqDTO req = new GetConsultaMovimientosGeneralReqDTO();
+	        	req.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+	        	req.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+	        	req.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+	        	req.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+	        	req.setNumsec("0");
+	        	req.setAcuerdo(DatosGenerales.getNumAcuerdo());
+	        	req.setFechadesde(DatosGenerales.getFechaDesde());
+	        	req.setFechahasta(DatosGenerales.getFechaHasta());
+	        	req.setAcceso(DatosGenerales.getAcceso());
+	        	req.setImpsdo(DatosGenerales.getImpsdo());
+	        	req.setFormato(DatosGenerales.getFormato());
+	        	
+	        	ResConsultaApuntesDTO respuesta = wsServicios.consultaApuntes(req);
+	        	if(respuesta.getCabecera().getStatus().equals("0")) {
+	        		ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
+	            	//detalles = setConsultaPrincipal.SetConsultaPrincipal();
+	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);	        		
+	        	}
+	        	else {
+	        		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+	        	}
+	        } catch (Exception ex) {
+	            System.out.print(ex.getMessage());
+	            return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+	        }
+    		
+    	}
+    }
+    
     //PANTALLA PRINCIPAL DE LOS MOVIMIENTOS DE LA CUENTA
     @RequestMapping(value = "/principalMovimientos")
-    public ModelAndView PrincipalMovimientos() {
+    public ModelAndView PrincipalMovimientos(@RequestParam("bsfoperador") String tibsfoperador, @RequestParam("datos") String strObj) {
+    	
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
-    	SetConsultaPrincipalProccess construct= new SetConsultaPrincipalProccess();
-    	detalles = construct.SetConsultaPrincipal();
-    	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
+    	
+    	try {
+    		BusquedaDTO datosGenerales= new BusquedaDTO();
+			
+    		datosGenerales=(BusquedaDTO) util.jsonToObject(new BusquedaDTO(), strObj,new ArrayList<String>());
+			
+    		BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(datosGenerales.getBsfoperador()));
+			
+    		//Se realiza la consulta de bloqueos
+    		GetConsultaBloqueosReqDTO reqBloqueos = new GetConsultaBloqueosReqDTO();
+    		reqBloqueos.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+    		reqBloqueos.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+    		reqBloqueos.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+    		reqBloqueos.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+    		reqBloqueos.setAcuerdo(datosGenerales.getNumAcuerdo());
+    		reqBloqueos.setEstado("A");
+    		
+    		ResConsultaBloqueosDTO resBloqueos = wsServicios.consultaBloqueos(reqBloqueos);
+    		
+    		if(resBloqueos.getCabecera().getErrores()==null){
+    			detalles.setBloqueos(setConsultaPrincipal.SetConsultaBloqueos(resBloqueos.getBloqueos()));
+    		}
+        	
+    		//Se realiza consulta de movimientos
+    		GetConsultaMovimientosGeneralReqDTO reqApuntes = new GetConsultaMovimientosGeneralReqDTO();
+    		reqApuntes.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+    		reqApuntes.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+    		reqApuntes.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+    		reqApuntes.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+    		reqApuntes.setNumsec("0");
+    		reqApuntes.setAcuerdo(datosGenerales.getNumAcuerdo());
+    		reqApuntes.setFechadesde(datosGenerales.getFechaDesde()==null||datosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
+    		reqApuntes.setFechahasta(datosGenerales.getFechaHasta()==null||datosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+    		reqApuntes.setAcceso("S");
+    		reqApuntes.setImpsdo("0");
+    		reqApuntes.setFormato(datosGenerales.getFormato());
+        	
+        	//detalles = setConsultaPrincipal.SetConsultaPrincipal();
+        	//return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
+        	
+        	ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
+        	if(resApuntes.getCabecera().getErrores()==null) {
+            	detalles.setApuntes(resApuntes.getApuntes());
+        	}
+        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
+        	/*
+        	else {
+        		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+        	}*/
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+		}
     }
     
     @RequestMapping("/users")
@@ -186,15 +288,16 @@ public class ConsultasController {
     }
     
   //PANTALLA PARA VERIFICAR LOS DETALLES DE MOVIMIENTOS
-    @RequestMapping(value = "/detalles")
-    public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo, @RequestParam("row") String row) {
+    @RequestMapping(value = "/detalles")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
+    public ModelAndView ConsultaDetalleMovimientos() {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    	String tipo="ap";
     	switch(tipo) {
     		case "b":{
     			detalles.setTitulo("de Bloqueo");
     		}break;
     		case "r":{
-    			detalles = setDetalles.SetConsultaDetallesBloqueo();
+    			detalles = setDetalles.SetConsultaDetallesRetencion();
     			
     		}break;
     		case "ap":{
@@ -203,6 +306,38 @@ public class ConsultasController {
     	}
     	
     	detalles.setTipo(tipo);
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
+    }
+    
+    //PANTALLA PARA VERIFICAR LOS DATOS DE AUDITORIA
+    @RequestMapping(value = "/auditoria")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
+    public ModelAndView ConsultaAuditoria() {
+    	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    	detalles.setTitulo("Básica de auditoría");
+    	detalles.setTipo("au");
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
+    }
+    
+  //PANTALLA PARA VERIFICAR LOS DETALLES DE AUDITORIA
+    @RequestMapping(value = "/detalleAuditoria")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
+    public ModelAndView ConsultaDetallesAuditoria() {
+    	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    	detalles.setTitulo("de Auditoría");
+    	detalles.setTipo("dAu");
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
+    }
+    
+  //PANTALLA PARA VERIFICAR EL ORIGEN 
+    @RequestMapping(value = "/origen")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
+    public ModelAndView ConsultaOrigen() {
+    	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    	detalles.setTipo("em");
+    	if(detalles.getTipo().equals("li")) {
+    		detalles.setTitulo("de liquidación");
+    	}
+    	else {
+    		detalles.setTitulo("Emisión de cheque");
+    	}
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
 

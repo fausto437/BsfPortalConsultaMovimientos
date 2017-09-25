@@ -2,7 +2,7 @@ package mx.gob.bansefi.process;
 
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.DetalleConsultaDTO;
-import mx.gob.bansefi.dto.GralMovimientoDTO;
+import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
 import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
@@ -72,7 +72,7 @@ public class SetConsultaDetallesProccess {
         return detalles;
     }
     
-    public DetalleConsultaDTO SetConsultaDetallesBloqueo() {
+    public DetalleConsultaDTO SetConsultaDetallesRetencion() {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	detalles.setTitulo("de Retención");
     	detalles.setNumAcuerdo("0923498");

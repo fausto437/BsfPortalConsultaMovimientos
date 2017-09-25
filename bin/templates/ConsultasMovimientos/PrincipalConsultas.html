@@ -27,9 +27,10 @@
 </head>
 <body>
 	<script th:inline="javascript">
-		var lstAcuerdos = [[${Model.acuerdos}]];
+		var lstApuntes = [[${Model.apuntes}]];
 		var lstBloqueos = [[${Model.bloqueos}]];
 		var lstRetenciones = [[${Model.retenciones}]];
+		console.log([[${Model}]]);
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
     <input id="BSFOPERADOR" name="BSFOPERADOR"/>
@@ -129,6 +130,7 @@
 		                	<br/>
 		                	<button onclick="detalleConsulta('','b' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
 	                	</div>
+	                	<!--  
 					    <div class="col-md-4 col-xs-4">
 					    	<nav class="pull-right">
 							<ul class="pagination" sd:pagination="pager">
@@ -139,7 +141,7 @@
 								<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
 							</ul>
 						</nav>
-					    </div>
+					    </div>-->
 					</div>
 	            </div>
         	</div>
@@ -204,12 +206,13 @@
 	            <div class="Datos">
 	            	<h2 class="textAzul">Movimientos</h2>
 	            	<br/>
-	            	<div class="text-center sin-registros textRojo" th:if="${Model.acuerdos} eq null">
+	            	<div class="text-center sin-registros textRojo" th:if="${Model.apuntes} eq null">
 	            		<h3>La cuenta no tiene movimientos.</h3>
 	            	</div>
 	            	<table class="table table-bordered table-striped" 
 	            			id="tblApuntes" 
-		             		style="width: 100%">
+		             		style="width: 100%"
+		             		th:if="${Model.apuntes} neq null">
 	                        <thead>
 	                        <tr>
 	                            <th>Concepto</th>
@@ -221,7 +224,7 @@
 	                            <th>Saldo</th>
 	                        </tr>
 	                        </thead>
-	                        <tbody id="listaAcuerdos">
+	                        <tbody id="listaApuntes">
 	                        <!-- Se agrgan los renglones de manera dinamica -->
 	                		</tbody>
 	                </table>
@@ -235,17 +238,18 @@
 		                	<br/>
 		                	<button onclick="detalleConsulta('','ap' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
 	                	</div>
+	                	<!-- 
 					    <div class="col-md-4 col-xs-4">
 					    	<nav class="pull-right">
 							<ul class="pagination" sd:pagination="pager">
 								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
-								<li th:each="numeroPagina: ${#numbers.sequence(0, Model.acuerdos.size()/50)}">
+								<li th:each="numeroPagina: ${#numbers.sequence(0, Model.apuntes.size()/50)}">
 									<a href="#"><span th:text="${numeroPagina + 1}"></span></a>
 								</li>
 								<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
 							</ul>
 						</nav>
-					    </div>
+					    </div> -->
 					</div>
 	                <br/>
 	            </div>

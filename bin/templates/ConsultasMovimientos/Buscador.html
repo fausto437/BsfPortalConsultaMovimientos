@@ -28,9 +28,7 @@
 	console.log([[${Model}]]);
     </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
-    <input id="bsfoperador" name="bsfoperador" th:value="${Model.bsfoperador}"/>
-    <input id="numAnotacion" name="numAnotacion"/>
-    <input id="tipo" name="tipo"/>
+    
 </form>
 <div class="container_48">
         <div class="contenedor">
@@ -46,7 +44,10 @@
                     </div>
                 </div>
                 <div class="contenedor-campos">
-                	<form id="frmBusquedaMovimientosGral" method="POST" th:object="${Model}" action="">
+                	<form id="frmBusquedaMovimientosGral" method="POST" th:object="${Model}" th:action="@{/consultaGeneral}">
+	                	<input th:field="*{bsfoperador}" class="hidden"/>
+					    <input id="numAnotacion" name="numAnotacion" class="hidden"/>
+					    <input id="tipo" name="tipo" class="hidden"/>
 	                    <div class="container">
 	                    	<div class="row-felx">
 	                    		<div>
@@ -96,7 +97,8 @@
 	                    					<div th:field="fechaDesde" 
 	                    						class="input-group date FechaCompleta" 
 	                    						data-provide="datepicker">
-	                                            <input type="text" class="form-control" placeholder="DESDE"/>
+	                                            <input type="text" class="form-control" placeholder="DESDE"
+	                                            		th:field="*{fechaDesde}"/>
 	                                            <div class="input-group-addon">
 	                                                <span class="glyphicon glyphicon-th"></span>
 	                                            </div>
@@ -107,7 +109,8 @@
 	                    					<div th:field="fechaHasta" 
 	                    						class="input-group date FechaCompleta" 
 	                    						data-provide="datepicker">
-	                                            <input type="text" class="form-control" placeholder="HASTA"/>
+	                                            <input type="text" class="form-control" placeholder="HASTA"
+	                                            		th:field="*{fechaHasta}"/>
 	                                            <div class="input-group-addon">
 	                                                <span class="glyphicon glyphicon-th"></span>
 	                                            </div>
@@ -137,10 +140,10 @@
 		                            <br/>
 		                            <br/>
 	                            	<div class="col-md-12 opt-radio">
-		                            	<input th:field="*{formato}" type="radio" value="oficina" class=""/>
+		                            	<input th:field="*{formato}" type="radio" value="OFICINA" class=""/>
 										<label class="control-label">Oficina</label>
 										<span class="opt-radio">
-											<input th:field="*{formato}" type="radio" value="cliente" class=""/>
+											<input th:field="*{formato}" type="radio" value="CLIENTE" class=""/>
 											<label class="control-label">Cliente</label>
 										</span>
 		                            </div>

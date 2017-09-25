@@ -1,4 +1,4 @@
-package mx.gob.bansefi.dto.Response;
+package mx.gob.bansefi.dto;
 
 import java.util.List;
 
@@ -6,17 +6,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.gob.bansefi.dto.CabeceraDTO;
-import mx.gob.bansefi.dto.NombreDTO;
 
 
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResConsultaNombreDTO{
+public class CabeceraDTO{
+
 	@Getter @Setter
-	private CabeceraDTO cabecera;
+	private String mensaje;
 	@Getter @Setter
-	private List<NombreDTO> nombres;
+	private String status;
+	@Getter @Setter
+	private List<ErrorDTO> errores;
 }

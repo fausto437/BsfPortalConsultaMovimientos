@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Created by AppWhere on 12/09/2017.
- */
+
+
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class GralBloqueoDTO {
+public class BloqueoDTO{
+
 	@Getter @Setter
 	private String tipo;
-	@Getter @Setter
-	private String concepto;
 	@Getter @Setter
 	private String estado;
 	@Getter @Setter
@@ -22,11 +21,11 @@ public class GralBloqueoDTO {
 	@Getter @Setter
 	private String fechaVTO;
 	@Getter @Setter
-	private String motivo;
+	private String concepto;
 	@Getter @Setter
 	private String empleado;
-	@Getter	@Setter
+	@Getter @Setter
 	private String centro;
-	@Getter	@Setter
+	@Getter @Setter
 	private String importe;
 }

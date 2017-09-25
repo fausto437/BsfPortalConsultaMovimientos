@@ -44,44 +44,63 @@
                     <span class="ui-button-text ui-c">ui-button</span>
                 </button>
                 <h1>
-                    <label class="titulo h1" id="lblTitulo">Consulta <span th:text="${Model.titulo}"></span></label><h2 class="textRojo" th:if="${Model.tipo} eq 'a'">49787748</h2>
+                    <label class="titulo h1" id="lblTitulo" th:if="${Model.tipo} neq 'em'">Consulta <span th:text="${Model.titulo}"></span></label><span th:text="${Model.titulo}" th:if="${Model.tipo} eq 'em'"></span><h2 class="textRojo" th:if="${Model.tipo} eq 'a'">49787748</h2>
                 </h1>
             </div>
         </div>
     </div>
-    <br/> <br/>
-    <!--
-	===========================================================================================
-									Detalles de anotaciones
-	===========================================================================================
-	-->
-	<div class="row" th:if="${Model.tipo} eq 'a'">
-		<th:block th:include="fragments/contenedorDetalles :: anotaciones"></th:block>
-	</div>
-	<!--
-	===========================================================================================
-									Detalles de apuntes
-	===========================================================================================
-	-->
-	<div class="row" th:if="${Model.tipo} eq 'ap'">
-		<th:block th:include="fragments/contenedorDetalles :: apunte"></th:block>
-	</div>
-	<!--
-	===========================================================================================
-									Detalles de bloqueos
-	===========================================================================================
-	-->
-	<div class="row" th:if="${Model.tipo} eq 'b'">
-		<th:block th:include="fragments/contenedorDetalles :: bloqueo"></th:block>
-	</div>
-	<!--
-	===========================================================================================
-									Detalles de retencion
-	===========================================================================================
-	-->
-	<div class="row" th:if="${Model.tipo} eq 'r'">
-		<th:block th:include="fragments/contenedorDetalles :: retencion"></th:block>
-	</div>
+    <br/>
+    <br/>
+    <div class="row">
+	    <!--
+		===========================================================================================
+										Detalles de anotaciones
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'a'" th:include="fragments/contenedorDetalles :: anotaciones"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de apuntes
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'ap'" th:include="fragments/contenedorDetalles :: apunte"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de bloqueos
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'b'" th:include="fragments/contenedorDetalles :: bloqueo"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de retencion
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'r'" th:include="fragments/contenedorDetalles :: retencion"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de auditoria
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'au'" th:include="fragments/auditoria :: auditoria"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de auditoria
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'dAu'" th:include="fragments/auditoria :: detallesAuditoria"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de liquidación
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'li'" th:include="fragments/origen :: liquidacion"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de emision de cheque
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipo} eq 'em'" th:include="fragments/origen :: emision"></th:block>
+    </div>
 </div>
 </body>
 </html>

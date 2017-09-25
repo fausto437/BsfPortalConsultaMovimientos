@@ -1,5 +1,6 @@
 package mx.gob.bansefi.dto.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -7,15 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import mx.gob.bansefi.dto.CabeceraDTO;
-import mx.gob.bansefi.dto.RetencionesDTO;
-
-
-
+import mx.gob.bansefi.dto.GralApunteDTO;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResConsultaRetencionDTO extends CabeceraDTO{
+public class ResConsultaApuntesDTO{
 
 	@Getter @Setter
-	private List<RetencionesDTO> retenciones;
+	private CabeceraDTO cabecera;
+	@Getter @Setter
+	private String cantidad;
+	@Getter @Setter
+	private ArrayList<GralApunteDTO> apuntes;
 }

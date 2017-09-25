@@ -29,4 +29,8 @@ public class BusquedaDTO {
 	private String fechaHasta;
 	@Getter @Setter
 	private String formato;
+	@Getter @Setter
+	private String acceso;
+	@Getter @Setter
+	private String impsdo;
 }

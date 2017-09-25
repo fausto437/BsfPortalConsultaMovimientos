@@ -29,8 +29,14 @@ public class WsServicios {
 	
 	@Value("${url.ConsultaNombre}")
 	private String urlConsultaNombre;
+	
+	@Value("${url.ConsultaPrincipal}")
+	private String urlConsultaPrincipal;
+	
+	@Value("${url.ConsultaBloqueos}")
+	private String urlConsultaBloqueos;
 
-	/*url.ConsultaNombre
+	/*
 	 * Definicion de variables mensajes de servicios
 	 */
 	@Value("${mensaje.errorServicioCliente}")
@@ -43,16 +49,35 @@ public class WsServicios {
     private static Util util = Util.getInstance();
 
     /*CONSULTA DE NOMBRE*/
-    public ResConsultaNombreDTO consultaNobre(GetConsultaCuentaNombreReqDTO Request)
+    public ResConsultaNombreDTO consultaNombre(GetConsultaCuentaNombreReqDTO Request)
 	{
 		ResConsultaNombreDTO Datos=new ResConsultaNombreDTO();
 		try
 		{
-			ArrayList<String> Nodos=new ArrayList<String>();
-			Nodos.add("cabecera");
-			Nodos.add("nombre");
 			String jsonRepuesta= util.callRestPost(Request, urlRootContext+ urlConsultaNombre);
 			Datos=(ResConsultaNombreDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo Consulta(BusquedaNombreDTO Request, String Url)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+    
+    /*CONSULTA DE MOVIMIENTOS*/
+    public ResConsultaApuntesDTO consultaApuntes(GetConsultaMovimientosGeneralReqDTO Request)
+	{
+    	ResConsultaApuntesDTO Datos=new ResConsultaApuntesDTO();
+		try
+		{
+			ArrayList<String> Nodos=new ArrayList<String>();
+			Nodos.add("cabecera");
+			Nodos.add("cantidad");
+			Nodos.add("lista");
+			String jsonRepuesta= util.callRestPost(Request, urlRootContext+ urlConsultaPrincipal);
+			Datos=(ResConsultaApuntesDTO)util.jsonToObject(Datos,jsonRepuesta);
 		}
 		catch(Exception ex)
 		{
@@ -75,6 +100,25 @@ public class WsServicios {
 			Nodos.add("retenciones");
 			String jsonRepuesta= util.callRestPost(Request,Url);
 			Datos=(ResConsultaRetencionDTO)util.jsonToObject(Datos,jsonRepuesta,Nodos);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo Consulta(BusquedaPersonaRequesDTO Request, String Url)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+	
+	/*CONSULTA DE BLOQUEOS*/
+	public ResConsultaBloqueosDTO consultaBloqueos(GetConsultaBloqueosReqDTO Request)
+	{
+		Util util = Util.getInstance();
+		ResConsultaBloqueosDTO Datos=new ResConsultaBloqueosDTO();
+		try
+		{
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaBloqueos);
+			Datos=(ResConsultaBloqueosDTO)util.jsonToObject(Datos,jsonRepuesta);
 		}
 		catch(Exception ex)
 		{

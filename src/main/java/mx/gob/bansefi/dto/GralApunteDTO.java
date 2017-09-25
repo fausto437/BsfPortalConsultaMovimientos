@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class GralMovimientoDTO {
+public class GralApunteDTO {
 	@Getter @Setter
 	private String concepto;
 	@Getter @Setter

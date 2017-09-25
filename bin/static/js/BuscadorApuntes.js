@@ -15,7 +15,8 @@ $(document).ready(function(){
 	maskInput();
 	iniBootbox();
 	$("#cboTipoIdentificacion").change(function () {
-        $("#txtTipoIdentificacion").val($("#cboTipoIdentificacion option:selected").val());
+		console.log($("#cboTipoIdentificacion option:selected"));
+        $("#txtTipoIdentificacion").val($("#cboTipoIdentificacion option:selected").text());
     });
 })
 
@@ -58,7 +59,6 @@ function maskInput()
 
 //Funcion para validar la identificacion de la cuenta.
 function validarId(){
-	console.log($("#txtTipoIdentificacion").val());
 	if($("#txtTipoIdentificacion").val()==""||$("#txtTipoIdentificacion").val()==undefined){
 		msjAlerta("Seleccione un tipo de identificación a validar.");
 		return;
@@ -94,7 +94,6 @@ function validarId(){
 	        },
 	        className: "alertDoc",
 	        callback: function (result) {
-	            console.log('This was logged in the callback: ' + result);
 	            if(result)
 	            	validId=true;
 	            else{
@@ -182,6 +181,8 @@ function getNombre(){
 			    $("#titCuenta").val(data);
 			}
 			else{
+				$("#titCuenta").val("");
+				validId=false;
 				msjAlerta("Hubo un error. Verifique que el número de la cuenta sea correcto.");
 			}
 		},
@@ -217,5 +218,5 @@ function consultarInformacion(){
 		msjAlerta("Validar identificación del titular.");
 		return;
 	}
-	
+	$("#frmBusquedaMovimientosGral").submit();
 }

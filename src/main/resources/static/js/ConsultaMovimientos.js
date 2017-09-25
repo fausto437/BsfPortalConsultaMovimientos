@@ -1,7 +1,7 @@
 /**
  * Created by AppWhere on 08/09/2017.
  */
-var contAcuerdos=0;
+var contApuntes=0;
 var contBloqueos=0;
 var contRetenciones=0;
 var anterior="";//Variable utilizada para quitar la seleccion del renglon anterior si es que existia uno ya seleccionado.
@@ -13,7 +13,7 @@ $(document).ready(function () {
     nomPath = nomPath.split("/", 1);
     nomPath = nomPath + "/";
     
-	if(lstAcuerdos!=null){
+	if(lstApuntes!=null){
 		cargaRow("ap");
 	}
 	if(lstBloqueos!=null){
@@ -87,22 +87,22 @@ function seleccionado(id,tipo, index){
 function cargaRow(tipo){
 	switch(tipo){
 		case "ap":{
-			if(lstAcuerdos.length>contAcuerdos){
+			if(lstApuntes.length>contApuntes){
 				var StrHtml="";
-				var i = contAcuerdos;
-				contAcuerdos+=10;
-				for(i; i<contAcuerdos;i++){
-					if(lstAcuerdos.length>i){
+				var i = contApuntes;
+				contApuntes+=10;
+				for(i; i<contApuntes;i++){
+					if(lstApuntes.length>i){
 						var id=i+1;
 						StrHtml+="<tr id='movimiento"+id+"'" +
 									"onclick='seleccionado(\"movimiento"+id+"\",\"ap\")'>" +
-									"<td>"+lstAcuerdos[i].concepto+"</td>" +
-									"<td>"+lstAcuerdos[i].fecOperacion+"</td>" +
-									"<td>"+lstAcuerdos[i].fecValor+"</td>" +
-									"<td>"+lstAcuerdos[i].ofTerminal+"</td>" +
-									"<td>"+lstAcuerdos[i].signo+"</td>" +
-									"<td>"+lstAcuerdos[i].importe+"</td>" +
-									"<td>"+lstAcuerdos[i].saldo+"</td>" +
+									"<td>"+lstApuntes[i].concepto+"</td>" +
+									"<td>"+lstApuntes[i].fecOperacion+"</td>" +
+									"<td>"+lstApuntes[i].fecValor+"</td>" +
+									"<td>"+lstApuntes[i].ofTerminal+"</td>" +
+									"<td>"+lstApuntes[i].signo+"</td>" +
+									"<td>"+lstApuntes[i].importe+"</td>" +
+									"<td>"+lstApuntes[i].saldo+"</td>" +
 								"</tr>";
 					}
 					
@@ -110,7 +110,7 @@ function cargaRow(tipo){
 						i=100;
 					}
 				}
-				$("#listaAcuerdos").append(StrHtml);
+				$("#listaApuntes").append(StrHtml);
 			}
 			else{
 				alert("No hay más registros");
@@ -129,8 +129,8 @@ function cargaRow(tipo){
 									"onclick='seleccionado(\"bloqueo"+id+"\",\"b\","+id+")'>" +
 									"<td>"+lstBloqueos[i].tipo+"</td>" +
 									"<td>"+lstBloqueos[i].estado+"</td>" +
-									"<td>"+lstBloqueos[i].fecAlta+"</td>" +
-									"<td>"+lstBloqueos[i].fecVto+"</td>" +
+									"<td>"+lstBloqueos[i].fechaAlta+"</td>" +
+									"<td>"+lstBloqueos[i].fechaVTO+"</td>" +
 									"<td>"+lstBloqueos[i].motivo+"</td>" +
 									"<td>"+lstBloqueos[i].empleado+"</td>" +
 									"<td>"+lstBloqueos[i].centro+"</td>" +
