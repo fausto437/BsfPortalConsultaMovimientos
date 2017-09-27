@@ -35,6 +35,9 @@ public class WsServicios {
 	
 	@Value("${url.ConsultaBloqueos}")
 	private String urlConsultaBloqueos;
+	
+	@Value("${url.ConsultaRetenciones}")
+	private String urlConsultaRetenciones;
 
 	/*
 	 * Definicion de variables mensajes de servicios
@@ -59,7 +62,7 @@ public class WsServicios {
 		}
 		catch(Exception ex)
 		{
-			log.error("\nError en el metodo Consulta(BusquedaNombreDTO Request, String Url)"
+			log.error("\nError en el metodo consultaNombre(GetConsultaCuentaNombreReqDTO Request)"
 					+ "\nException Message: " + ex.getMessage());
 
 		}
@@ -72,16 +75,12 @@ public class WsServicios {
     	ResConsultaApuntesDTO Datos=new ResConsultaApuntesDTO();
 		try
 		{
-			ArrayList<String> Nodos=new ArrayList<String>();
-			Nodos.add("cabecera");
-			Nodos.add("cantidad");
-			Nodos.add("lista");
 			String jsonRepuesta= util.callRestPost(Request, urlRootContext+ urlConsultaPrincipal);
 			Datos=(ResConsultaApuntesDTO)util.jsonToObject(Datos,jsonRepuesta);
 		}
 		catch(Exception ex)
 		{
-			log.error("\nError en el metodo Consulta(BusquedaNombreDTO Request, String Url)"
+			log.error("\nError en el metodo consultaApuntes(GetConsultaMovimientosGeneralReqDTO Request)"
 					+ "\nException Message: " + ex.getMessage());
 
 		}
@@ -89,21 +88,18 @@ public class WsServicios {
 	}
     
     /*CONSULTA DE RETENCIONES*/
-	public static ResConsultaRetencionDTO consultaRetencion(GetConsultaRetencionReqDTO Request, String Url)
+	public ResConsultaRetencionDTO consultaRetencion(GetConsultaRetencionReqDTO Request)
 	{
 		Util util = Util.getInstance();
 		ResConsultaRetencionDTO Datos=new ResConsultaRetencionDTO();
 		try
 		{
-			ArrayList<String> Nodos=new ArrayList<String>();
-			Nodos.add("cabecera");
-			Nodos.add("retenciones");
-			String jsonRepuesta= util.callRestPost(Request,Url);
-			Datos=(ResConsultaRetencionDTO)util.jsonToObject(Datos,jsonRepuesta,Nodos);
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext+ urlConsultaRetenciones);
+			Datos=(ResConsultaRetencionDTO)util.jsonToObject(Datos,jsonRepuesta);
 		}
 		catch(Exception ex)
 		{
-			log.error("\nError en el metodo Consulta(BusquedaPersonaRequesDTO Request, String Url)"
+			log.error("\nError en el metodo consultaRetencion(GetConsultaRetencionReqDTO Request)"
 					+ "\nException Message: " + ex.getMessage());
 
 		}
@@ -122,7 +118,7 @@ public class WsServicios {
 		}
 		catch(Exception ex)
 		{
-			log.error("\nError en el metodo Consulta(BusquedaPersonaRequesDTO Request, String Url)"
+			log.error("\nError en el metodo consultaBloqueos(GetConsultaBloqueosReqDTO Request)"
 					+ "\nException Message: " + ex.getMessage());
 
 		}

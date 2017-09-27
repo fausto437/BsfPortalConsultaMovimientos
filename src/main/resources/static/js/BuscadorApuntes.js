@@ -41,7 +41,7 @@ function startDB() {
     try {
         dataBase = indexedDB.open('bansefi', 1);
         dataBase.onsuccess = function (e) {
-            CargaCombo($("#cboTipoIdentificacion"),"catalogo_tipo_de_identificacion_pm",cboTipoIdentificacion)
+            CargaCombo($("#cboTipoIdentificacion"),"catalogo_identificacion",cboTipoIdentificacion)
         };
         dataBase.onerror = function (e) {
             console.log('Error al acceder a la Base de datos.');
@@ -162,7 +162,7 @@ function getNombre(){
 		msjAlerta("Verificar el número de cuenta");
 		return;
 	}
-	numId=true;
+	
 	var datos ={
 			"bsfoperador":$("#bsfoperador").val(),
 			"acuerdo":$("#numAcuerdo").val()
@@ -177,16 +177,17 @@ function getNombre(){
 		success : function(data) {
 			loading.modal('hide');
 			if(data!="ERROR"){
-				validId=true;
+				numId=true;
 			    $("#titCuenta").val(data);
 			}
 			else{
 				$("#titCuenta").val("");
-				validId=false;
+				numId=false;
 				msjAlerta("Hubo un error. Verifique que el número de la cuenta sea correcto.");
 			}
 		},
 		error : function(e) {
+				numId=false;
 			    console.log("Error " + e);
 			    loading.modal('hide');
 			    msjAlerta("Verifique que el número de la cuenta sea correcto.");
@@ -218,5 +219,6 @@ function consultarInformacion(){
 		msjAlerta("Validar identificación del titular.");
 		return;
 	}
+	loading.modal('show');
 	$("#frmBusquedaMovimientosGral").submit();
 }

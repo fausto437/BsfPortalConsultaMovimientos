@@ -73,4 +73,13 @@ public class DetalleConsultaDTO {
 	private String motivo;
 	@Getter	@Setter
 	private String situacion;
+	//DATOS DE RETENCION
+	@Getter	@Setter
+	private String idTipoRetencion;
+	@Getter	@Setter
+	private String tipoRetencion;
+	@Getter	@Setter
+	private String codRetencion;
+	@Getter	@Setter
+	private String origen;
 }

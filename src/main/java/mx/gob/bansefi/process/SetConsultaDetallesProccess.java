@@ -3,11 +3,11 @@ package mx.gob.bansefi.process;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.DetalleConsultaDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
+import mx.gob.bansefi.dto.GralBloqueoDTO;
+import mx.gob.bansefi.dto.GralRetencionDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
 import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
-//import scala.annotation.meta.setter;
-
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -72,20 +72,42 @@ public class SetConsultaDetallesProccess {
         return detalles;
     }
     
-    public DetalleConsultaDTO SetConsultaDetallesRetencion() {
+    public DetalleConsultaDTO SetConsultaDetallesRetencion(GralRetencionDTO renglonRetencion) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	detalles.setTitulo("de Retención");
-    	detalles.setNumAcuerdo("0923498");
-    	detalles.setCodEmpleado("EOJJKRF");
-    	detalles.setCentro("");
-    	detalles.setTitular("");
-    	detalles.setIdTipoBloqueo("");
-    	detalles.setTipoBloqueo("");
-    	detalles.setFechaAlta("07/03/2014");
-		detalles.setFechaVto("10/03/2014");
-		detalles.setMotivo("");
-		detalles.setSituacion("");
-		
+    	detalles.setCodEmpleado(renglonRetencion.getEmpleado());
+    	detalles.setIdTipoRetencion(renglonRetencion.getTipo());
+    	detalles.setTipoRetencion("");
+    	detalles.setFechaAlta(renglonRetencion.getFechaAlta());
+		detalles.setFechaVto(renglonRetencion.getFechaVTO());
+		detalles.setMotivo(renglonRetencion.getConcepto());
+		detalles.setSituacion(renglonRetencion.getEstado());
+		detalles.setImporte(renglonRetencion.getImporte());
+		detalles.setOrigen(renglonRetencion.getOrigen());
+		detalles.setMoneda("MXN");
+		try {
+			String centro = renglonRetencion.getOrigen().substring(0, renglonRetencion.getOrigen().indexOf('-'));
+			detalles.setCentro(centro);
+		}
+		catch(Exception e) {
+			detalles.setCentro("");
+			e.printStackTrace();
+		}
     	return detalles;
     }
+
+	public DetalleConsultaDTO SetConsultaDetallesBloqueo(GralBloqueoDTO renglonBloqueo) {
+		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+		detalles.setTitulo("de Bloqueo");
+		detalles.setIdTipoBloqueo(renglonBloqueo.getTipo());
+		detalles.setMotivo(renglonBloqueo.getConcepto());
+		detalles.setSituacion(renglonBloqueo.getEstado());
+		detalles.setFechaAlta(renglonBloqueo.getFechaAlta());
+		detalles.setFechaVto(renglonBloqueo.getFechaVTO());
+		detalles.setCodEmpleado(renglonBloqueo.getEmpleado());
+		detalles.setCentro(renglonBloqueo.getCentro());
+		detalles.setImporte(renglonBloqueo.getImporte());
+		
+		return detalles;
+	}
 }

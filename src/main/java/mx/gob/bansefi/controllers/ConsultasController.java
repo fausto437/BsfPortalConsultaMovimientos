@@ -7,6 +7,8 @@ import mx.gob.bansefi.dto.BusquedaDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.DetalleConsultaDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
+import mx.gob.bansefi.dto.GralBloqueoDTO;
+import mx.gob.bansefi.dto.GralRetencionDTO;
 import mx.gob.bansefi.dto.ReqEncryptDTO;
 import mx.gob.bansefi.dto.ReqEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Request.*;
@@ -173,7 +175,7 @@ public class ConsultasController {
     //PANTALLA PARA REALIZAR LA CONSULTA GENERAL DE MOVIMIENTOS
     @RequestMapping(value = "/consultaGeneral")
     public ModelAndView ConsultaPrincipal(@ModelAttribute("Model") final BusquedaDTO DatosGenerales, @RequestParam("tipo") String tipo) {
-    	boolean conAnotaciones=true;
+    	boolean conAnotaciones=false;
     	//Si tiene anotaciones
     	if(conAnotaciones) {
     		ResConsultaAnotacionesDTO res = new ResConsultaAnotacionesDTO();
@@ -188,34 +190,73 @@ public class ConsultasController {
     	}
     	//No tiene anotaciones
     	else {
-    		BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
-	        try {
-	        	GetConsultaMovimientosGeneralReqDTO req = new GetConsultaMovimientosGeneralReqDTO();
-	        	req.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
-	        	req.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
-	        	req.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
-	        	req.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
-	        	req.setNumsec("0");
-	        	req.setAcuerdo(DatosGenerales.getNumAcuerdo());
-	        	req.setFechadesde(DatosGenerales.getFechaDesde());
-	        	req.setFechahasta(DatosGenerales.getFechaHasta());
-	        	req.setAcceso(DatosGenerales.getAcceso());
-	        	req.setImpsdo(DatosGenerales.getImpsdo());
-	        	req.setFormato(DatosGenerales.getFormato());
-	        	
-	        	ResConsultaApuntesDTO respuesta = wsServicios.consultaApuntes(req);
-	        	if(respuesta.getCabecera().getStatus().equals("0")) {
-	        		ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
-	            	//detalles = setConsultaPrincipal.SetConsultaPrincipal();
-	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);	        		
-	        	}
-	        	else {
-	        		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
-	        	}
-	        } catch (Exception ex) {
-	            System.out.print(ex.getMessage());
-	            return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
-	        }
+    		ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
+        	
+        	try {
+        		
+        			BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
+    			
+	        		//Se realiza la consulta de bloqueos
+	        		GetConsultaBloqueosReqDTO reqBloqueos = new GetConsultaBloqueosReqDTO();
+	        		reqBloqueos.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+	        		reqBloqueos.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+	        		reqBloqueos.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+	        		reqBloqueos.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+	        		reqBloqueos.setAcuerdo(DatosGenerales.getNumAcuerdo());
+	        		reqBloqueos.setEstado("A");
+        		
+	        		ResConsultaBloqueosDTO resBloqueos = wsServicios.consultaBloqueos(reqBloqueos);
+        		
+	        		if(resBloqueos.getCabecera().getErrores()==null){
+	        			detalles.setBloqueos(resBloqueos.getBloqueos()==null?null:setConsultaPrincipal.SetConsultaBloqueos(resBloqueos.getBloqueos()));
+	        		}
+	        		
+	            	//Se realiza consulta de retenciones
+	        		GetConsultaRetencionReqDTO reqRetenciones = new GetConsultaRetencionReqDTO();
+	        		reqRetenciones.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+	        		reqRetenciones.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+	        		reqRetenciones.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+	        		reqRetenciones.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+	        		reqRetenciones.setAcuerdo(DatosGenerales.getNumAcuerdo());
+	        		reqRetenciones.setEstado("ACTIVO");
+        		
+	        		ResConsultaRetencionDTO resRetenciones= wsServicios.consultaRetencion(reqRetenciones);
+	        		
+	        		if(resRetenciones.getCabecera().getErrores()==null){
+	        			detalles.setRetenciones(resRetenciones.getRetenciones()==null?null:setConsultaPrincipal.setConsultaRetenciones(resRetenciones.getRetenciones()));
+	        		}
+	        		
+	        		//Se realiza consulta de movimientos
+	        		GetConsultaMovimientosGeneralReqDTO reqApuntes = new GetConsultaMovimientosGeneralReqDTO();
+	        		reqApuntes.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+	        		reqApuntes.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+	        		reqApuntes.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+	        		reqApuntes.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+	        		reqApuntes.setNumsec("0");
+	        		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
+	        		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
+	        		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+	        		reqApuntes.setAcceso("S");
+	        		reqApuntes.setImpsdo("0");
+	        		reqApuntes.setFormato(DatosGenerales.getFormato());
+            	
+            	//detalles = setConsultaPrincipal.SetConsultaPrincipal();
+            	//return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
+            	
+	            	ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
+	            	if(resApuntes.getCabecera().getErrores()==null) {
+	            		detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
+	            	}
+	            	
+	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales).addObject("anotaciones","n");
+	            	/*
+	            	else {
+	            		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+	            	}*/
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    			return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+	    		}
     		
     	}
     }
@@ -247,7 +288,21 @@ public class ConsultasController {
     		if(resBloqueos.getCabecera().getErrores()==null){
     			detalles.setBloqueos(setConsultaPrincipal.SetConsultaBloqueos(resBloqueos.getBloqueos()));
     		}
-        	
+        	//Se realiza consulta de retenciones
+    		GetConsultaRetencionReqDTO reqRetenciones = new GetConsultaRetencionReqDTO();
+    		reqRetenciones.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+    		reqRetenciones.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+    		reqRetenciones.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
+    		reqRetenciones.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+    		reqRetenciones.setAcuerdo(datosGenerales.getNumAcuerdo());
+    		reqRetenciones.setEstado("ACTIVO");
+    		
+    		ResConsultaRetencionDTO resRetenciones= wsServicios.consultaRetencion(reqRetenciones);
+    		
+    		if(resRetenciones.getCabecera().getErrores()==null){
+    			detalles.setRetenciones(setConsultaPrincipal.setConsultaRetenciones(resRetenciones.getRetenciones()));
+    		}
+    		
     		//Se realiza consulta de movimientos
     		GetConsultaMovimientosGeneralReqDTO reqApuntes = new GetConsultaMovimientosGeneralReqDTO();
     		reqApuntes.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
@@ -267,9 +322,10 @@ public class ConsultasController {
         	
         	ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
         	if(resApuntes.getCabecera().getErrores()==null) {
-            	detalles.setApuntes(resApuntes.getApuntes());
+        		detalles.setApuntes(setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
         	}
-        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
+        	
+        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", datosGenerales);
         	/*
         	else {
         		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
@@ -288,20 +344,53 @@ public class ConsultasController {
     }
     
   //PANTALLA PARA VERIFICAR LOS DETALLES DE MOVIMIENTOS
-    @RequestMapping(value = "/detalles")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
-    public ModelAndView ConsultaDetalleMovimientos() {
+    @RequestMapping(value = "/detalles")//
+    public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo, @RequestParam("row") String row, @RequestParam("acuerdo") String acuerdo, @RequestParam("titular") String titular) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	String tipo="ap";
     	switch(tipo) {
     		case "b":{
-    			detalles.setTitulo("de Bloqueo");
+    			try {
+    				GralBloqueoDTO renglonBloqueo = (GralBloqueoDTO) util.jsonToObject(new GralBloqueoDTO(), row,new ArrayList<String>());
+					detalles= setDetalles.SetConsultaDetallesBloqueo(renglonBloqueo);
+					detalles.setTitular(titular);
+    				detalles.setNumAcuerdo(acuerdo);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
     		}break;
     		case "r":{
-    			detalles = setDetalles.SetConsultaDetallesRetencion();
-    			
+    			try {
+					GralRetencionDTO renglonRetencion = (GralRetencionDTO) util.jsonToObject(new GralRetencionDTO(), row,new ArrayList<String>());
+					detalles = setDetalles.SetConsultaDetallesRetencion(renglonRetencion);
+					detalles.setTitular(titular);
+    				detalles.setNumAcuerdo(acuerdo);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
     		}break;
     		case "ap":{
-    			detalles = setDetalles.SetConsultaDetallesApunte();
+    			try {
+					GralApunteDTO renglonApunte = (GralApunteDTO) util.jsonToObject(new GralApunteDTO(), row,new ArrayList<String>());
+					GetConsultaApunteDetallesReqDTO reqApunteDetalle = new GetConsultaApunteDetallesReqDTO();
+					reqApunteDetalle.setUsuario("");
+					reqApunteDetalle.setPassword("");
+					reqApunteDetalle.setEntidad("");
+					reqApunteDetalle.setTerminal("");
+					//ENVIAR EL BSFOPERADOR DESDE LA VISTA PARA SACAR LOS DATOS Y CONSUMIR LA CONSULTA DETALLADA DE UN MOVIMIENTO
+					reqApunteDetalle.setAcuerdo(acuerdo);
+					reqApunteDetalle.setFecha(renglonApunte.getFechaOperacion());
+					reqApunteDetalle.setDetalle(renglonApunte.getDetalle());
+					reqApunteDetalle.setImporte(renglonApunte.getImporte());
+					reqApunteDetalle.setCodcuenta(renglonApunte.getCodcuenta());
+					reqApunteDetalle.setSigno(renglonApunte.getSigno());
+					reqApunteDetalle.setCodorigen(renglonApunte.getCodorigen());
+					reqApunteDetalle.setCodapunte(renglonApunte.getCodapunte());
+					//detalles = setDetalles.SetConsultaDetallesApunte(renglonApunte);
+					detalles.setTitular(titular);
+    				detalles.setNumAcuerdo(acuerdo);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
     		}break;
     	}
     	

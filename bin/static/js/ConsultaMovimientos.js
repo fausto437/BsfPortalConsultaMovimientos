@@ -27,10 +27,10 @@ $(document).ready(function () {
 
 //Funcion para abrir el detalle del registro seleccionado
 function detalleConsulta(info, tipo){
-	console.log(info);
 	var valido=false;
 	switch(tipo){
 		case 'a':{
+			console.log("anotacion");
 			$("#bsfoperador").val("bla");
 			$("#numAnotacion").val("bla2");
 			$("#tipo").val(tipo);
@@ -39,18 +39,21 @@ function detalleConsulta(info, tipo){
 		case 'b':{
 			if($("#tblBloqueos").find(".seleccionado").length>0){
 				var str = JSON.stringify(lstBloqueos[actual]);
-				console.log(str);
 				$("#row").val(str);
 				valido=true;
 			}
-		}
+		}break;
 		case 'r':{
 			if($("#tblRetenciones").find(".seleccionado").length>0){
+				var str = JSON.stringify(lstRetenciones[actual]);
+				$("#row").val(str);
 				valido=true;
 			}
 		}break;
 		case 'ap':{
 			if($("#tblApuntes").find(".seleccionado").length>0){
+				var str = JSON.stringify(lstApuntes[actual]);
+				$("#row").val(str);
 				valido=true;
 			}
 		}break;
@@ -76,7 +79,7 @@ function seleccionado(id,tipo, index){
 		$("#"+anterior).removeClass('seleccionado');
 	}
 	anterior=id;
-	actual=index;
+	actual=index-1;
 	$("#"+id).addClass('seleccionado');
 	//Se ingresan los valores que serán enviados para la consulta
 	$("#tipo").val(tipo);
@@ -97,9 +100,9 @@ function cargaRow(tipo){
 						StrHtml+="<tr id='movimiento"+id+"'" +
 									"onclick='seleccionado(\"movimiento"+id+"\",\"ap\")'>" +
 									"<td>"+lstApuntes[i].concepto+"</td>" +
-									"<td>"+lstApuntes[i].fecOperacion+"</td>" +
-									"<td>"+lstApuntes[i].fecValor+"</td>" +
-									"<td>"+lstApuntes[i].ofTerminal+"</td>" +
+									"<td>"+lstApuntes[i].fechaoperacion+"</td>" +
+									"<td>"+lstApuntes[i].fechavalor+"</td>" +
+									"<td>"+lstApuntes[i].ofterminal+"</td>" +
 									"<td>"+lstApuntes[i].signo+"</td>" +
 									"<td>"+lstApuntes[i].importe+"</td>" +
 									"<td>"+lstApuntes[i].saldo+"</td>" +
@@ -158,11 +161,11 @@ function cargaRow(tipo){
 					if(lstRetenciones.length>i){
 						var id=i+1;
 						StrHtml+="<tr id='retencion"+id+"'" +
-									"onclick='seleccionado(\"retencion"+id+"\",\"r\")'>" +
+									"onclick='seleccionado(\"retencion"+id+"\",\"r\","+id+")'>" +
 									"<td>"+lstRetenciones[i].tipo+"</td>" +
 									"<td>"+lstRetenciones[i].estado+"</td>" +
-									"<td>"+lstRetenciones[i].fecAlta+"</td>" +
-									"<td>"+lstRetenciones[i].fecVto+"</td>" +
+									"<td>"+lstRetenciones[i].fechaAlta+"</td>" +
+									"<td>"+lstRetenciones[i].fechaVTO+"</td>" +
 									"<td>"+lstRetenciones[i].concepto+"</td>" +
 									"<td>"+lstRetenciones[i].empleado+"</td>" +
 									"<td>"+lstRetenciones[i].origen+"</td>" +

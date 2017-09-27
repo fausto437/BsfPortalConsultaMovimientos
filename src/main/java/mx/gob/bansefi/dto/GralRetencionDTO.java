@@ -16,15 +16,15 @@ public class GralRetencionDTO {
 	@Getter @Setter
 	private String estado;
 	@Getter @Setter
-	private String fecAlta;
+	private String fechaAlta;
 	@Getter @Setter
-	private String fecVto;
+	private String fechaVTO;
 	@Getter @Setter
 	private String concepto;
 	@Getter @Setter
 	private String empleado;
-	@Getter	@Setter
+	@Getter @Setter
 	private String origen;
-	@Getter	@Setter
+	@Getter @Setter
 	private String importe;
 }

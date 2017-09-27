@@ -1,9 +1,11 @@
 package mx.gob.bansefi.process;
 
+import mx.gob.bansefi.dto.ApunteDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
+import mx.gob.bansefi.dto.RetencionesDTO;
 import mx.gob.bansefi.dto.Modelos.AnotacionesDTO;
 import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
@@ -32,7 +34,7 @@ public class SetConsultaPrincipalProccess {
     private String urlgetLocalidad;
 
     private DecimalFormat df = new DecimalFormat("0.00");
-    
+    //Función para llenar los campos de la tabla de bloqueos
     public List<GralBloqueoDTO> SetConsultaBloqueos(List<GralBloqueoDTO> lstBloqueos){
     	List<GralBloqueoDTO> nuevaLista = new ArrayList<GralBloqueoDTO>();
     	for (GralBloqueoDTO datoBloqueo : lstBloqueos) {
@@ -66,7 +68,7 @@ public class SetConsultaPrincipalProccess {
     	return nuevaLista;
     }
     
-    
+    //Función para llenar las tablas de la pantalla principal con datos de prueba
     public ConsultaPrincipalDTO SetConsultaPrincipal() {
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
     	
@@ -123,8 +125,8 @@ public class SetConsultaPrincipalProccess {
     	GralRetencionDTO retencion = new GralRetencionDTO();
     	retencion.setTipo("Q7");
     	retencion.setTipo("ACTIVO");
-    	retencion.setFecAlta("12/05/2008");
-    	retencion.setFecVto("12/05/2008");
+    	retencion.setFechaAlta("12/05/2008");
+    	retencion.setFechaVTO("12/05/2008");
     	retencion.setConcepto("POR QUE NO 123456 BANAEX");
     	retencion.setEmpleado("E172379129");
     	retencion.setOrigen("0166-0069644029-15/07/2014-0000001");
@@ -134,8 +136,8 @@ public class SetConsultaPrincipalProccess {
     	retencion = new GralRetencionDTO();
     	retencion.setTipo("Q7");
     	retencion.setTipo("ACTIVO");
-    	retencion.setFecAlta("12/05/2008");
-    	retencion.setFecVto("12/05/2008");
+    	retencion.setFechaAlta("12/05/2008");
+    	retencion.setFechaVTO("12/05/2008");
     	retencion.setConcepto("POR QUE NO 123456 BANAEX");
     	retencion.setEmpleado("E172379129");
     	retencion.setOrigen("0166-0069644029-15/07/2014-0000001");
@@ -145,142 +147,143 @@ public class SetConsultaPrincipalProccess {
     	retencion = new GralRetencionDTO();
     	retencion.setTipo("Q7");
     	retencion.setTipo("ACTIVO");
-    	retencion.setFecAlta("12/05/2008");
-    	retencion.setFecVto("12/05/2008");
+    	retencion.setFechaAlta("12/05/2008");
+    	retencion.setFechaVTO("12/05/2008");
     	retencion.setConcepto("POR QUE NO 123456 BANAEX");
     	retencion.setEmpleado("E172379129");
     	retencion.setOrigen("0166-0069644029-15/07/2014-0000001");
     	retencion.setImporte("10.00");
     	lstRetenciones.add(retencion);
     	
-    	//ACUERDOS
-    	List<GralApunteDTO> lstAcuerdos = new ArrayList<GralApunteDTO>();
-    	GralApunteDTO acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("1.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	//APUNTES
+    	List<ApunteDTO> lstApuntes= new ArrayList<ApunteDTO>();
+    	ApunteDTO apunte = new ApunteDTO();
+    	apunte.setConcepto("PRUEBA FOLIO");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-1.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("1.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("2.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-333.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("2.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("3.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-67,543.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("3.00 MXN");
+    	apunte.setSigno("H");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("4.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("PRUEBA FOLIO");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-1.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("4.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("5.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-333.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("5.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("6.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-67,543.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("6.00 MXN");
+    	apunte.setSigno("H");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("7.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("PRUEBA FOLIO");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-1.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("7.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("8.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-333.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("8.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("9.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-67,543.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("9.00 MXN");
+    	apunte.setSigno("H");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("PRUEBA FOLIO");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-1.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("10.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("PRUEBA FOLIO");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-1.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("10.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-333.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("11.00 MXN");
-    	acuerdo.setSigno("D");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-333.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("11.00 MXN");
+    	apunte.setSigno("D");
+    	lstApuntes.add(apunte);
     	
-    	acuerdo = new GralApunteDTO();
-    	acuerdo.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
-    	acuerdo.setFecOperacion("04/03/2014");
-    	acuerdo.setFecValor("04/03/2014");
-    	acuerdo.setImporte("-67,543.00 MXN");
-    	acuerdo.setOfTerminal("12012130");
-    	acuerdo.setSaldo("12.00 MXN");
-    	acuerdo.setSigno("H");
-    	lstAcuerdos.add(acuerdo);
+    	apunte = new ApunteDTO();
+    	apunte.setConcepto("C. OVI PRUEBA VALIDAR DECIMALES");
+    	apunte.setFechaoperacion("04/03/2014");
+    	apunte.setFechavalor("04/03/2014");
+    	apunte.setImporte("-67,543.00 MXN");
+    	apunte.setOfterminal("12012130");
+    	apunte.setSaldo("12.00 MXN");
+    	apunte.setSigno("H");
+    	lstApuntes.add(apunte);
     	
-    	detalles.setApuntes(lstAcuerdos);
+    	detalles.setApuntes(lstApuntes);
     	detalles.setBloqueos(lstBloqueos);
     	detalles.setRetenciones(lstRetenciones);
         return detalles;
     }
-    
+
+    //Función para llenar la tabla de anotaciones con datos de prueba
     public ArrayList<AnotacionesDTO> SetConsultaAnotaciones() {
     	ArrayList<AnotacionesDTO> anotaciones = new ArrayList<AnotacionesDTO>();
     	AnotacionesDTO datosAnotacion= new AnotacionesDTO();
@@ -307,4 +310,82 @@ public class SetConsultaPrincipalProccess {
     	
     	return anotaciones;
     }
+
+    //Función para llenar la tabla de retenciones con los datos de la consulta
+	public List<GralRetencionDTO> setConsultaRetenciones(List<GralRetencionDTO> lstRetenciones) {
+		List<GralRetencionDTO> nuevaLista = new ArrayList<GralRetencionDTO>();
+    	for (GralRetencionDTO datoRetencion : lstRetenciones) {
+    		GralRetencionDTO nuevoObj = new GralRetencionDTO();
+    		nuevoObj.setTipo(datoRetencion.getTipo()==null?"":datoRetencion.getTipo());
+    		nuevoObj.setEstado("ACTIVO");
+    		try {
+				String nueva_fecha=datoRetencion.getFechaAlta().substring(6, 8)+"/"+datoRetencion.getFechaAlta().substring(4, 6)+"/"+datoRetencion.getFechaAlta().substring(0, 4);
+				nuevoObj.setFechaAlta(nueva_fecha);
+			} catch (Exception e) {
+				nuevoObj.setFechaAlta("");
+				e.printStackTrace();
+			}
+    		try {
+				String nueva_fecha=datoRetencion.getFechaVTO().substring(6, 8)+"/"+datoRetencion.getFechaVTO().substring(4, 6)+"/"+datoRetencion.getFechaVTO().substring(0, 4);
+				nuevoObj.setFechaVTO(nueva_fecha);
+			} catch (Exception e) {
+				nuevoObj.setFechaVTO("");
+				e.printStackTrace();
+			}
+    		nuevoObj.setConcepto(datoRetencion.getConcepto()==null?"":datoRetencion.getConcepto());
+    		nuevoObj.setEmpleado(datoRetencion.getEmpleado()==null?"":datoRetencion.getEmpleado());
+    		nuevoObj.setOrigen(datoRetencion.getOrigen()==null?"":datoRetencion.getOrigen());
+    		try {
+    			nuevoObj.setImporte(datoRetencion.getImporte()==null?"":""+df.format(Double.parseDouble(datoRetencion.getImporte())));    			
+    		}
+    		catch(Exception e) {
+    			nuevoObj.setImporte("");
+				e.printStackTrace();
+    		}
+    		nuevaLista.add(nuevoObj);
+    	}
+    	
+    	
+    	return nuevaLista;
+	}
+
+	public List<ApunteDTO> setConsultaApuntes(ArrayList<GralApunteDTO> lstApuntes) {
+		List<ApunteDTO> nuevaLista = new ArrayList<ApunteDTO>();
+    	for (GralApunteDTO datoApunte : lstApuntes) {
+    		ApunteDTO nuevoObj = new ApunteDTO();
+    		nuevoObj.setConcepto(datoApunte.getConcepto()==null?"":datoApunte.getConcepto());
+    		nuevoObj.setFechaoperacion(datoApunte.getFechaOperacion()==null?"":datoApunte.getFechaOperacion());
+    		nuevoObj.setFechavalor(datoApunte.getFechaValor()==null?"":datoApunte.getFechaValor());
+    		nuevoObj.setOfterminal(datoApunte.getOfiTerminal()==null?"":datoApunte.getOfiTerminal());
+    		nuevoObj.setSigno(datoApunte.getSigno()==null?"":datoApunte.getSigno());
+    		
+    		try {
+    			nuevoObj.setImporte(datoApunte.getImporte()==null?"":""+df.format(Double.parseDouble(datoApunte.getImporte())));    			
+    		}
+    		catch(Exception e) {
+    			nuevoObj.setImporte("");
+				e.printStackTrace();
+    		}
+    		try {
+    			nuevoObj.setSaldo(datoApunte.getSaldo()==null?"":""+df.format(Double.parseDouble(datoApunte.getSaldo())));    			
+    		}
+    		catch(Exception e) {
+    			nuevoObj.setImporte("");
+				e.printStackTrace();
+    		}
+    		
+    		nuevoObj.setCodigoerror(datoApunte.getCodigoError()==null?"":datoApunte.getCodigoError());
+    		nuevoObj.setDescripcionerror(datoApunte.getDescripcionError()==null?"":datoApunte.getDescripcionError());
+    		nuevoObj.setDetalle(datoApunte.getDetalle()==null?"":datoApunte.getDetalle());
+    		nuevoObj.setCodcuenta(datoApunte.getCodcuenta()==null?"":datoApunte.getCodcuenta());
+    		nuevoObj.setCodorigen(datoApunte.getCodorigen()==null?"":datoApunte.getCodorigen());
+    		nuevoObj.setCodapunte(datoApunte.getCodapunte()==null?"":datoApunte.getCodapunte());
+    		nuevoObj.setIdorigen(datoApunte.getIdOrigen()==null?"":datoApunte.getIdOrigen());
+    		
+    		nuevaLista.add(nuevoObj);
+    	}
+    	
+    	
+    	return nuevaLista;
+	}
 }

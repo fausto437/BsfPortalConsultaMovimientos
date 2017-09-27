@@ -19,5 +19,5 @@ public class ResConsultaApuntesDTO{
 	@Getter @Setter
 	private String cantidad;
 	@Getter @Setter
-	private ArrayList<GralApunteDTO> apuntes;
+	private ArrayList<GralApunteDTO> lista;
 }

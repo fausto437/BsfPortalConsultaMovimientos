@@ -31,12 +31,15 @@
 		var lstBloqueos = [[${Model.bloqueos}]];
 		var lstRetenciones = [[${Model.retenciones}]];
 		console.log([[${Model}]]);
+		console.log([[${datos}]]);
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
     <input id="BSFOPERADOR" name="BSFOPERADOR"/>
     <input id="titulo" name="titulo"/>
     <input id="tipo" name="tipo"/>
     <input id="row" name="row"/>
+    <input id="acuerdo" name="acuerdo" th:value="${datos.numAcuerdo}"/>
+    <input id="titular" name="titular" th:value="${datos.titCuenta}"/>
 </form>
 <div class="container_48">
     <div class="contenedor">
@@ -60,30 +63,15 @@
     		<div class="seccion">
 	    		<label>N&uacute;mero de cuenta</label>
 		    	<br/>
-		    	<label class="textRojo">43445873</label>
+		    	<label class="textRojo" th:text="${datos.numAcuerdo}"></label>
 		    	<br/>
 		    	<label>Cliente</label>
 		    	<br/>
-		    	<label class="textRojo">MARIA DE LOS ANGELES PEREZ FRAGA</label>
+		    	<label class="textRojo" th:text="${datos.titCuenta}"></label>
 		    	<br/>
-		    	<div class="contenedor-anotaciones">
+		    	<div class="contenedor-anotaciones" th:if="${anotaciones} eq 's'">
 		    		<h2>ANOTACIONES</h2>
 		    		<div class="row">
-		    			<div class="col-md-4 col-xs-4">
-		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
-		    			</div>
-		    			<div class="col-md-4 col-xs-4">
-		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
-		    			</div>
-		    			<div class="col-md-4 col-xs-4">
-		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
-		    			</div>
-		    			<div class="col-md-4 col-xs-4">
-		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
-		    			</div>
-		    			<div class="col-md-4 col-xs-4">
-		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
-		    			</div>
 		    			<div class="col-md-4 col-xs-4">
 		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
 		    			</div>
@@ -117,7 +105,7 @@
 	                        </tr>
 	                        </thead>
 	                        <tbody id="listaBloqueos">
-	                        <!-- Se agrgan los renglones de manera dinamica -->
+	                        <!-- Se agregan los renglones de manera dinamica -->
 	                		</tbody>
 	                </table>
 	                <div class="row" th:if="${Model.bloqueos} neq null">
@@ -125,7 +113,7 @@
 					    	<div sd:pagination-summary=""></div>
 					    </div>
 					    <div class="col-md-4 col-xs-4 text-center">
-		                	<label class="textAzul cargar-registros" onclick="cargaRow('b');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('b');" th:if="${Model.bloqueos.size()}&gt; 10">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
 		                	<br/>
 		                	<br/>
 		                	<button onclick="detalleConsulta('','b' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
@@ -172,7 +160,7 @@
 	                        </tr>
 	                        </thead>
 	                        <tbody id="listaRetenciones">
-	                        	<!-- Se agrgan los renglones de manera dinamica -->
+	                        	<!-- Se agregan los renglones de manera dinamica -->
 	                		</tbody>
 	                </table>
 	                <div class="row" th:if="${Model.retenciones} neq null">
@@ -180,22 +168,23 @@
 					    	<div sd:pagination-summary=""></div>
 					    </div>
 					    <div class="col-md-4 col-xs-4 text-center">
-		                	<label class="textAzul cargar-registros" onclick="cargaRow('ap');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('ap');" th:if="${Model.retenciones.size()}&gt; 10">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
 		                	<br/>
 		                	<br/>
 		                	<button onclick="detalleConsulta('','r' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
 	                	</div>
+	                	<!-- 
 					    <div class="col-md-4 col-xs-4">
 					    	<nav class="pull-right">
-							<ul class="pagination" sd:pagination="pager">
-								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
-								<li th:each="numeroPagina: ${#numbers.sequence(0, Model.retenciones.size()/50)}">
-									<a href="#"><span th:text="${numeroPagina + 1}"></span></a>
-								</li>
-								<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
-							</ul>
-						</nav>
-					    </div>
+								<ul class="pagination" sd:pagination="pager">
+									<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+									<li th:each="numeroPagina: ${#numbers.sequence(0, Model.retenciones.size()/50)}">
+										<a href="#"><span th:text="${numeroPagina + 1}"></span></a>
+									</li>
+									<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+								</ul>
+							</nav>
+					    </div> -->	
 					</div>
 	            </div>
         	</div>
@@ -225,15 +214,15 @@
 	                        </tr>
 	                        </thead>
 	                        <tbody id="listaApuntes">
-	                        <!-- Se agrgan los renglones de manera dinamica -->
+	                        <!-- Se agregan los renglones de manera dinamica -->
 	                		</tbody>
 	                </table>
-	                <div class="row">
+	                <div class="row" th:if="${Model.apuntes} neq null">
 					    <div class="col-md-4 col-xs-4">
 					    	<div sd:pagination-summary=""></div>
 					    </div>
 					    <div class="col-md-4 col-xs-4 text-center">
-		                	<label class="textAzul cargar-registros" onclick="cargaRow('ap');">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('ap');" th:if="${Model.apuntes.size()}&gt; 10">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
 		                	<br/>
 		                	<br/>
 		                	<button onclick="detalleConsulta('','ap' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
@@ -264,7 +253,7 @@
             <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;">Salir</button>
         </div>
         <div class="col-md-4 col-xs-4 text-center">
-            <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+            <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
         </div>
         <div class="col-md-4 col-xs-4 text-right">
             <button onclick="alert('asd');" type="button" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>

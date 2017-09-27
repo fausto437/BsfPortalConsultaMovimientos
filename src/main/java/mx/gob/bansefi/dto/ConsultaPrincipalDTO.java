@@ -18,7 +18,7 @@ public class ConsultaPrincipalDTO {
 	@Getter @Setter
 	private String cliente;
 	@Getter @Setter
-	private List<GralApunteDTO> apuntes;
+	private List<ApunteDTO> apuntes;
 	@Getter @Setter
 	private List<GralBloqueoDTO> bloqueos;
 	@Getter @Setter
