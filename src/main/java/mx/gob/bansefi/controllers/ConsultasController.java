@@ -345,7 +345,12 @@ public class ConsultasController {
     
   //PANTALLA PARA VERIFICAR LOS DETALLES DE MOVIMIENTOS
     @RequestMapping(value = "/detalles")//
-    public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo, @RequestParam("row") String row, @RequestParam("acuerdo") String acuerdo, @RequestParam("titular") String titular) {
+    public ModelAndView ConsultaDetalleMovimientos(
+    		@RequestParam("tipo") String tipo, 
+    		@RequestParam("row") String row, 
+    		@RequestParam("acuerdo") String acuerdo, 
+    		@RequestParam("titular") String titular,
+    		@RequestParam("BSFOPERADOR") String bsfoperador) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	switch(tipo) {
     		case "b":{
@@ -372,11 +377,13 @@ public class ConsultasController {
     			try {
 					GralApunteDTO renglonApunte = (GralApunteDTO) util.jsonToObject(new GralApunteDTO(), row,new ArrayList<String>());
 					GetConsultaApunteDetallesReqDTO reqApunteDetalle = new GetConsultaApunteDetallesReqDTO();
-					reqApunteDetalle.setUsuario("");
-					reqApunteDetalle.setPassword("");
-					reqApunteDetalle.setEntidad("");
-					reqApunteDetalle.setTerminal("");
-					//ENVIAR EL BSFOPERADOR DESDE LA VISTA PARA SACAR LOS DATOS Y CONSUMIR LA CONSULTA DETALLADA DE UN MOVIMIENTO
+					
+					BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(bsfoperador));
+					
+					reqApunteDetalle.setUsuario(bsfOperadorDecrypt.getBSFOPERADOR().getUSERTCB());
+					reqApunteDetalle.setPassword(bsfOperadorDecrypt.getBSFOPERADOR().getPASSTCB());
+					reqApunteDetalle.setEntidad(bsfOperadorDecrypt.getBSFOPERADOR().getENTIDAD());
+					reqApunteDetalle.setTerminal(bsfOperadorDecrypt.getBSFOPERADOR().getTERMINAL());
 					reqApunteDetalle.setAcuerdo(acuerdo);
 					reqApunteDetalle.setFecha(renglonApunte.getFechaOperacion());
 					reqApunteDetalle.setDetalle(renglonApunte.getDetalle());
@@ -385,6 +392,9 @@ public class ConsultasController {
 					reqApunteDetalle.setSigno(renglonApunte.getSigno());
 					reqApunteDetalle.setCodorigen(renglonApunte.getCodorigen());
 					reqApunteDetalle.setCodapunte(renglonApunte.getCodapunte());
+					
+					ResConsultaApunteDetalleDTO resBloqueos = wsServicios.consultaDetalleApunte(reqApunteDetalle);
+					
 					//detalles = setDetalles.SetConsultaDetallesApunte(renglonApunte);
 					detalles.setTitular(titular);
     				detalles.setNumAcuerdo(acuerdo);

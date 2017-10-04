@@ -79,8 +79,6 @@ public class WizardDocumentosController {
     private String pathConsultaDocumento;
     @Value("${path.returnDigitalizacion}")
     private String pathReturnDigitalizacion;
-    @Value("${path.AltaDocumentos}")
-    private String pathAltaDocumentos;
     @Value("${domain.servicesU}")
     private String urlServicesU;
     @Value("${url.setRelacionDocTCB}")

@@ -27,8 +27,6 @@ import java.util.List;
 public class SetConsultaDetallesProccess {
     @Value("${url.context}")
     private String urlcontext;
-    @Value("${url.getLocalidad}")
-    private String urlgetLocalidad;
 
     private DecimalFormat df = new DecimalFormat("0.00");
     public DetalleConsultaDTO SetConsultaDetallesApunte() {

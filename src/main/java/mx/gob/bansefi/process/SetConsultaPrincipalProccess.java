@@ -30,8 +30,6 @@ import java.util.List;
 public class SetConsultaPrincipalProccess {
     @Value("${url.context}")
     private String urlcontext;
-    @Value("${url.getLocalidad}")
-    private String urlgetLocalidad;
 
     private DecimalFormat df = new DecimalFormat("0.00");
     //Función para llenar los campos de la tabla de bloqueos

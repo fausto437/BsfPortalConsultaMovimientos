@@ -124,6 +124,25 @@ public class WsServicios {
 		}
 		return Datos;
 	}
+	
+	/*CONSULTA DE DETALLE DE APUNTE*/
+	public ResConsultaApunteDetalleDTO consultaDetalleApunte(GetConsultaApunteDetallesReqDTO Request)
+	{
+		Util util = Util.getInstance();
+		ResConsultaApunteDetalleDTO Datos=new ResConsultaApunteDetalleDTO();
+		try
+		{
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaBloqueos);
+			Datos=(ResConsultaApunteDetalleDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo consultaBloqueos(GetConsultaBloqueosReqDTO Request)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
 
 	/*
 	 * Metodo para consulta de datos de persona fisica

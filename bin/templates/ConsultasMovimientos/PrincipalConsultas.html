@@ -34,7 +34,7 @@
 		console.log([[${datos}]]);
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
-    <input id="BSFOPERADOR" name="BSFOPERADOR"/>
+    <input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
     <input id="titulo" name="titulo"/>
     <input id="tipo" name="tipo"/>
     <input id="row" name="row"/>
