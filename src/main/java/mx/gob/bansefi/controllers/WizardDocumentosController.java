@@ -8,15 +8,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
+
 import mx.gob.bansefi.clients.DocumentosClient;
-import mx.gob.bansefi.dto.Request.DocumentosPM.ReqConsultaDocumentosTCB;
 import mx.gob.bansefi.dto.Response.DocumentosPM.DocumentosRelacionadosDTO;
 import mx.gob.bansefi.dto.Response.DocumentosPM.ResAltaDocTCB;
 import mx.gob.bansefi.dto.Response.DocumentosPM.ResConsultaDocumentosTCB;
+import mx.gob.bansefi.dto.bsfOperador.BsfOperadorPadreDTO;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
@@ -29,14 +33,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import mx.gob.bansefi.dto.Modelos.BsfOperador;
-import mx.gob.bansefi.dto.Modelos.BsfOperadorDTO;
 import mx.gob.bansefi.clients.CatalogoClient;
 import mx.gob.bansefi.dto.ClsSeguridad;
 import mx.gob.bansefi.dto.DatosEncryptDigitaliza;
-import mx.gob.bansefi.dto.ReqEncryptDTO;
-import mx.gob.bansefi.dto.ReqEncryptORDecryptDTO;
-import mx.gob.bansefi.dto.ResEncryptORDecryptDTO;
-import mx.gob.bansefi.dto.Responce;
 import mx.gob.bansefi.dto.ResponceSecurity;
 import mx.gob.bansefi.dto.documentos;
 import mx.gob.bansefi.dto.encriptar;
@@ -44,6 +43,10 @@ import mx.gob.bansefi.dto.Modelos.TransportDTO;
 //import mx.gob.bansefi.dto.ModelosVistas.AddDocumentosMODEL;
 import mx.gob.bansefi.dto.Modelos.DocumentosMODEL;
 import mx.gob.bansefi.dto.Request.ReqAltaRelacionDocumentoDTO;
+import mx.gob.bansefi.dto.Request.ReqEncryptDecryptDTO;
+import mx.gob.bansefi.dto.Request.Documentos.ReqConsultaDocumentosTCB;
+import mx.gob.bansefi.dto.Request.Documentos.ReqEncryptORDecryptDTO;
+import mx.gob.bansefi.dto.Response.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.ResGralDTO;
 //import mx.gob.bansefi.dto.asocia.AsociaDatosDTO;
 //import mx.gob.bansefi.dto.asocia.AsociaRequestDTO;
@@ -83,7 +86,10 @@ public class WizardDocumentosController {
     private String urlServicesU;
     @Value("${url.setRelacionDocTCB}")
     private String pathRelacionDocTCB;
-
+    @Value("${server.context-path}")
+    private String context;
+    
+    private Util util = Util.getInstance();
     @Autowired
     SecurityWS securityWs;
     @Autowired
@@ -102,7 +108,7 @@ public class WizardDocumentosController {
             return new ModelAndView("error/500").addObject("msgError", "Error en los servicios (decrypt), intente de nuevo, si el error persiste contacte a sistemas.");
         }
         String bsfOperadorDTOencryp = Util.getInstance().objectToJson(bsfOperadorDecrypt.getBSFOPERADOR());
-        ResEncryptORDecryptDTO bsfOperadorDTOEncrypt = securityWs.encriptBsfOperador(new ReqEncryptORDecryptDTO(bsfOperadorDTOencryp));
+        ResEncryptORDecryptDTO bsfOperadorDTOEncrypt = securityWs.encrypt(new ReqEncryptORDecryptDTO(bsfOperadorDTOencryp));
         if (bsfOperadorDTOEncrypt.getCodRet() != 1) {
             return new ModelAndView("error/500").addObject("msgError", "Error en los servicios (encrypt), intente de nuevo, si el error persiste contacte a sistemas.");
         }
@@ -124,6 +130,37 @@ public class WizardDocumentosController {
         }
         model.addAttribute("list", lista);
         return new ModelAndView("documentos/Documentos").addObject("urlActionBack", urlDigitalizacion).addObject("model", DatosGenerales);
+    }
+    
+    @RequestMapping(value = "/encriptar", method = RequestMethod.POST)
+    public ResEncryptORDecryptDTO encripcion(@ModelAttribute("obj") DatosEncryptDigitaliza datos) {
+    	String url = urlServidor + context + "/";
+    	
+    	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(datos.getBSFOPERADOR()));
+		if(bsfOperadorDecrypt.getRespuesta()!=null) {
+			BsfOperadorPadreDTO bsfOp;
+			try {
+				bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+				String aencriptar = "{\"BSFOPERADOR\": {\"ENTIDAD\": \"" + bsfOp.getBSFOPERADOR().getENTIDAD() + "\", \"CENTRO\": \"" + bsfOp.getBSFOPERADOR().getCENTRO() 
+	        			+ "\", \"TERMINAL\": \""+ bsfOp.getBSFOPERADOR().getTERMINAL() + "\", \"USERTCB\": \"" + bsfOp.getBSFOPERADOR().getUSERTCB()
+	                    + "\", \"SESSIONID\": \"\", \"TRANSPORT\": {\"ACTIONBACK\": \""+url+"/ \", \"TITULO\": \"Digitalizar documento " + datos.getDescDoc()
+	                    + "\", \"TIPODOCUMENTO\": \"" + datos.getCodDoc() + "\",\"TARGET\": \"_top\", \"IDINTERNOPE\": {\"BSFOPERADORINICIO\": \""+datos.getBSFOPERADOR()
+	                    + "\"}}}}";
+				ResEncryptORDecryptDTO encrypt = securityWs.encrypt(new ReqEncryptORDecryptDTO(aencriptar));
+				System.out.println("############Texto a encriptado###########\n " + encrypt.getRespuesta().toString());
+				if (encrypt.getError() != null) {
+	            	encrypt.setError(null);
+	                System.out.println(encrypt.getError());
+	            }
+				return encrypt;
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
     }
 
     /*@RequestMapping(value = "/addDocumentos")

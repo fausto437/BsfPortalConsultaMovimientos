@@ -18,6 +18,11 @@ $(document).ready(function(){
 		console.log($("#cboTipoIdentificacion option:selected"));
         $("#txtTipoIdentificacion").val($("#cboTipoIdentificacion option:selected").text());
     });
+	
+	/*$("#cboTipoIdentificacionDigitalizacion").change(function () {
+		console.log($("#cboTipoIdentificacionDigitalizacion option:selected"));
+        $("#txtTipoIdentificacionDigitalizacion").val($("#cboTipoIdentificacionDigitalizacion option:selected").text());
+    });*/
 })
 
 //Funcion para crear el mensaje de carga de las solicitudes.
@@ -41,7 +46,8 @@ function startDB() {
     try {
         dataBase = indexedDB.open('bansefi', 1);
         dataBase.onsuccess = function (e) {
-            CargaCombo($("#cboTipoIdentificacion"),"catalogo_identificacion",cboTipoIdentificacion)
+            CargaCombo($("#cboTipoIdentificacion"),"catalogo_identificacion",cboTipoIdentificacion);
+            //CargaCombo($("#cboTipoIdentificacionDigitalizacion"),"catalogo_identificacion",cboTipoIdentificacion);
         };
         dataBase.onerror = function (e) {
             console.log('Error al acceder a la Base de datos.');
@@ -151,8 +157,43 @@ function confirmarId(){
 }
 
 //Funcion para solicitar la digitalización de la identificacion.
-function digitalizarDoc(){
-	alert("digitalizacion");
+function digitalizacion(){
+	bootbox.hideAll();
+	var obj = {
+			BSFOPERADOR: $("#bsfoperador").val(),
+	        idInternoPe: idPersona,
+	        descDoc: descripcion,
+	        codDoc: codigoDoc,
+	        cuenta: $("#noCuenta").val(),
+			idTCB: idDoc,
+	        alta: "1"
+	    };
+	$.ajax({
+      type: "POST",
+      url: window.location.protocol + "//" + window.location.host +
+      "/" + nomPath + "encriptar",
+      data: obj,
+      success: OnSuccess,
+      failure: function (response) {
+          bootbox.alert("fallo: " + response.encriptado);
+      }
+  });
+}
+
+//========================================================================================================================================================
+//Método para el manejo de la digitalización
+//========================================================================================================================================================
+function OnSuccess(response){
+	$("#ifrmModalDigitaContainerRet").removeClass('hidden');
+	$("#digitalizar").removeClass('hidden');
+	$('#TRANSPORT').val(response.respuesta);
+	$('#formDigita').submit();
+}
+
+//Método para mostrar opciones de digitalizacion en caso de una consulta de visualización de un documento haya tenido un error.
+function mostrarOpcDigitalizar(element){
+	bootbox.hideAll();
+	console.log(element);
 }
 
 //Funcion para realizar la busqueda del nombre del titular de la cuenta.

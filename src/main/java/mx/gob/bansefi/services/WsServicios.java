@@ -52,7 +52,7 @@ public class WsServicios {
     private static Util util = Util.getInstance();
 
     /*CONSULTA DE NOMBRE*/
-    public ResConsultaNombreDTO consultaNombre(GetConsultaCuentaNombreReqDTO Request)
+    public ResConsultaNombreDTO consultaNombre(ReqConsultaCuentaNombreDTO Request)
 	{
 		ResConsultaNombreDTO Datos=new ResConsultaNombreDTO();
 		try
@@ -70,7 +70,7 @@ public class WsServicios {
 	}
     
     /*CONSULTA DE MOVIMIENTOS*/
-    public ResConsultaApuntesDTO consultaApuntes(GetConsultaMovimientosGeneralReqDTO Request)
+    public ResConsultaApuntesDTO consultaApuntes(ReqConsultaMovimientosGeneralDTO Request)
 	{
     	ResConsultaApuntesDTO Datos=new ResConsultaApuntesDTO();
 		try
@@ -88,7 +88,7 @@ public class WsServicios {
 	}
     
     /*CONSULTA DE RETENCIONES*/
-	public ResConsultaRetencionDTO consultaRetencion(GetConsultaRetencionReqDTO Request)
+	public ResConsultaRetencionDTO consultaRetencion(ReqConsultaRetencionDTO Request)
 	{
 		Util util = Util.getInstance();
 		ResConsultaRetencionDTO Datos=new ResConsultaRetencionDTO();
@@ -107,7 +107,7 @@ public class WsServicios {
 	}
 	
 	/*CONSULTA DE BLOQUEOS*/
-	public ResConsultaBloqueosDTO consultaBloqueos(GetConsultaBloqueosReqDTO Request)
+	public ResConsultaBloqueosDTO consultaBloqueos(ReqConsultaBloqueosDTO Request)
 	{
 		Util util = Util.getInstance();
 		ResConsultaBloqueosDTO Datos=new ResConsultaBloqueosDTO();
@@ -126,7 +126,7 @@ public class WsServicios {
 	}
 	
 	/*CONSULTA DE DETALLE DE APUNTE*/
-	public ResConsultaApunteDetalleDTO consultaDetalleApunte(GetConsultaApunteDetallesReqDTO Request)
+	public ResConsultaApunteDetalleDTO consultaDetalleApunte(ReqConsultaApunteDetallesDTO Request)
 	{
 		Util util = Util.getInstance();
 		ResConsultaApunteDetalleDTO Datos=new ResConsultaApunteDetalleDTO();

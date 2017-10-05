@@ -11,11 +11,10 @@
     <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
     <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet"/>
     <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
-    <link th:href="@{/css/base.css}" rel="stylesheet"/>
     <link th:href="@{/css/ConsultasMovimientos.css}" rel="stylesheet"/>
     
     <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/funcionesGenerales.js}"></script>
     <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
     <script th:src="@{/js/bootbox.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
@@ -256,7 +255,10 @@
             <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
         </div>
         <div class="col-md-4 col-xs-4 text-right">
-            <button onclick="alert('asd');" type="button" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>
+	        <form id="formMostrarDetalle" method="POST" th:action="@{/}">
+	    		<input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/ class="hidden">
+	            <button onclick="realizarOtraBusqueda();" type="button" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>
+	        </form>
         </div>
     </div>
 </div>

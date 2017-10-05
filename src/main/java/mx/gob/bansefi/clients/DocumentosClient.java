@@ -1,6 +1,6 @@
 package mx.gob.bansefi.clients;
 
-import mx.gob.bansefi.dto.Request.DocumentosPM.ReqConsultaDocumentosTCB;
+import mx.gob.bansefi.dto.Request.Documentos.ReqConsultaDocumentosTCB;
 import mx.gob.bansefi.dto.Response.DocumentosPM.ResConsultaDocumentosTCB;
 import mx.gob.bansefi.utils.Util;
 import org.apache.log4j.LogManager;

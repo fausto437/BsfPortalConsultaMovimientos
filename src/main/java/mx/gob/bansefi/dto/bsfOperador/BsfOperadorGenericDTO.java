@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.gob.bansefi.dto.bsfOperador.transports.TransportModRelacionesDTO;
 
 /**
  * Created by AppWIns on 03/08/2017.
@@ -26,6 +25,6 @@ public class BsfOperadorGenericDTO {
     @Getter @Setter
     private String PASSTCB;
     @Getter @Setter
-    private TransportModRelacionesDTO TRANSPORT;
+    private TransportDTO TRANSPORT;
 
 }

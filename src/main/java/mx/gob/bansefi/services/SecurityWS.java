@@ -7,11 +7,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import mx.gob.bansefi.dto.BsfOperadorDTO;
-import mx.gob.bansefi.dto.BsfOperadorIDTO;
-import mx.gob.bansefi.dto.ReqEncryptORDecryptDTO;
-import mx.gob.bansefi.dto.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Modelos.BsfOperador;
+import mx.gob.bansefi.dto.Request.Documentos.ReqEncryptORDecryptDTO;
+import mx.gob.bansefi.dto.Response.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.utils.Util;
 
 @Service
@@ -27,30 +25,7 @@ public class SecurityWS {
 		this.urlEncrypt = domainServices + pathEncrypt;
 	}
 
-	public BsfOperadorDTO decriptBsfOperador(ReqEncryptORDecryptDTO req) {
-		ResEncryptORDecryptDTO res = null;
-		BsfOperadorDTO bsfOperador = new BsfOperadorDTO();
-		try {
-			String jsonRes = util.callRestPost(req, urlDecrypt);
-			res = new ResEncryptORDecryptDTO();
-			ArrayList<String> nodos = new ArrayList<String>();
-			res = (ResEncryptORDecryptDTO) util.jsonToObject(res, jsonRes, nodos);
-			if (res.getCodRet() == 1) {
-				res.setError(res.getError().replace('\\', ' '));
-				res.setRespuesta(res.getRespuesta().replace('\\', ' '));
-				bsfOperador = (BsfOperadorDTO) util.jsonToObject(bsfOperador, res.getRespuesta(), nodos);
-				bsfOperador.getBSFOPERADOR().setStatus(res.getCodRet());
-			} else {
-				log.error("\nError en el servicio decript URL:" + urlDecrypt + " \nStatus: " + res.getCodRet() + "\nMsgError: " + res.getError());
-				bsfOperador.getBSFOPERADOR().setStatus(res.getCodRet());
-				bsfOperador.getBSFOPERADOR().setDescripcion(res.getError());
-			}
-		} catch (Exception ex) {
-			log.error("\nError en el metodo decriptBsfOperador(ReqEncryptDTO req, String Url)" + "\nException Message: " + ex.getMessage());
-			bsfOperador.getBSFOPERADOR().setStatus(0);
-		}
-		return bsfOperador;
-	}
+	
 	public BsfOperador decriptBsfOperadorDoc(ReqEncryptORDecryptDTO req) {
 		ResEncryptORDecryptDTO res = null;
 		BsfOperador bsfOperador = new BsfOperador();
@@ -100,27 +75,38 @@ public class SecurityWS {
 		return bsfOperador;
 	}
 
-	public ResEncryptORDecryptDTO encriptBsfOperador(ReqEncryptORDecryptDTO req) {
-		ResEncryptORDecryptDTO res = null;
-		ResEncryptORDecryptDTO response = new ResEncryptORDecryptDTO();
+	//METODO DE ENCRIPCION
+	public ResEncryptORDecryptDTO encrypt(ReqEncryptORDecryptDTO req) {
+		ResEncryptORDecryptDTO res = new ResEncryptORDecryptDTO();
 		try {
 			String jsonRes = util.callRestPost(req, urlEncrypt);
 			res = new ResEncryptORDecryptDTO();
 			ArrayList<String> nodos = new ArrayList<String>();
 			res = (ResEncryptORDecryptDTO) util.jsonToObject(res, jsonRes, nodos);
-			if (res.getCodRet() == 1) {
-				response.setCodRet(res.getCodRet());
-				response.setRespuesta(res.getRespuesta());
-				response.setError(res.getError());
-			} else {
-				log.error("\nError en el servicio decript URL:" + urlEncrypt + " \nStatus: " + res.getCodRet() + "\nMsgError: " + res.getError());
-				response.setCodRet(res.getCodRet());
-				response.setError(res.getError());
+			if (res.getCodRet() != 1) {
+				log.error("\nError en el servicio encrypt URL:" + urlEncrypt + " \nStatus: " + res.getCodRet() + "\nMsgError: " + res.getError());
 			}
 		} catch (Exception ex) {
-			log.error("\nError en el metodo decriptBsfOperador(ReqEncryptDTO req, String Url)" + "\nException Message: " + ex.getMessage());
-			response.setCodRet(0);
+			log.error("\nError en el metodo encrypt(ReqEncryptORDecryptDTO req)" + "\nException Message: " + ex.getMessage());
+			res.setCodRet(0);
 		}
-		return response;
+		return res;
+	}
+	
+	//MÉTODO DE DESENCRIPCIPON
+	public ResEncryptORDecryptDTO decrypt(ReqEncryptORDecryptDTO req) {
+		ResEncryptORDecryptDTO res = new ResEncryptORDecryptDTO ();
+		try {
+			String jsonRes = util.callRestPost(req, urlDecrypt);
+			ArrayList<String> nodos = new ArrayList<String>();
+			res = (ResEncryptORDecryptDTO) util.jsonToObject(res, jsonRes, nodos);
+			if (res.getCodRet() != 1) {
+				log.error("\nError en el servicio decrypt URL:" + urlDecrypt + " \nStatus: " + res.getCodRet() + "\nMsgError: " + res.getError());
+			}
+		} catch (Exception ex) {
+			log.error("\nError en el metodo decrypt(ReqEncryptORDecryptDTO req)" + "\nException Message: " + ex.getMessage());
+			res.setCodRet(0);
+		}
+		return res;
 	}
 }

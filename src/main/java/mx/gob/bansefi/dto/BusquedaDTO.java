@@ -22,6 +22,10 @@ public class BusquedaDTO {
 	@Getter @Setter
 	private String cboTipoIdentificacion;
 	@Getter @Setter
+	private String txtTipoIdentificacionDigitalizacion;
+	@Getter @Setter
+	private String cboTipoIdentificacionDigitalizacion;
+	@Getter @Setter
 	private String numId;
 	@Getter @Setter
 	private String fechaDesde;

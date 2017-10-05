@@ -6,8 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mx.gob.bansefi.dto.AnotacionesDTO;
 import mx.gob.bansefi.dto.CabeceraDTO;
-import mx.gob.bansefi.dto.Modelos.AnotacionesDTO;
 
 /**
  * Created by AppWIns on 10/07/2017.

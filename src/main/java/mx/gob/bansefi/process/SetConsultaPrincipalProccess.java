@@ -1,13 +1,12 @@
 package mx.gob.bansefi.process;
 
+import mx.gob.bansefi.dto.AnotacionesDTO;
 import mx.gob.bansefi.dto.ApunteDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
 import mx.gob.bansefi.dto.RetencionesDTO;
-import mx.gob.bansefi.dto.Modelos.AnotacionesDTO;
-import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
 //import scala.annotation.meta.setter;
 
@@ -41,13 +40,14 @@ public class SetConsultaPrincipalProccess {
     		nuevoObj.setConcepto(datoBloqueo.getConcepto()==null?"":datoBloqueo.getConcepto());
     		nuevoObj.setEmpleado(datoBloqueo.getEmpleado()==null?"":datoBloqueo.getEmpleado());
     		nuevoObj.setFechaAlta(datoBloqueo.getFechaAlta()==null?"":datoBloqueo.getFechaAlta());
-    		try {
+    		nuevoObj.setFechaVTO(datoBloqueo.getFechaVTO()==null?"":datoBloqueo.getFechaVTO());
+    		/*try {
 				String nueva_fecha=datoBloqueo.getFechaVTO().substring(6, 8)+"/"+datoBloqueo.getFechaVTO().substring(4, 6)+"/"+datoBloqueo.getFechaVTO().substring(0, 4);
 				nuevoObj.setFechaVTO(nueva_fecha);
 			} catch (Exception e) {
 				nuevoObj.setFechaVTO("");
 				e.printStackTrace();
-			}
+			}*/
     		try {
     			nuevoObj.setImporte(datoBloqueo.getImporte()==null?"":""+df.format(Double.parseDouble(datoBloqueo.getImporte())));    			
     		}

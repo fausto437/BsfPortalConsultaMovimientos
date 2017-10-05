@@ -6,7 +6,6 @@ import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
-import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
