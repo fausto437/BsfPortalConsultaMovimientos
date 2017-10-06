@@ -22,5 +22,5 @@ public class TransportDTO {
 	@Getter	@Setter
 	private DatosTransportDTO IDINTERNOPE;
 	@Getter	@Setter
-	private DatosTransportDTO MenuDinamico;
+	private String MenuDinamico;
 }

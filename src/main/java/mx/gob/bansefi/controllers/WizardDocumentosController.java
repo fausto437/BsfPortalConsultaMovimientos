@@ -44,10 +44,12 @@ import mx.gob.bansefi.dto.Modelos.TransportDTO;
 import mx.gob.bansefi.dto.Modelos.DocumentosMODEL;
 import mx.gob.bansefi.dto.Request.ReqAltaRelacionDocumentoDTO;
 import mx.gob.bansefi.dto.Request.ReqEncryptDecryptDTO;
+import mx.gob.bansefi.dto.Request.Documentos.ReqConsultaDocumento;
 import mx.gob.bansefi.dto.Request.Documentos.ReqConsultaDocumentosTCB;
 import mx.gob.bansefi.dto.Request.Documentos.ReqEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.ResGralDTO;
+import mx.gob.bansefi.dto.Response.Documentos.ResConsultaDocumento;
 //import mx.gob.bansefi.dto.asocia.AsociaDatosDTO;
 //import mx.gob.bansefi.dto.asocia.AsociaRequestDTO;
 //import mx.gob.bansefi.dto.asocia.AsociaResponseDTO;
@@ -97,7 +99,19 @@ public class WizardDocumentosController {
     @Autowired
     DocumentosClient documentosClient;
 
-    @RequestMapping(value = "/documentos")
+    @RequestMapping("/getDocumento")
+    public ResConsultaDocumento consultaDocumento(@ModelAttribute("data") ReqConsultaDocumento datos) {
+    	ResConsultaDocumento res = new ResConsultaDocumento();
+        try {
+        	res = documentosClient.consultaBase64(datos);
+            
+        } catch (Exception ex) {
+            System.out.println("Error en consultaDocumento: " + ex.getMessage());
+        }
+
+        return res;
+    }
+    /*@RequestMapping(value = "/documentos")
     public ModelAndView documentos(Model model, @ModelAttribute("DocumentosMODEL") final DocumentosMODEL DatosGenerales) {
 
         // ////////////////////decrypt BSFOPERADOR //////////////////
@@ -130,11 +144,11 @@ public class WizardDocumentosController {
         }
         model.addAttribute("list", lista);
         return new ModelAndView("documentos/Documentos").addObject("urlActionBack", urlDigitalizacion).addObject("model", DatosGenerales);
-    }
+    }*/
     
     @RequestMapping(value = "/encriptar", method = RequestMethod.POST)
     public ResEncryptORDecryptDTO encripcion(@ModelAttribute("obj") DatosEncryptDigitaliza datos) {
-    	String url = urlServidor + context + "/";
+    	String url = urlLocalHost + context + "/busquedaDig";
     	
     	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(datos.getBSFOPERADOR()));
 		if(bsfOperadorDecrypt.getRespuesta()!=null) {
@@ -143,9 +157,9 @@ public class WizardDocumentosController {
 				bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
 				String aencriptar = "{\"BSFOPERADOR\": {\"ENTIDAD\": \"" + bsfOp.getBSFOPERADOR().getENTIDAD() + "\", \"CENTRO\": \"" + bsfOp.getBSFOPERADOR().getCENTRO() 
 	        			+ "\", \"TERMINAL\": \""+ bsfOp.getBSFOPERADOR().getTERMINAL() + "\", \"USERTCB\": \"" + bsfOp.getBSFOPERADOR().getUSERTCB()
-	                    + "\", \"SESSIONID\": \"\", \"TRANSPORT\": {\"ACTIONBACK\": \""+url+"/ \", \"TITULO\": \"Digitalizar documento " + datos.getDescDoc()
+	                    + "\", \"SESSIONID\": \"\", \"TRANSPORT\": {\"ACTIONBACK\": \""+url+"\", \"TITULO\": \"Digitalizar documento " + datos.getDescDoc()
 	                    + "\", \"TIPODOCUMENTO\": \"" + datos.getCodDoc() + "\",\"TARGET\": \"_top\", \"IDINTERNOPE\": {\"BSFOPERADORINICIO\": \""+datos.getBSFOPERADOR()
-	                    + "\"}}}}";
+	                    + "\", \"IDINTERNOPE\": \"" + datos.getIdInternoPe() + "\", \"DESCDOC\": \"" + datos.getDescDoc() + "\" }}}}";
 				ResEncryptORDecryptDTO encrypt = securityWs.encrypt(new ReqEncryptORDecryptDTO(aencriptar));
 				System.out.println("############Texto a encriptado###########\n " + encrypt.getRespuesta().toString());
 				if (encrypt.getError() != null) {
@@ -565,48 +579,6 @@ public class WizardDocumentosController {
         }
 
         return lista;
-    }
-
-    public documentos consultaDocumento(String id) {
-        String Salida = "";
-        documentos Resp = new documentos();
-        try {
-            // JSONObject jsonObject = new JSONObject().put("text",id);
-            String input = "{'ConsultaDocumento':{'id':'" + id + "'}}";
-            // try {
-            URL restServiceURL = new URL(urlServidor + pathConsultaDocumento);
-            HttpURLConnection httpConnection = (HttpURLConnection) restServiceURL.openConnection();
-            httpConnection.setDoOutput(true);
-            httpConnection.setRequestMethod("POST");
-            httpConnection.setRequestProperty("Content-Type", "application/json");
-            OutputStream outputStream = httpConnection.getOutputStream();
-            outputStream.write(input.getBytes());
-            outputStream.flush();
-            if (httpConnection.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + httpConnection.getResponseCode());
-            }
-            BufferedReader responseBuffer = new BufferedReader(new InputStreamReader((httpConnection.getInputStream()), "UTF8"));
-            String output;
-            while ((output = responseBuffer.readLine()) != null) {
-                Salida += output;
-            }
-            JSONObject json = new JSONObject(Salida);
-
-            Resp.id_documento = json.getJSONObject("ConsultaDocumentoResp").getJSONObject("ResultadoConsulta").get("id").toString();
-            String documento = json.getJSONObject("ConsultaDocumentoResp").getJSONObject("ResultadoConsulta").get("documento").toString();
-            Resp.descripcion = "";
-            Resp.fecha = json.getJSONObject("ConsultaDocumentoResp").getJSONObject("ResultadoConsulta").get("fecha").toString();
-            Resp.id_tipo_documento = json.getJSONObject("ConsultaDocumentoResp").getJSONObject("ResultadoConsulta").get("tipo").toString();
-            Resp.base64 = documento;
-            httpConnection.disconnect();
-
-            // } catch (Exception ex) {
-            // System.out.println("Error en GetDocumento: " + ex.getMessage());
-            // }
-        } catch (Exception ex) {
-            System.out.println("Error en GetDocumento: " + ex.getMessage());
-        }
-
-        return Resp;
-    }*/
+  }/*/
+    
 }

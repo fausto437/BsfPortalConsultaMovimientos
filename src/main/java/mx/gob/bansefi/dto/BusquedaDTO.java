@@ -18,13 +18,19 @@ public class BusquedaDTO {
 	@Getter @Setter
 	private String titCuenta;
 	@Getter @Setter
+	private String idInternoPe;
+	@Getter @Setter
 	private String txtTipoIdentificacion;
 	@Getter @Setter
 	private String cboTipoIdentificacion;
 	@Getter @Setter
+	private String codTipoIdentificacion;
+	@Getter @Setter
 	private String txtTipoIdentificacionDigitalizacion;
 	@Getter @Setter
 	private String cboTipoIdentificacionDigitalizacion;
+	@Getter @Setter
+	private String codTipoIdentificacionDigitalizacion;
 	@Getter @Setter
 	private String numId;
 	@Getter @Setter

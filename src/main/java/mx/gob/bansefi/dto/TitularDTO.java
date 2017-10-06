@@ -10,10 +10,12 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class NombreDTO{
+public class TitularDTO{
 
 	@Getter @Setter
 	private String nombre;
 	@Getter @Setter
 	private String idInternoPe;
+	@Getter @Setter
+	private String error;
 }

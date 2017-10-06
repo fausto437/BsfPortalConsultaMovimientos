@@ -6,19 +6,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Created by AppWhere on 23/07/2017.
+ * Created by AppWhere on 06/10/2017.
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnotacionesDTO {
+public class AltaRelacionDocumentoDTO {
     @Getter	@Setter
-    String noanotacion;
+    String idInternoPe;
     @Getter	@Setter
-    String descr;
+    String codTipoDoc;
     @Getter	@Setter
-    String tipoanotacion;
+    String descDoc;
     @Getter	@Setter
-    String fechactivacion;
+    String fechaCaducidadDoc;
     @Getter	@Setter
-    String prioridad;
+    String entidad;
+    @Getter	@Setter
+    String centro;
+    @Getter	@Setter
+    String terminal;
 }

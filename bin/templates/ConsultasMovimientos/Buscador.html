@@ -47,7 +47,7 @@
 	                	<input th:field="*{bsfoperador}" class="hidden"/>
 					    <input id="numAnotacion" name="numAnotacion" class="hidden"/>
 					    <input id="tipo" name="tipo" class="hidden"/>
-	                    <div class="container">
+	                    <div id="formBusqueda" class="container">
 	                    	<div class="row-felx">
 	                    		<div>
 	                                <label>Introduzca el número de cuenta y el cliente que desea consultar sus movimientos</label>
@@ -73,6 +73,7 @@
 	                    				<div class="col-md-8 col-xs-8">
 	                    					<label>Titular de la cuenta</label> <br/>
 	                    					<input th:field="*{titCuenta}" class="form-control" readonly="readonly"/>
+	                    					<input th:field="*{idInternoPe}" class="form-control hidden" readonly="readonly"/>
 	                    				</div>
 	                    			</div>
 	                    			<br/>
@@ -81,6 +82,7 @@
 	                    					<label>Tipo de identificaci&oacute;n</label><span class="textRojo">*</span><br/>
 											<div class=" Requeridos">
 												<input th:field="*{txtTipoIdentificacion}" type="text" class="form-control hidden"/>
+												<input th:field="*{codTipoIdentificacion}" type="text" class="form-control hidden"/>
 												<select th:field="*{cboTipoIdentificacion}" class="form-control"></select>
 											</div>
 	                    				</div>
@@ -149,25 +151,17 @@
 	                            </div>
 	                        </div>
 	                    </div>
+	                    </form>
+	                    <br/>
 	                    <!--                          OPCIONES DIGITALIZACIÓN                       -->
-						<div id="opcDigitalizar" class="row hidden">
-					    	<div class="col-md-4 col-xs-4">
-					    		<label>Seleccione el tipo de documento a digitalizar:</label>
-					    		<input th:field="*{txtTipoIdentificacionDigitalizacion}" type="text" class="form-control hidden"/> 
-								<select th:field="*{cboTipoIdentificacionDigitalizacion}" class="form-control"></select>
-					    	</div>
-					    	<div class="col-md-4 col-xs-4">
-					    		<button class="btn btn-primary" onclick="digitalizacion();" style="display: inline-block;margin: 5% 0;">Digitalizar</button>
-					    	</div>
-					    	<div class="col-md-4 col-xs-4">
-					    		<button class="btn btn-primary" onclick="cancelarDigitalizacion();" style="display: inline-block;margin: 5% 0;">Cancelar</button>
-					    	</div>
-					    </div>
-					    <div id="digitalizar" class="hidden" style="height:425px;">
+					    <div id="digitalizar" class="hidden text-center" style="height:425px;">
 					    	<iframe id="ifrmModalDigitalizacion" name="ifrmModalDigitalizacion"
 					            style="border: 0; width: 100%; height: 100%;" padding="border-width: 10px;"></iframe>
+					            <button type="button" class="btn btn-danger pull-right" onclick="cancelarDigitalizacion();" style="display: inline-block;margin: 5% 0;">Cancelar</button>
 					    </div>
-	            	</form>
+	            	<form id="formDigita" name="formDigita" method="POST" th:action="${urlActionBack}" target="ifrmModalDigitalizacion">
+					   	<input type="hidden" id="TRANSPORT" name="TRANSPORT" value=""/>
+					</form>
 				</div>
 				
             </div>

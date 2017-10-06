@@ -13,4 +13,8 @@ import lombok.Setter;
 public class DatosTransportDTO {
 	@Getter	@Setter
 	private String BSFOPERADORINICIO;
+	@Getter	@Setter
+	private String IDINTERNOPE;
+	@Getter	@Setter
+	private String DESCDOC;
 }

@@ -1,7 +1,7 @@
 package mx.gob.bansefi.controllers;
 
 import mx.gob.bansefi.clients.DocumentosClient;
-import mx.gob.bansefi.dto.Modelos.*;
+import mx.gob.bansefi.dto.AltaRelacionDocumentoDTO;
 import mx.gob.bansefi.dto.AnotacionesDTO;
 import mx.gob.bansefi.dto.BusquedaDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
@@ -9,9 +9,12 @@ import mx.gob.bansefi.dto.DetalleConsultaDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
+import mx.gob.bansefi.dto.TitularDTO;
 import mx.gob.bansefi.dto.Request.*;
+import mx.gob.bansefi.dto.Request.Documentos.ReqAltaRelacionDocumento;
 import mx.gob.bansefi.dto.Request.Documentos.ReqEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.*;
+import mx.gob.bansefi.dto.Response.Documentos.ResAltaRelacionDocumento;
 import mx.gob.bansefi.dto.bsfOperador.BsfOperadorPadreDTO;
 import mx.gob.bansefi.process.SetConsultaDetallesProccess;
 import mx.gob.bansefi.process.SetConsultaPrincipalProccess;
@@ -47,6 +50,8 @@ public class ConsultasController {
     private String urlencrypt;
     @Value("${url.context}")
     private String urlcontext;
+    @Value("${url.Digitalizacion}")
+    private String urlDigitalizacion;
 
     @Autowired
     WsServicios wsServicios;
@@ -85,7 +90,7 @@ public class ConsultasController {
             } catch (Exception ex) {
                 System.out.print(ex.getMessage());
             }
-            return new ModelAndView(packageTemplates + "/Buscador").addObject("Model", busquedaDatos);
+            return new ModelAndView(packageTemplates + "/Buscador").addObject("Model", busquedaDatos).addObject("urlActionBack", urlDigitalizacion);
         } else {
             return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
 
@@ -95,13 +100,47 @@ public class ConsultasController {
   //PANTALLA PRINCIPAL DE BUSQUEDA
     @RequestMapping(value = "/busquedaApuntes")
     public ModelAndView BusquedaApunte() {
-    	
     	return new ModelAndView(packageTemplates + "/Buscador");
+    }
+    
+  //PANTALLA PRINCIPAL DE BUSQUEDA DESPUÉS DE LA DIGITALIZACIÓN
+    @RequestMapping(value = "/busquedaDig&{idDoc}")
+    public ModelAndView BusquedaDespuesDeDigitalizar(@RequestParam("TRANSPORT") String TRANSPORT) {
+    	BusquedaDTO busquedaDatos = new BusquedaDTO();
+    	ResEncryptORDecryptDTO transportDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(TRANSPORT));
+    	transportDecrypt.setRespuesta(transportDecrypt.getRespuesta().replace("'", "\""));
+    	transportDecrypt.setRespuesta(transportDecrypt.getRespuesta().replace("\"{", "{"));
+    	transportDecrypt.setRespuesta(transportDecrypt.getRespuesta().replace("}\"", "}"));
+    	try {
+			BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), transportDecrypt.getRespuesta());
+			
+			AltaRelacionDocumentoDTO datosRelacion = new AltaRelacionDocumentoDTO();
+			datosRelacion.setCentro(bsfOp.getBSFOPERADOR().getCENTRO());
+			datosRelacion.setCodTipoDoc(bsfOp.getBSFOPERADOR().getTRANSPORT().getTIPODOCUMENTO());
+			datosRelacion.setDescDoc(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getDESCDOC());
+			datosRelacion.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+			datosRelacion.setFechaCaducidadDoc("9999/99/12");
+			datosRelacion.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+			datosRelacion.setIdInternoPe(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getIDINTERNOPE());
+			
+			ResAltaRelacionDocumento resAltaRelacion = documentosClient.relacionarDocumento(new ReqAltaRelacionDocumento(datosRelacion));
+			
+			
+			busquedaDatos.setBsfoperador(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getBSFOPERADORINICIO());
+			
+			
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+    	
+    	return new ModelAndView(packageTemplates + "/Buscador").addObject("Model", busquedaDatos).addObject("urlActionBack", urlDigitalizacion);
     }
     
     //BUSQUEDA DEL NOMBRE
     @RequestMapping("/getNombre")
-    public String nombre(@RequestParam("bsfoperador") String bsfOperador, @RequestParam("acuerdo") String acuerdo){
+    public TitularDTO nombre(@RequestParam("bsfoperador") String bsfOperador, @RequestParam("acuerdo") String acuerdo){
+    	TitularDTO datosTitular = new TitularDTO();
     	if (!bsfOperador.equals("")) {
     		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfOperador));
 	        try {
@@ -115,23 +154,27 @@ public class ConsultasController {
 	    	        	req.setAcuerdo(acuerdo);
 	    	        	ResConsultaNombreDTO respuesta = wsServicios.consultaNombre(req);
 	    	        	if(respuesta.getCabecera().getErrores()==null) {
-	    	        		return respuesta.getNombres().get(0).getNombre();
+	    	        		datosTitular.setNombre(respuesta.getNombres().get(0).getNombre());
+	    	        		datosTitular.setIdInternoPe(respuesta.getNombres().get(0).getIdInternoPe());
+	    	        		datosTitular.setError(null);
+	    	        		return datosTitular;
 	    	        	}
 	    	        	else {
-	    	        		return "ERROR";
+	    	        		datosTitular.setError(respuesta.getCabecera().getErrores().get(0).getMensaje());
+	    	        		return datosTitular;
 	    	        	}
 	        		}
 	        		else {
-    	        		return "ERROR";
+    	        		return datosTitular;
     	        	}
 	        	
 	        } catch (Exception ex) {
 	            System.out.print(ex.getMessage());
-	            return "ERROR";
+	            return datosTitular;
 	        }
     	}
     	else {
-            return "ERROR AL RECIBIR LOS DATOS";
+            return datosTitular;
         }
     }
     
