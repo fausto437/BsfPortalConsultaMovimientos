@@ -12,9 +12,12 @@ $(document).ready(function () {
 })
 
 //Funcion para abrir el detalle del registro seleccionado
-function detalleConsulta(info, tipo){
-	$("#bsfoperador").val("bla");
-	$("#numAnotacion").val("bla2");
+function detalleConsulta(num, desc, codAnt, codSubAnt, tipo){
+	console.log(desc);
+	$("#numAnotacion").val(num);
+	$("#desc").val(desc);
+	$("#codAnt").val(codAnt);
+	$("#codSubAnt").val(codSubAnt);
 	$("#tipo").val(tipo);
 	$("#formMostrarDetalle").submit();
 }

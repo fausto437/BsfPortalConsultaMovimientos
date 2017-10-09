@@ -24,6 +24,7 @@
 </head>
 <body>
 <script th:inline="javascript">
+	var verificaDigitalizacion =[[${Model.verificaDigitalizacion}]];
 	console.log([[${Model}]]);
     </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
@@ -45,7 +46,6 @@
                 <div class="contenedor-campos">
                 	<form id="frmBusquedaMovimientosGral" method="POST" th:object="${Model}" th:action="@{/consultaGeneral}">
 	                	<input th:field="*{bsfoperador}" class="hidden"/>
-					    <input id="numAnotacion" name="numAnotacion" class="hidden"/>
 					    <input id="tipo" name="tipo" class="hidden"/>
 	                    <div id="formBusqueda" class="container">
 	                    	<div class="row-felx">

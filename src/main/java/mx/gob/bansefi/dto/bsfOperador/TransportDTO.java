@@ -23,4 +23,10 @@ public class TransportDTO {
 	private DatosTransportDTO IDINTERNOPE;
 	@Getter	@Setter
 	private String MenuDinamico;
+	@Getter	@Setter
+	private String IDDOCUMENTO;
+	@Getter	@Setter
+	private String MESSAGE;
+	@Getter	@Setter
+	private String STATUS;
 }

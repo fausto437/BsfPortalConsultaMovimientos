@@ -256,7 +256,7 @@
         </div>
         <div class="col-md-4 col-xs-4 text-right">
 	        <form id="formMostrarDetalle" method="POST" th:action="@{/}">
-	    		<input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/ class="hidden">
+	    		<input id="BSFOPERADOR" class="hidden" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
 	            <button onclick="realizarOtraBusqueda();" type="button" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>
 	        </form>
         </div>

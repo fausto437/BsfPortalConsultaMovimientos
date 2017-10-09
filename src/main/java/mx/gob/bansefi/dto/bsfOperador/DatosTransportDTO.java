@@ -14,7 +14,13 @@ public class DatosTransportDTO {
 	@Getter	@Setter
 	private String BSFOPERADORINICIO;
 	@Getter	@Setter
-	private String IDINTERNOPE;
+	private int IDINTERNOPE;
 	@Getter	@Setter
 	private String DESCDOC;
+	@Getter	@Setter
+	private String ACUERDO;
+	@Getter	@Setter
+	private String CODDOC;
+	@Getter	@Setter
+	private String TITULAR;
 }

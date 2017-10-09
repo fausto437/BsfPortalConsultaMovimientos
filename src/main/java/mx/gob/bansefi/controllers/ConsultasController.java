@@ -1,6 +1,7 @@
 package mx.gob.bansefi.controllers;
 
 import mx.gob.bansefi.clients.DocumentosClient;
+import mx.gob.bansefi.dto.AltaDocumentoTCBDTO;
 import mx.gob.bansefi.dto.AltaRelacionDocumentoDTO;
 import mx.gob.bansefi.dto.AnotacionesDTO;
 import mx.gob.bansefi.dto.BusquedaDTO;
@@ -84,6 +85,7 @@ public class ConsultasController {
             operador = bsfOperador;
             busquedaDatos.setBsfoperador(bsfOperador);
             busquedaDatos.setFormato("OFICINA");
+            busquedaDatos.setVerificaDigitalizacion("0");
             //BsfOperadorDTO bsfOperadorDecrypt = securityWs.decriptBsfOperador(new ReqEncryptORDecryptDTO(bsfOperador));
             try {
             	System.out.print("Setear algun valor");
@@ -97,13 +99,8 @@ public class ConsultasController {
         }
     }
     
-  //PANTALLA PRINCIPAL DE BUSQUEDA
-    @RequestMapping(value = "/busquedaApuntes")
-    public ModelAndView BusquedaApunte() {
-    	return new ModelAndView(packageTemplates + "/Buscador");
-    }
     
-  //PANTALLA PRINCIPAL DE BUSQUEDA DESPUÉS DE LA DIGITALIZACIÓN
+    //PANTALLA PRINCIPAL DE BUSQUEDA DESPUÉS DE LA DIGITALIZACIÓN
     @RequestMapping(value = "/busquedaDig&{idDoc}")
     public ModelAndView BusquedaDespuesDeDigitalizar(@RequestParam("TRANSPORT") String TRANSPORT) {
     	BusquedaDTO busquedaDatos = new BusquedaDTO();
@@ -114,21 +111,33 @@ public class ConsultasController {
     	try {
 			BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), transportDecrypt.getRespuesta());
 			
-			AltaRelacionDocumentoDTO datosRelacion = new AltaRelacionDocumentoDTO();
+			AltaDocumentoTCBDTO datosRelacion = new AltaDocumentoTCBDTO();
 			datosRelacion.setCentro(bsfOp.getBSFOPERADOR().getCENTRO());
-			datosRelacion.setCodTipoDoc(bsfOp.getBSFOPERADOR().getTRANSPORT().getTIPODOCUMENTO());
+			datosRelacion.setCodTipoDoc(""+bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getCODDOC());
 			datosRelacion.setDescDoc(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getDESCDOC());
 			datosRelacion.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
 			datosRelacion.setFechaCaducidadDoc("9999/99/12");
 			datosRelacion.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
 			datosRelacion.setIdInternoPe(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getIDINTERNOPE());
 			
-			ResAltaRelacionDocumento resAltaRelacion = documentosClient.relacionarDocumento(new ReqAltaRelacionDocumento(datosRelacion));
+			ResAltaRelacionDocumento resAltaRelacion = documentosClient.relacionarDocumento(new ReqAltaDocumentoTCBDTO(datosRelacion), bsfOp.getBSFOPERADOR().getTRANSPORT().getIDDOCUMENTO());
 			
-			
-			busquedaDatos.setBsfoperador(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getBSFOPERADORINICIO());
-			
-			
+			if(resAltaRelacion.getDescripcion()==null) {
+				busquedaDatos.setBsfoperador(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getBSFOPERADORINICIO());
+				busquedaDatos.setFormato("OFICINA");
+	            busquedaDatos.setVerificaDigitalizacion("2");//Variable para especificar si ya se ha digitalizado el documento.
+	            busquedaDatos.setIdInternoPe(datosRelacion.getIdInternoPe());
+	            busquedaDatos.setTitCuenta(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getTITULAR());
+	            busquedaDatos.setNumAcuerdo(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getACUERDO());
+	            }
+			else {
+				busquedaDatos.setBsfoperador(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getBSFOPERADORINICIO());
+				busquedaDatos.setFormato("OFICINA");
+	            busquedaDatos.setVerificaDigitalizacion("1");//Variable para especificar si ya se ha digitalizado el documento.
+	            busquedaDatos.setIdInternoPe(datosRelacion.getIdInternoPe());
+	            busquedaDatos.setTitCuenta(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getTITULAR());
+	            busquedaDatos.setNumAcuerdo(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE().getACUERDO());
+			}
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -178,147 +187,157 @@ public class ConsultasController {
         }
     }
     
-    //PATALLA PRINCIPAL DE ANOTACIONES
-    @RequestMapping(value = "/anotaciones")
-    public ModelAndView Consulta() {
-    	ArrayList<AnotacionesDTO> anotaciones = new ArrayList<AnotacionesDTO>();
-    	AnotacionesDTO datosAnotacion= new AnotacionesDTO();
-    	datosAnotacion.setDescr("bla");
-    	datosAnotacion.setFechactivacion("10/12/2012");
-    	datosAnotacion.setNoanotacion("1");
-    	datosAnotacion.setPrioridad("ALTA");
-    	datosAnotacion.setTipoanotacion("NOTA");
-    	anotaciones.add(datosAnotacion);
-    	datosAnotacion= new AnotacionesDTO();
-    	datosAnotacion.setDescr("kud");
-    	datosAnotacion.setFechactivacion("21/04/2015");
-    	datosAnotacion.setNoanotacion("5");
-    	datosAnotacion.setPrioridad("ALTA");
-    	datosAnotacion.setTipoanotacion("NOTA");
-    	anotaciones.add(datosAnotacion);
-    	datosAnotacion= new AnotacionesDTO();
-    	datosAnotacion.setDescr("bla");
-    	datosAnotacion.setFechactivacion("10/12/2012");
-    	datosAnotacion.setNoanotacion("1");
-    	datosAnotacion.setPrioridad("ALTA");
-    	datosAnotacion.setTipoanotacion("NOTA");
-    	anotaciones.add(datosAnotacion);
-    	
-    	return new ModelAndView(packageTemplates + "/ConsultaAnotaciones").addObject("Model", anotaciones);
-    }
-    //PANTALLA PARA VERIFICAR LOS DETALLES DE ANOTACIONES
-    @RequestMapping(value = "/detalleAnotacion")
-    public ModelAndView ConsultaDetalleAnotaciones(@ModelAttribute("Model") final BusquedaDTO DatosGenerales, @RequestParam("tipo") String tipo) {
-    	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	detalles.setTitulo("Detalle de Anotación");
-    	detalles.setTipo(tipo);
-    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
-    }
-    
     //PANTALLA PARA REALIZAR LA CONSULTA GENERAL DE MOVIMIENTOS
     @RequestMapping(value = "/consultaGeneral")
     public ModelAndView ConsultaPrincipal(@ModelAttribute("Model") final BusquedaDTO DatosGenerales, @RequestParam("tipo") String tipo) {
-    	boolean conAnotaciones=false;
-    	//Si tiene anotaciones
-    	if(conAnotaciones) {
-    		ResConsultaAnotacionesDTO res = new ResConsultaAnotacionesDTO();
-    		res.setTitular(DatosGenerales.getTitCuenta());
-    		res.setTxtIdPe("("+DatosGenerales.getTxtTipoIdentificacion()+":"+ DatosGenerales.getNumId()+")");
-    		res.setAnotaciones(setConsultaPrincipal.SetConsultaAnotaciones());
-        	String datosString= util.objectToJson(DatosGenerales);
-        	
-        	return new ModelAndView(packageTemplates + "/ConsultaAnotaciones").addObject("Model", res).addObject("cadenaDatos", datosString);
+    	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
+    	if(bsfOperadorDecrypt.getRespuesta()!=null) {
+    		try {
+    			BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+    			ReqConsultaAnotacionesDTO req = new ReqConsultaAnotacionesDTO();
+    			req.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+    			req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+    			req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+    			req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+    			req.setAcuerdo(DatosGenerales.getNumAcuerdo());
+    			req.setFechaDesde("00/00/0000");
+    			req.setFechaHasta("00/00/0000");
+    			req.setAntInformativa("1");
+    			req.setAntAlerta("2");
+    			req.setAntImperativa("3");
+    			req.setAntAvisos("4");
+    			ResConsultaAnotacionesDTO resAnotaciones = wsServicios.consultaAnotaciones(req);
+    			//Se verifica si tiene anotaciones
+    			if(resAnotaciones.getErrores()==null) {
+    				if(resAnotaciones.getAnotaciones().size()>1) {
+    					ResConsultaAnotacionesDTO res = new ResConsultaAnotacionesDTO();
+    					String titular=DatosGenerales.getTitCuenta();
+        	    		String txtIdPe="("+DatosGenerales.getTxtTipoIdentificacion()+":"+ DatosGenerales.getNumId()+")";
+        	    		res.setAnotaciones(setConsultaPrincipal.SetConsultaAnotaciones(resAnotaciones.getAnotaciones()));
+        	        	String datosString= util.objectToJson(DatosGenerales);
+        	        	return new ModelAndView(packageTemplates + "/ConsultaAnotaciones").addObject("Model", res).addObject("cadenaDatos", DatosGenerales).addObject("titular", titular).addObject("txtIdPe", txtIdPe);
+    				}
+    				else {
+    		    		ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
+    		    		
+    		        	try {
+    		        			if(bsfOperadorDecrypt.getRespuesta()!=null) {
+    		    	        		//Se realiza la consulta de bloqueos
+    		        				ReqConsultaBloqueosDTO reqBloqueos = new ReqConsultaBloqueosDTO();
+    		    	        		reqBloqueos.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+    		    	        		reqBloqueos.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+    		    	        		reqBloqueos.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+    		    	        		reqBloqueos.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+    		    	        		reqBloqueos.setAcuerdo(DatosGenerales.getNumAcuerdo());
+    		    	        		reqBloqueos.setEstado("A");
+    		            		
+    		    	        		ResConsultaBloqueosDTO resBloqueos = wsServicios.consultaBloqueos(reqBloqueos);
+    		            		
+    		    	        		if(resBloqueos.getCabecera().getErrores()==null){
+    		    	        			detalles.setBloqueos(resBloqueos.getBloqueos()==null?null:setConsultaPrincipal.SetConsultaBloqueos(resBloqueos.getBloqueos()));
+    		    	        		}
+    		    	        		
+    		    	            	//Se realiza consulta de retenciones
+    		    	        		ReqConsultaRetencionDTO reqRetenciones = new ReqConsultaRetencionDTO();
+    		    	        		reqRetenciones.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+    		    	        		reqRetenciones.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+    		    	        		reqRetenciones.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+    		    	        		reqRetenciones.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+    		    	        		reqRetenciones.setAcuerdo(DatosGenerales.getNumAcuerdo());
+    		    	        		reqRetenciones.setEstado("ACTIVO");
+    		            		
+    		    	        		ResConsultaRetencionDTO resRetenciones= wsServicios.consultaRetencion(reqRetenciones);
+    		    	        		
+    		    	        		if(resRetenciones.getCabecera().getErrores()==null){
+    		    	        			detalles.setRetenciones(resRetenciones.getRetenciones()==null?null:setConsultaPrincipal.setConsultaRetenciones(resRetenciones.getRetenciones()));
+    		    	        		}
+    		    	        		
+    		    	        		//Se realiza consulta de movimientos
+    		    	        		ReqConsultaMovimientosGeneralDTO reqApuntes = new ReqConsultaMovimientosGeneralDTO();
+    		    	        		reqApuntes.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+    		    	        		reqApuntes.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+    		    	        		reqApuntes.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+    		    	        		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+    		    	        		reqApuntes.setNumsec("0");
+    		    	        		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
+    		    	        		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
+    		    	        		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+    		    	        		reqApuntes.setAcceso("S");
+    		    	        		reqApuntes.setImpsdo("0");
+    		    	        		reqApuntes.setFormato(DatosGenerales.getFormato());
+    		                	
+    		    	        		ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
+    		    	            	if(resApuntes.getCabecera().getErrores()==null) {
+    		    	            		detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
+    		    	            	}
+    		    	            	
+    		    	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales).addObject("anotaciones","n");
+    		        			}
+    		        			else {
+    		        				return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+    		        			}
+    			    		} catch (Exception e) {
+    			    			e.printStackTrace();
+    			    			return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+    			    		}
+    		    	}
+    	    	}
+    		}
+    		catch(Exception ex) {
+    			ex.printStackTrace();
+    		}
     	}
-    	//No tiene anotaciones
-    	else {
-    		ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
-    		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
-        	try {
-        			if(bsfOperadorDecrypt.getRespuesta()!=null) {
-        				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
-        				
-    	        		//Se realiza la consulta de bloqueos
-        				ReqConsultaBloqueosDTO reqBloqueos = new ReqConsultaBloqueosDTO();
-    	        		reqBloqueos.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
-    	        		reqBloqueos.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
-    	        		reqBloqueos.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
-    	        		reqBloqueos.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
-    	        		reqBloqueos.setAcuerdo(DatosGenerales.getNumAcuerdo());
-    	        		reqBloqueos.setEstado("A");
-            		
-    	        		ResConsultaBloqueosDTO resBloqueos = wsServicios.consultaBloqueos(reqBloqueos);
-            		
-    	        		if(resBloqueos.getCabecera().getErrores()==null){
-    	        			detalles.setBloqueos(resBloqueos.getBloqueos()==null?null:setConsultaPrincipal.SetConsultaBloqueos(resBloqueos.getBloqueos()));
-    	        		}
-    	        		
-    	            	//Se realiza consulta de retenciones
-    	        		ReqConsultaRetencionDTO reqRetenciones = new ReqConsultaRetencionDTO();
-    	        		reqRetenciones.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
-    	        		reqRetenciones.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
-    	        		reqRetenciones.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
-    	        		reqRetenciones.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
-    	        		reqRetenciones.setAcuerdo(DatosGenerales.getNumAcuerdo());
-    	        		reqRetenciones.setEstado("ACTIVO");
-            		
-    	        		ResConsultaRetencionDTO resRetenciones= wsServicios.consultaRetencion(reqRetenciones);
-    	        		
-    	        		if(resRetenciones.getCabecera().getErrores()==null){
-    	        			detalles.setRetenciones(resRetenciones.getRetenciones()==null?null:setConsultaPrincipal.setConsultaRetenciones(resRetenciones.getRetenciones()));
-    	        		}
-    	        		
-    	        		//Se realiza consulta de movimientos
-    	        		ReqConsultaMovimientosGeneralDTO reqApuntes = new ReqConsultaMovimientosGeneralDTO();
-    	        		reqApuntes.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
-    	        		reqApuntes.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
-    	        		reqApuntes.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
-    	        		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
-    	        		reqApuntes.setNumsec("0");
-    	        		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
-    	        		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
-    	        		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
-    	        		reqApuntes.setAcceso("S");
-    	        		reqApuntes.setImpsdo("0");
-    	        		reqApuntes.setFormato(DatosGenerales.getFormato());
-                	
-                	//detalles = setConsultaPrincipal.SetConsultaPrincipal();
-                	//return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles);
-                	
-    	            	ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
-    	            	if(resApuntes.getCabecera().getErrores()==null) {
-    	            		detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
-    	            	}
-    	            	
-    	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales).addObject("anotaciones","n");
-    	            	/*
-    	            	else {
-    	            		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
-    	            	}*/
-        			}
-        			else {
-        				return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
-        			}
-	        		
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
-	    			return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
-	    		}
-    		
+    	return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+    }
+    
+    //PANTALLA PARA VERIFICAR LOS DETALLES DE ANOTACIONES
+    @RequestMapping(value = "/detalleAnotacion")
+    public ModelAndView ConsultaDetalleAnotaciones(@RequestParam("bsfoperador") String bsfoperador,@RequestParam("titular") String titular, 
+    		@RequestParam("numAnotacion") String numAnotacion, @RequestParam("tipo") String tipo, @RequestParam("numAcuerdo") String numAcuerdo,
+    		@RequestParam("codAnt") String codAnt, @RequestParam("codSubAnt") String codSubAnt, @RequestParam("desc") String descripcion) {
+    	
+    	try {
+    		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfoperador));
+        	if(bsfOperadorDecrypt.getRespuesta()!=null) {
+    			BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+    			ReqConsultaAnotacionDetallesDTO req = new ReqConsultaAnotacionDetallesDTO();
+    			req.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+    			req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+    			req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+    			req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+    			req.setAnotacion(numAnotacion);
+    			req.setCodAnt(codAnt);
+    			req.setCodSubAnt(codSubAnt);
+    			
+    			ResConsultaAnotacionDetalleDTO res = wsServicios.consultaDetalleAnotacion(req); 
+    			detalles = setDetalles.SetAnotacionDetalles(res, codAnt);
+    			detalles.setTipoDetalle(tipo);
+            	detalles.setNumAcuerdo(numAcuerdo);
+            	detalles.setDescripcion(descripcion);
+    		}
+        	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     	}
+    	catch(Exception ex) {
+    		ex.printStackTrace();
+    		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
+    	}
+    	
+    	
     }
     
     //PANTALLA PRINCIPAL DE LOS MOVIMIENTOS DE LA CUENTA
     @RequestMapping(value = "/principalMovimientos")
-    public ModelAndView PrincipalMovimientos(@RequestParam("bsfoperador") String tibsfoperador, @RequestParam("datos") String strObj) {
+    public ModelAndView PrincipalMovimientos(@ModelAttribute("cadenaDatos") BusquedaDTO DatosGenerales) {
     	
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
     	
     	try {
-    		BusquedaDTO datosGenerales= new BusquedaDTO();
+    		//BusquedaDTO datosGenerales= new BusquedaDTO();
 			
-    		datosGenerales=(BusquedaDTO) util.jsonToObject(new BusquedaDTO(), strObj,new ArrayList<String>());
+    		//datosGenerales=(BusquedaDTO) util.jsonToObject(new BusquedaDTO(), strObj,new ArrayList<String>());
 			
-    		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(datosGenerales.getBsfoperador()));
+    		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
 
     		if(bsfOperadorDecrypt.getRespuesta()!=null) {
 				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
@@ -328,7 +347,7 @@ public class ConsultasController {
 	    		reqBloqueos.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
 	    		reqBloqueos.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
 	    		reqBloqueos.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
-	    		reqBloqueos.setAcuerdo(datosGenerales.getNumAcuerdo());
+	    		reqBloqueos.setAcuerdo(DatosGenerales.getNumAcuerdo());
 	    		reqBloqueos.setEstado("A");
 	    		
 	    		ResConsultaBloqueosDTO resBloqueos = wsServicios.consultaBloqueos(reqBloqueos);
@@ -343,7 +362,7 @@ public class ConsultasController {
 	    		reqRetenciones.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
 	    		reqRetenciones.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
 	    		reqRetenciones.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
-	    		reqRetenciones.setAcuerdo(datosGenerales.getNumAcuerdo());
+	    		reqRetenciones.setAcuerdo(DatosGenerales.getNumAcuerdo());
 	    		reqRetenciones.setEstado("ACTIVO");
 	    		
 	    		ResConsultaRetencionDTO resRetenciones= wsServicios.consultaRetencion(reqRetenciones);
@@ -359,19 +378,19 @@ public class ConsultasController {
 	    		reqApuntes.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
 	    		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
 	    		reqApuntes.setNumsec("0");
-	    		reqApuntes.setAcuerdo(datosGenerales.getNumAcuerdo());
-	    		reqApuntes.setFechadesde(datosGenerales.getFechaDesde()==null||datosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
-	    		reqApuntes.setFechahasta(datosGenerales.getFechaHasta()==null||datosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+	    		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
+	    		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
+	    		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
 	    		reqApuntes.setAcceso("S");
 	    		reqApuntes.setImpsdo("0");
-	    		reqApuntes.setFormato(datosGenerales.getFormato());
+	    		reqApuntes.setFormato(DatosGenerales.getFormato());
 	        	
 	        	ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
 	        	if(resApuntes.getCabecera().getErrores()==null) {
             		detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
             	}
 	        	
-	        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", datosGenerales);
+	        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales);
     		}
     		else {
         		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
@@ -383,14 +402,7 @@ public class ConsultasController {
 		}
     }
     
-    @RequestMapping("/users")
-    public String list(ModelMap model, @SortDefault("username") Pageable pageable){
-    	//model.addAttribute("page", userService.find(pageable));
-    	
-    	return "users/list";
-    }
-    
-  //PANTALLA PARA VERIFICAR LOS DETALLES DE MOVIMIENTOS
+    //PANTALLA PARA VERIFICAR LOS DETALLES DE BLOQUEOS, RETENECIONES Y APUNTES 
     @RequestMapping(value = "/detalles")//
     public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo, @RequestParam("row") String row, 
     		@RequestParam("acuerdo") String acuerdo, @RequestParam("titular") String titular, @RequestParam("BSFOPERADOR") String bsfoperador) {
@@ -451,7 +463,7 @@ public class ConsultasController {
     		}break;
     	}
     	
-    	detalles.setTipo(tipo);
+    	detalles.setTipoDetalle(tipo);
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
     
@@ -460,7 +472,7 @@ public class ConsultasController {
     public ModelAndView ConsultaAuditoria() {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	detalles.setTitulo("Básica de auditoría");
-    	detalles.setTipo("au");
+    	detalles.setTipoDetalle("au");
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
     
@@ -469,7 +481,7 @@ public class ConsultasController {
     public ModelAndView ConsultaDetallesAuditoria() {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	detalles.setTitulo("de Auditoría");
-    	detalles.setTipo("dAu");
+    	detalles.setTipoDetalle("dAu");
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
     
@@ -477,8 +489,8 @@ public class ConsultasController {
     @RequestMapping(value = "/origen")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
     public ModelAndView ConsultaOrigen() {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	detalles.setTipo("em");
-    	if(detalles.getTipo().equals("li")) {
+    	detalles.setTipoDetalle("em");
+    	if(detalles.getTipoDetalle().equals("li")) {
     		detalles.setTitulo("de liquidación");
     	}
     	else {

@@ -12,13 +12,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AnotacionesDTO {
     @Getter	@Setter
-    String noanotacion;
+    String anotacion;
     @Getter	@Setter
-    String descr;
+    String descripcion;
     @Getter	@Setter
-    String tipoanotacion;
+    String codAnt;
     @Getter	@Setter
-    String fechactivacion;
+    String fechaActivacion;
     @Getter	@Setter
     String prioridad;
+    @Getter	@Setter
+    String codSubAnt;
 }

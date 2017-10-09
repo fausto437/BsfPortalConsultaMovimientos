@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import mx.gob.bansefi.dto.AltaRelacionDocumentoDTO;
+import mx.gob.bansefi.dto.AltaDocumentoTCBDTO;
 
 /**
  * Created by app on 06/10/2017.
@@ -13,5 +13,11 @@ import mx.gob.bansefi.dto.AltaRelacionDocumentoDTO;
 @NoArgsConstructor
 public class ReqAltaRelacionDocumento {
     @Setter @Getter
-    private AltaRelacionDocumentoDTO AltaDocumentosPersona;
+    private String IdDocumento;
+    @Setter @Getter
+    private String IdTipoOperacion;
+    @Setter @Getter
+    private int IdOperacion;
+    @Setter @Getter
+    private String IdDocumentoTCB;
 }

@@ -11,27 +11,27 @@
              <div class="row tabla-titulos">
 	             <div class="col-md-3 col-xs-3">
 	             	<span>TIPO: </span>
-	             	<label class="datos-informacion">INFORMATIVA</label>
+	             	<label class="datos-informacion" th:text="${Model.tipo}"></label>
 	             </div>
 	             <div class="col-md-6 col-xs-6">
 	             	<span>SUBC&Oacute;DIGO: </span>
-	             	<label class="datos-informacion">ANOTACION GENERAL EXPEDIENTE</label>
+	             	<label class="datos-informacion" th:text="${Model.subcodigo}"></label>
 	             </div>
 	             <div class="col-md-3 col-xs-3">
 	             	<span>&Aacute;REA: </span>
-	             	<label class="datos-informacion">COMERCIAL</label>
+	             	<label class="datos-informacion" th:text="${Model.area}"></label>
 	             </div>
              </div>
              <div class="row renglon-datos">
              	<div class="col-md-2 col-xs-2">
-             		<label>04/05/2014</label>
+             		<label th:text="${Model.fecha}"></label>
              	</div>
              	<div class="col-md-10 col-xs-10">
-             		<h3 class="textAzul">asociacion tarjeta incompleta</h3>
+             		<h3 class="textAzul" th:text="${Model.descripcion}"></h3>
              		<br/>
-             		<label>Empleado: </label><label> E1661194,</label><label>ALEXA EN LPARC</label>
+             		<label>Empleado: </label><label th:text="${Model.codEmpleado}"></label><label th:text="', '+${Model.nombreEmpleado}" th:if="${Model.nombreEmpleado} neq null"></label>
              		<br/>
-             		<label>No se pudo realizar la asociaci&oacute;n de la tarjeta</label>
+             		<label th:text="${Model.nota}"></label>
              	</div>
              </div>
         </div>

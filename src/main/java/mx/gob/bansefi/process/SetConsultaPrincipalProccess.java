@@ -3,6 +3,7 @@ package mx.gob.bansefi.process;
 import mx.gob.bansefi.dto.AnotacionesDTO;
 import mx.gob.bansefi.dto.ApunteDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
+import mx.gob.bansefi.dto.GralAnotacionDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
@@ -282,31 +283,43 @@ public class SetConsultaPrincipalProccess {
     }
 
     //Función para llenar la tabla de anotaciones con datos de prueba
-    public ArrayList<AnotacionesDTO> SetConsultaAnotaciones() {
-    	ArrayList<AnotacionesDTO> anotaciones = new ArrayList<AnotacionesDTO>();
-    	AnotacionesDTO datosAnotacion= new AnotacionesDTO();
-    	datosAnotacion.setDescr("bla");
-    	datosAnotacion.setFechactivacion("10/12/2012");
-    	datosAnotacion.setNoanotacion("1");
-    	datosAnotacion.setPrioridad("ALTA");
-    	datosAnotacion.setTipoanotacion("NOTA");
-    	anotaciones.add(datosAnotacion);
-    	datosAnotacion= new AnotacionesDTO();
-    	datosAnotacion.setDescr("kud");
-    	datosAnotacion.setFechactivacion("21/04/2015");
-    	datosAnotacion.setNoanotacion("5");
-    	datosAnotacion.setPrioridad("ALTA");
-    	datosAnotacion.setTipoanotacion("NOTA");
-    	anotaciones.add(datosAnotacion);
-    	datosAnotacion= new AnotacionesDTO();
-    	datosAnotacion.setDescr("bla");
-    	datosAnotacion.setFechactivacion("10/12/2012");
-    	datosAnotacion.setNoanotacion("1");
-    	datosAnotacion.setPrioridad("ALTA");
-    	datosAnotacion.setTipoanotacion("NOTA");
-    	anotaciones.add(datosAnotacion);
+   public ArrayList<GralAnotacionDTO> SetConsultaAnotaciones(ArrayList<GralAnotacionDTO> lstAnotaciones) {
     	
-    	return anotaciones;
+	   ArrayList<GralAnotacionDTO> nuevaLista = new ArrayList<GralAnotacionDTO>();
+    	for (GralAnotacionDTO datoAnotacion : lstAnotaciones) {
+    		GralAnotacionDTO nuevoObj= new GralAnotacionDTO();
+    		nuevoObj = datoAnotacion;
+    		nuevoObj.setAnotacion(datoAnotacion.getAnotacion()!=null||datoAnotacion.getAnotacion()!=""?""+Integer.parseInt(datoAnotacion.getAnotacion()):"");
+    		switch(nuevoObj.getCodAnt()) {
+	    		case "1":{
+	    			nuevoObj.setTipoAnotacion("INFORMATIVA");
+	    		}break;
+	    		case "2":{
+	    			nuevoObj.setTipoAnotacion("ALERTA");
+	    		}break;
+	    		case "3":{
+	    			nuevoObj.setTipoAnotacion("IMPERATIVA");
+	    		}break;
+	    		case "4":{
+	    			nuevoObj.setTipoAnotacion("AVISO");
+	    		}break;
+    		}
+    		switch(nuevoObj.getPrioridad()) {
+	    		case "1":{
+	    			nuevoObj.setPrioridad("BAJA");
+	    		}break;
+	    		case "2":{
+	    			nuevoObj.setPrioridad("MEDIA");
+	    		}break;
+	    		case "3":{
+	    			nuevoObj.setPrioridad("ALTA");
+	    		}break;
+    		}
+    		
+    		nuevaLista.add(nuevoObj);
+    	}
+    	
+    	return nuevaLista;
     }
 
     //Función para llenar la tabla de retenciones con los datos de la consulta

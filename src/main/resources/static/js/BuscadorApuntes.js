@@ -18,11 +18,15 @@ $(document).ready(function(){
         $("#txtTipoIdentificacion").val($("#cboTipoIdentificacion option:selected").text());
         $("#codTipoIdentificacion").val($("#cboTipoIdentificacion option:selected").val());
     });
-	
-	$("#cboTipoIdentificacionDigitalizacion").change(function () {
-        $("#txtTipoIdentificacionDigitalizacion").val($("#cboTipoIdentificacionDigitalizacion option:selected").text());
-        $("#codTipoIdentificacionDigitalizacion").val($("#cboTipoIdentificacionDigitalizacion option:selected").val());
-    });
+	if(verificaDigitalizacion=="2"){
+		msjAlerta("Hubo un error en el proceso de digitalización. Intente de nuevo.");
+	}
+	if(verificaDigitalizacion=="1"){
+		//msjAlerta("La identificación fue validadá correctamente, ingrese las fechas y formato para realizar la consulta.");
+		 $('#cboTipoIdentificacion').prop('disabled', 'disabled');
+		$("#numId").prop('readonly', 'readonly');
+		$("#btnValidarId").addClass('disabled');
+	}
 })
 
 //Funcion para crear el mensaje de carga de las solicitudes.
@@ -65,85 +69,87 @@ function maskInput()
 
 //Funcion para validar la identificacion de la cuenta.
 function validarId(){
-	if($("#numAcuerdo").val()==""||$("#txtTipoIdentificacion").val()==undefined){
-		msjAlerta("Ingrese el número de cuenta al que se encuentra ligada la identificación.");
-		return;
-	}
-	if($("#txtTipoIdentificacion").val()==""||$("#txtTipoIdentificacion").val()==undefined){
-		msjAlerta("Seleccione un tipo de identificación a validar.");
-		return;
-	}
-	if($("#numId").val()==""||$("#numId").val()==undefined){
-		msjAlerta("Ingrese el número de identificación a validar.");
-		return;
-	}
-	//var random_boolean = Math.random() >= 0.5;
-	var datos={
-			tipo_documento: $("#codTipoIdentificacion").val(),
-			id_interno_pe: $("#idInternoPe").val()
-	};
-	$.ajax({
-	type : 'POST',
-	data : datos,
-	url : window.location.protocol + "//" + window.location.host + "/" + nomPath + "getDocumento",
-	beforeSend : function() {
-	    loading.modal('show');
-	},
-	success : function(data) {
-		loading.modal('hide');
-		console.log(data);
-		var tipoDocTCB=data.codTipoDocumento;
-		if(data.getDocumentoDigitalizadoResp!=null){
-			bootbox.confirm({
-		        size: "large",
-		        message: '<iframe src="data:application/pdf;base64,'+data.getDocumentoDigitalizadoResp.documento+'" style="width:100%;height:100%" seamless=""></iframe>',
-		        buttons: {
-		            confirm: {
-		                label: 'Es válida',
-		                className: 'btn-success'
-		            },
-		            cancel: {
-		                label: 'No es válida',
-		                className: 'btn-danger'
-		            }
-		        },
-		        className: "alertDoc",
-		        callback: function (result) {
-		            if(result)
-		            	validId=true;
-		            else{
-		            	digitalizacion(tipoDocTCB);
-		            }
-		        }
-		    });
+	if(verificaDigitalizacion!="1"){
+		if($("#numAcuerdo").val()==""||$("#txtTipoIdentificacion").val()==undefined){
+			msjAlerta("Ingrese el número de cuenta al que se encuentra ligada la identificación.");
+			return;
 		}
-		else{
-			bootbox.confirm({
-		        size: "large",
-		        message: '<div class="alertNoDoc"><h3>No se encontró una identificación con la información ingresada</h3></div>',
-		        buttons: {
-		            confirm: {
-		                label: 'Digitalizar identificación',
-		                className: 'btn-primary'
-		            },
-		            cancel: {
-		                label: 'Regresar',
-		                className: 'btn-default'
-		            }
-		        },
-		        callback: function (result) {
-		        	digitalizacion(tipoDocTCB);
-		        }
-		    });
+		if($("#txtTipoIdentificacion").val()==""||$("#txtTipoIdentificacion").val()==undefined){
+			msjAlerta("Seleccione un tipo de identificación a validar.");
+			return;
 		}
-	},
-	error : function(e) {
-		    console.log("Error " + e);
-		    loading.modal('hide');
-			msjAlerta("Verifique que el número de la cuenta sea correcto.");
-			$("#numAcuerdo").val("");
-	    }
-    });
+		if($("#numId").val()==""||$("#numId").val()==undefined){
+			msjAlerta("Ingrese el número de identificación a validar.");
+			return;
+		}
+		//var random_boolean = Math.random() >= 0.5;
+		var datos={
+				tipo_documento: $("#codTipoIdentificacion").val(),
+				id_interno_pe: $("#idInternoPe").val()
+		};
+		$.ajax({
+		type : 'POST',
+		data : datos,
+		url : window.location.protocol + "//" + window.location.host + "/" + nomPath + "getDocumento",
+		beforeSend : function() {
+		    loading.modal('show');
+		},
+		success : function(data) {
+			loading.modal('hide');
+			console.log(data);
+			var tipoDocTCB=data.codTipoDocumento;
+			if(data.getDocumentoDigitalizadoResp!=null){
+				bootbox.confirm({
+			        size: "large",
+			        message: '<iframe src="data:application/pdf;base64,'+data.getDocumentoDigitalizadoResp.documento+'" style="width:100%;height:100%" seamless=""></iframe>',
+			        buttons: {
+			            confirm: {
+			                label: 'Es válida',
+			                className: 'btn-success'
+			            },
+			            cancel: {
+			                label: 'No es válida',
+			                className: 'btn-danger'
+			            }
+			        },
+			        className: "alertDoc",
+			        callback: function (result) {
+			            if(result)
+			            	validId=true;
+			            else{
+			            	digitalizacion(tipoDocTCB);
+			            }
+			        }
+			    });
+			}
+			else{
+				bootbox.confirm({
+			        size: "large",
+			        message: '<div class="alertNoDoc"><h3>No se encontró una identificación con la información ingresada</h3></div>',
+			        buttons: {
+			            confirm: {
+			                label: 'Digitalizar identificación',
+			                className: 'btn-primary'
+			            },
+			            cancel: {
+			                label: 'Regresar',
+			                className: 'btn-default'
+			            }
+			        },
+			        callback: function (result) {
+			        	digitalizacion(tipoDocTCB);
+			        }
+			    });
+			}
+		},
+		error : function(e) {
+			    console.log("Error " + e);
+			    loading.modal('hide');
+				msjAlerta("Verifique que el número de la cuenta sea correcto.");
+				$("#numAcuerdo").val("");
+		    }
+	    });
+	}
 }
 
 //Funcion para confirmar la validacion de la identificacion.
@@ -158,8 +164,10 @@ function digitalizacion(tipo){
 			BSFOPERADOR: $("#bsfoperador").val(),
 	        idInternoPe: $("#idInternoPe").val(),
 	        descDoc: $("#txtTipoIdentificacion").val(),
+	        descDocDB: $("#numId").val(),
 	        codDoc: tipo,
-	        cuenta: $("#noCuenta").val(),
+	        cuenta: $("#numAcuerdo").val(),
+	        titular:$("#titCuenta").val(),
 	        alta: "1"
 	    };
 	$.ajax({
@@ -215,6 +223,10 @@ function getNombre(){
 				numId=true;
 			    $("#titCuenta").val(data.nombre);
 			    $("#idInternoPe").val(data.idInternoPe);
+			    $('#cboTipoIdentificacion').prop('disabled', false);
+				$("#numId").prop('readonly', false);
+				$("#btnValidarId").removeClass('disabled');
+				verificaDigitalizacion="0";
 			}
 			else{
 				$("#titCuenta").val("");
@@ -248,13 +260,15 @@ function msjAlerta(text) {
 
 //Funcion para realizar la consulta de la informacion. 
 function consultarInformacion(){
-	if(numId==false){
-		msjAlerta("Verificar el número de cuenta.");
-		return;
-	}
-	if(validId==false){
-		msjAlerta("Validar identificación del titular.");
-		return;
+	if(verificaDigitalizacion!="1"){
+		if(numId==false){
+			msjAlerta("Verificar el número de cuenta.");
+			return;
+		}/*
+		if(validId==false){
+			msjAlerta("Validar identificación del titular.");
+			return;
+		}*/
 	}
 	loading.modal('show');
 	$("#frmBusquedaMovimientosGral").submit();

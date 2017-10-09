@@ -11,9 +11,6 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 
 import mx.gob.bansefi.clients.DocumentosClient;
-import mx.gob.bansefi.dto.Response.DocumentosPM.DocumentosRelacionadosDTO;
-import mx.gob.bansefi.dto.Response.DocumentosPM.ResAltaDocTCB;
-import mx.gob.bansefi.dto.Response.DocumentosPM.ResConsultaDocumentosTCB;
 import mx.gob.bansefi.dto.bsfOperador.BsfOperadorPadreDTO;
 
 import org.apache.log4j.LogManager;
@@ -40,7 +37,6 @@ import mx.gob.bansefi.dto.ResponceSecurity;
 import mx.gob.bansefi.dto.documentos;
 import mx.gob.bansefi.dto.encriptar;
 import mx.gob.bansefi.dto.Modelos.TransportDTO;
-//import mx.gob.bansefi.dto.ModelosVistas.AddDocumentosMODEL;
 import mx.gob.bansefi.dto.Modelos.DocumentosMODEL;
 import mx.gob.bansefi.dto.Request.ReqAltaRelacionDocumentoDTO;
 import mx.gob.bansefi.dto.Request.ReqEncryptDecryptDTO;
@@ -50,13 +46,9 @@ import mx.gob.bansefi.dto.Request.Documentos.ReqEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.ResEncryptORDecryptDTO;
 import mx.gob.bansefi.dto.Response.ResGralDTO;
 import mx.gob.bansefi.dto.Response.Documentos.ResConsultaDocumento;
-//import mx.gob.bansefi.dto.asocia.AsociaDatosDTO;
-//import mx.gob.bansefi.dto.asocia.AsociaRequestDTO;
-//import mx.gob.bansefi.dto.asocia.AsociaResponseDTO;
 import mx.gob.bansefi.dto.clientServices.request.ReqCatalogoVariosPMDTO;
 import mx.gob.bansefi.dto.clientServices.response.resCatalogosVariosPM.CatalogoDTO;
 import mx.gob.bansefi.dto.clientServices.response.resCatalogosVariosPM.ResCatalogosVariosPMDTO;
-//import mx.gob.bansefi.services.AltaModificacionServices;
 import mx.gob.bansefi.services.SecurityService;
 import mx.gob.bansefi.services.SecurityWS;
 import mx.gob.bansefi.services.WsServicios;
@@ -159,7 +151,8 @@ public class WizardDocumentosController {
 	        			+ "\", \"TERMINAL\": \""+ bsfOp.getBSFOPERADOR().getTERMINAL() + "\", \"USERTCB\": \"" + bsfOp.getBSFOPERADOR().getUSERTCB()
 	                    + "\", \"SESSIONID\": \"\", \"TRANSPORT\": {\"ACTIONBACK\": \""+url+"\", \"TITULO\": \"Digitalizar documento " + datos.getDescDoc()
 	                    + "\", \"TIPODOCUMENTO\": \"" + datos.getCodDoc() + "\",\"TARGET\": \"_top\", \"IDINTERNOPE\": {\"BSFOPERADORINICIO\": \""+datos.getBSFOPERADOR()
-	                    + "\", \"IDINTERNOPE\": \"" + datos.getIdInternoPe() + "\", \"DESCDOC\": \"" + datos.getDescDoc() + "\" }}}}";
+	                    + "\", \"IDINTERNOPE\": \"" + datos.getIdInternoPe() + "\", \"DESCDOC\": \"" + datos.getDescDocDB() + "\", \"ACUERDO\": \"" + datos.getCuenta() 
+	                    + "\", \"CODDOC\": \"" + datos.getCodDoc() + "\", \"TITULAR\": \"" + datos.getTitular() + "\" }}}}";
 				ResEncryptORDecryptDTO encrypt = securityWs.encrypt(new ReqEncryptORDecryptDTO(aencriptar));
 				System.out.println("############Texto a encriptado###########\n " + encrypt.getRespuesta().toString());
 				if (encrypt.getError() != null) {

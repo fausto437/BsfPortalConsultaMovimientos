@@ -6,6 +6,7 @@ import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
+import mx.gob.bansefi.dto.Response.ResConsultaAnotacionDetalleDTO;
 import mx.gob.bansefi.services.WsServicios;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,6 +106,28 @@ public class SetConsultaDetallesProccess {
 		detalles.setCentro(renglonBloqueo.getCentro());
 		detalles.setImporte(renglonBloqueo.getImporte());
 		
+		return detalles;
+	}
+	
+	public DetalleConsultaDTO SetAnotacionDetalles(ResConsultaAnotacionDetalleDTO res, String codTipo) {
+		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+		detalles.setTitulo("Detalle de Anotación");
+		detalles.setCodEmpleado(res.getIdEmpleado());
+		detalles.setFecha(res.getFechaUltimaModificacion());
+		switch(codTipo) {
+			case "1":{
+				detalles.setTipo("INFORMATIVA");
+			}break;
+			case "2":{
+				detalles.setTipo("ALERTA");
+			}break;
+			case "3":{
+				detalles.setTipo("IMPERATIVA");
+			}break;
+			case "4":{
+				detalles.setTipo("AVISO");
+			}break;
+		}
 		return detalles;
 	}
 }

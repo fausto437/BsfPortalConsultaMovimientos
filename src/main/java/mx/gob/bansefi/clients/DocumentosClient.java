@@ -1,5 +1,6 @@
 package mx.gob.bansefi.clients;
 
+import mx.gob.bansefi.dto.Request.ReqAltaDocumentoTCBDTO;
 import mx.gob.bansefi.dto.Request.Documentos.ReqAltaRelacionDocumento;
 import mx.gob.bansefi.dto.Request.Documentos.ReqConsultaDocumento;
 import mx.gob.bansefi.dto.Request.Documentos.ReqConsultaDocumentosTCB;
@@ -8,7 +9,6 @@ import mx.gob.bansefi.dto.Response.Documentos.ResAltaDocumentoTCB;
 import mx.gob.bansefi.dto.Response.Documentos.ResAltaRelacionDocumento;
 import mx.gob.bansefi.dto.Response.Documentos.ResConsultaDocumento;
 import mx.gob.bansefi.dto.Response.Documentos.ResConsultaTipoDocumento;
-import mx.gob.bansefi.dto.Response.DocumentosPM.ResConsultaDocumentosTCB;
 import mx.gob.bansefi.utils.Util;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -31,10 +31,13 @@ public class DocumentosClient {
     private String msjServicioInaccesible;
     @Value("${domain.services}")
     private String domainSerivices;
-    @Value("${path.AltaRelacionDocumento}")
-    private String altaRelacionDocumento;
+    @Value("${path.AltaDocumentoTCB}")
+    private String altaDocumentoTCB;
     @Value("${path.ConsultaTipoId}")
     private String consultaTipoId;
+    @Value("${path.RelacionDocumentoOperacion}")
+    private String relacionDocumentoOperacion;
+    
     
     private static final Logger log = LogManager.getLogger(CatalogoClient.class);
     private Util util = Util.getInstance();
@@ -115,23 +118,39 @@ public class DocumentosClient {
     /*
      * Metodo para consumir servicio de relación de documento con la persona.
      */
-    public ResAltaRelacionDocumento relacionarDocumento(ReqAltaRelacionDocumento datos) {
+    public ResAltaRelacionDocumento relacionarDocumento(ReqAltaDocumentoTCBDTO datos, String idDigitalizacion) {
+    	ResAltaDocumentoTCB resId = new ResAltaDocumentoTCB();
     	ResAltaRelacionDocumento res = new ResAltaRelacionDocumento();
     	try {
-            String jsonRes = this.util.callRestPost(datos, domainSerivices + altaRelacionDocumento);
+            String jsonRes = this.util.callRestPost(datos, domainSerivices + altaDocumentoTCB);
             if (!jsonRes.equals("")) {
                 ArrayList<String> nodos = new ArrayList<String>();
                 nodos.add("AltaDocumentosPersonaResponse");
                 nodos.add("return");
                 nodos.add("RESPONSE");
-                ResAltaDocumentoTCB resId = (ResAltaDocumentoTCB) this.util.jsonToObject(res, jsonRes, nodos);
-                if(resId!=null){
+                resId = (ResAltaDocumentoTCB) this.util.jsonToObject(resId, jsonRes, nodos);
+                if(resId.getSTATUS().equals("1")){
                 	//Hacer la relación de los documentos
-                	jsonRes = this.util.callRestPost(datos, domainSerivices + altaRelacionDocumento);
+                	ReqAltaRelacionDocumento req = new ReqAltaRelacionDocumento(idDigitalizacion, "5", datos.getAltaDocumentosPersona().getIdInternoPe(),resId.getID_INTERNO_DC());
+                	jsonRes = this.util.callRestPost(req, domainSerivices + relacionDocumentoOperacion);
+                	if (!jsonRes.equals("")) {
+                        ArrayList<String> nodosRelacion = new ArrayList<String>();
+                        nodosRelacion.add("InsertaRelacionDocumentoTCBResp");
+                        nodosRelacion.add("RespuestaRelacion");
+                        res = (ResAltaRelacionDocumento) this.util.jsonToObject(res, jsonRes, nodosRelacion);
+                        if(res.getDescripcion()==null){
+                        	if(res.getRespuesta()!="1") {
+                        		log.error("\nServicio incaccesible: " + relacionDocumentoOperacion);                        		
+                        	}
+                        }
+                    }
+                	else {
+                        log.error("\nServicio incaccesible: " + altaDocumentoTCB);
+                    }
                 }
             } 
             else {
-                log.error("\nServicio incaccesible: " + altaRelacionDocumento);
+                log.error("\nServicio incaccesible: " + altaDocumentoTCB);
             }
         } 
     	catch (ParseException ex) {
