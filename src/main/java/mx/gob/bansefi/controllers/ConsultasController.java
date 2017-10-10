@@ -4,12 +4,15 @@ import mx.gob.bansefi.clients.DocumentosClient;
 import mx.gob.bansefi.dto.AltaDocumentoTCBDTO;
 import mx.gob.bansefi.dto.AltaRelacionDocumentoDTO;
 import mx.gob.bansefi.dto.AnotacionesDTO;
+import mx.gob.bansefi.dto.ApunteDTO;
 import mx.gob.bansefi.dto.BusquedaDTO;
 import mx.gob.bansefi.dto.ConsultaPrincipalDTO;
 import mx.gob.bansefi.dto.DetalleConsultaDTO;
+import mx.gob.bansefi.dto.GralAnotacionDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
+import mx.gob.bansefi.dto.ReportDTO;
 import mx.gob.bansefi.dto.TitularDTO;
 import mx.gob.bansefi.dto.Request.*;
 import mx.gob.bansefi.dto.Request.Documentos.ReqAltaRelacionDocumento;
@@ -19,9 +22,20 @@ import mx.gob.bansefi.dto.Response.Documentos.ResAltaRelacionDocumento;
 import mx.gob.bansefi.dto.bsfOperador.BsfOperadorPadreDTO;
 import mx.gob.bansefi.process.SetConsultaDetallesProccess;
 import mx.gob.bansefi.process.SetConsultaPrincipalProccess;
+import mx.gob.bansefi.process.SetReporteProccess;
 import mx.gob.bansefi.services.SecurityWS;
 import mx.gob.bansefi.services.WsServicios;
 import mx.gob.bansefi.utils.Util;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
+
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,13 +45,18 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class ConsultasController {
@@ -98,7 +117,6 @@ public class ConsultasController {
 
         }
     }
-    
     
     //PANTALLA PRINCIPAL DE BUSQUEDA DESPUÉS DE LA DIGITALIZACIÓN
     @RequestMapping(value = "/busquedaDig&{idDoc}")
@@ -271,7 +289,7 @@ public class ConsultasController {
     		    	            		detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
     		    	            	}
     		    	            	
-    		    	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales).addObject("anotaciones","n");
+    		    	            	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales).addObject("lstAnotaciones",null);
     		        			}
     		        			else {
     		        				return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
@@ -328,19 +346,23 @@ public class ConsultasController {
     
     //PANTALLA PRINCIPAL DE LOS MOVIMIENTOS DE LA CUENTA
     @RequestMapping(value = "/principalMovimientos")
-    public ModelAndView PrincipalMovimientos(@ModelAttribute("cadenaDatos") BusquedaDTO DatosGenerales) {
+    public ModelAndView PrincipalMovimientos(@ModelAttribute("cadenaDatos") BusquedaDTO DatosGenerales, @RequestParam("lstAnotaciones") String lstAnotaciones) {
     	
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
     	
     	try {
-    		//BusquedaDTO datosGenerales= new BusquedaDTO();
-			
-    		//datosGenerales=(BusquedaDTO) util.jsonToObject(new BusquedaDTO(), strObj,new ArrayList<String>());
-			
     		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
 
     		if(bsfOperadorDecrypt.getRespuesta()!=null) {
 				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+				JSONArray nuevalstAnotaciones=null;
+				if(lstAnotaciones.length()>1) {
+					Object object=null;
+					JSONParser jsonParser=new JSONParser();
+					object=jsonParser.parse(lstAnotaciones);
+					nuevalstAnotaciones=(JSONArray) object;
+				}
+				
 				//Se realiza la consulta de bloqueos
 	    		ReqConsultaBloqueosDTO reqBloqueos = new ReqConsultaBloqueosDTO();
 	    		reqBloqueos.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
@@ -390,20 +412,140 @@ public class ConsultasController {
             		detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
             	}
 	        	
-	        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales);
+	        	return new ModelAndView(packageTemplates + "/PrincipalConsultas").addObject("Model", detalles).addObject("datos", DatosGenerales).addObject("lstAnotaciones", nuevalstAnotaciones);
     		}
     		else {
         		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
         	}
     		
-		} catch (ParseException e) {
+		} catch (ParseException | net.minidev.json.parser.ParseException e) {
 			e.printStackTrace();
 			return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
 		}
     }
     
+    //CARGAR MÁS REGISTROS EN LAS TABLAS PRINCIPALES
+    @RequestMapping("/cargarRegistros")
+    public ConsultaPrincipalDTO CargarRegistros(@RequestParam("cadenaDatos") String cadenaDatosGenerales,
+    		@RequestParam("tipo") String tipo, @RequestParam("numsec") String numsec, @RequestParam("imp") String imp){
+    	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
+    	try {
+    		BusquedaDTO DatosGenerales = (BusquedaDTO) util.jsonToObject(new BusquedaDTO(), cadenaDatosGenerales);
+    		ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(DatosGenerales.getBsfoperador()));
+    		if(bsfOperadorDecrypt.getRespuesta()!=null) {
+				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+				switch(tipo) {
+		    		case "b":{
+		    			try {
+		    				return null;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+		    		}break;
+		    		case "r":{
+		    			try {
+							return null;
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+		    		}break;
+		    		case "ap":{
+		    			try {
+		    				ReqConsultaMovimientosGeneralDTO reqApuntes = new ReqConsultaMovimientosGeneralDTO();
+		    	    		reqApuntes.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+		    	    		reqApuntes.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+		    	    		reqApuntes.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+		    	    		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+		    	    		reqApuntes.setNumsec(numsec);
+		    	    		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
+		    	    		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
+		    	    		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+		    	    		reqApuntes.setAcceso("N");
+		    	    		reqApuntes.setImpsdo(imp);
+		    	    		reqApuntes.setFormato(DatosGenerales.getFormato());
+		    	        	
+		    	        	ResConsultaApuntesDTO resApuntes = wsServicios.consultaApuntes(reqApuntes);
+		    	        	if(resApuntes.getCabecera().getErrores()==null) {
+			                	detalles.setApuntes(resApuntes.getLista()==null?null:setConsultaPrincipal.setConsultaApuntes(resApuntes.getLista()));
+			                }
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+		    		}break;
+				}
+    		}
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return detalles;
+    }
+    
+    //IMPRESION DEL REPORTE
+    @RequestMapping(value = "/imprimir")
+    public String imprimirReporte(@RequestParam("lista") String lista, @RequestParam("numCuenta") String numCuenta,
+    		@RequestParam("titCuenta") String titCuenta){
+    	ArrayList<ApunteDTO> listdata = new ArrayList<ApunteDTO>();     
+    	JsonParser parser = new JsonParser();
+    	JsonElement element = parser.parse(lista);
+    	JsonArray jasonArray = element.getAsJsonArray();
+    	for(Object o : jasonArray) {
+    		ApunteDTO nuevoObj=null;
+			try {
+				nuevoObj = (ApunteDTO) util.jsonToObject(new ApunteDTO(), o.toString());
+				if(nuevoObj.getIdorigen()!="") {
+					int i =nuevoObj.getIdorigen().lastIndexOf("-")+1;
+					nuevoObj.setIdorigen(nuevoObj.getIdorigen().substring(i, nuevoObj.getIdorigen().length()));
+				}
+				listdata.add(nuevoObj);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+    	}
+    	List<ReportDTO> report = new ArrayList<ReportDTO>();
+    	ReportDTO dat= new ReportDTO();
+    	dat.setNumcuenta("bka");
+    	report.add(dat);
+        String XMLbase64="";
+        JasperReport Reporte; // Variable donde se cargara la plantilla del reporte
+        JasperPrint jp; // Variable donde se genera el reporte
+        String path ="";
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("listamovimientos", listdata);
+        try {
+            path = Util.class.getResource("/Cedulas/ReporteMovimientos.jasper").getPath();
+
+            path = new String(path.replaceAll("%20", " "));
+
+            String pathImgae = Util.class.getResource("/Cedulas/Imagenes/logo_top.png").getPath();
+            pathImgae = new String(pathImgae.replaceAll("%20", " "));
+
+            parameters.put("urlimagen", pathImgae);
+
+            Reporte = (JasperReport) JRLoader.loadObjectFromFile(path);
+
+            jp = JasperFillManager.fillReport(Reporte, parameters, new JRBeanCollectionDataSource(report, false) );
+
+            File pdf = File.createTempFile("output.", ".pdf");
+            FileOutputStream os = new FileOutputStream(pdf);
+            JasperExportManager.exportReportToPdfStream(jp, os);
+            Base64.Encoder e = Base64.getEncoder();
+            XMLbase64 = e.encodeToString(Files.readAllBytes(pdf.toPath()));
+            os.close();
+            pdf.delete();
+
+
+        } catch (Exception ex) {
+            System.out.print(ex.getMessage());
+        }
+
+        return XMLbase64;
+    }
+    
     //PANTALLA PARA VERIFICAR LOS DETALLES DE BLOQUEOS, RETENECIONES Y APUNTES 
-    @RequestMapping(value = "/detalles")//
+    @RequestMapping(value = "/detalles")
     public ModelAndView ConsultaDetalleMovimientos(@RequestParam("tipo") String tipo, @RequestParam("row") String row, 
     		@RequestParam("acuerdo") String acuerdo, @RequestParam("titular") String titular, @RequestParam("BSFOPERADOR") String bsfoperador) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
@@ -430,7 +572,7 @@ public class ConsultasController {
     		}break;
     		case "ap":{
     			try {
-					GralApunteDTO renglonApunte = (GralApunteDTO) util.jsonToObject(new GralApunteDTO(), row,new ArrayList<String>());
+					ApunteDTO renglonApunte = (ApunteDTO) util.jsonToObject(new ApunteDTO(), row,new ArrayList<String>());
 					ReqConsultaApunteDetallesDTO reqApunteDetalle = new ReqConsultaApunteDetallesDTO();
 					
 					ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfoperador));
@@ -442,7 +584,7 @@ public class ConsultasController {
 						reqApunteDetalle.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
 						reqApunteDetalle.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
 						reqApunteDetalle.setAcuerdo(acuerdo);
-						reqApunteDetalle.setFecha(renglonApunte.getFechaOperacion());
+						reqApunteDetalle.setFecha(renglonApunte.getFechaoperacion());
 						reqApunteDetalle.setDetalle(renglonApunte.getDetalle());
 						reqApunteDetalle.setImporte(renglonApunte.getImporte());
 						reqApunteDetalle.setCodcuenta(renglonApunte.getCodcuenta());
@@ -452,9 +594,11 @@ public class ConsultasController {
 						
 						ResConsultaApunteDetalleDTO resAputeDetalle = wsServicios.consultaDetalleApunte(reqApunteDetalle);
 						
-						//detalles = setDetalles.SetConsultaDetallesApunte(renglonApunte);
-						detalles.setTitular(titular);
+						detalles = setDetalles.SetConsultaDetallesApunte(resAputeDetalle);
+						detalles.setEstatus(renglonApunte.getSigno());
+						detalles.setIdTipoCuenta(renglonApunte.getCodcuenta());
 	    				detalles.setNumAcuerdo(acuerdo);
+	    				detalles.setIdOrigen(renglonApunte.getIdorigen());
 					}
 					
 				} catch (ParseException e) {
@@ -464,39 +608,162 @@ public class ConsultasController {
     	}
     	
     	detalles.setTipoDetalle(tipo);
-    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles).addObject("bsfOperador",  bsfoperador);
     }
     
     //PANTALLA PARA VERIFICAR LOS DATOS DE AUDITORIA
     @RequestMapping(value = "/auditoria")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
-    public ModelAndView ConsultaAuditoria() {
+    public ModelAndView ConsultaAuditoria(@ModelAttribute("Model") DetalleConsultaDTO DatosConsulta, @RequestParam("bsfOperadorAuditoria") String bsfOperador) {
+    	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfOperador));
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	detalles.setTitulo("Básica de auditoría");
-    	detalles.setTipoDetalle("au");
-    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
+    	
+    	if(bsfOperadorDecrypt.getRespuesta()!=null) {
+			try {
+				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+				ReqConsultaAuditoriaDTO req= new ReqConsultaAuditoriaDTO();
+				req.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+				req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+				req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+				req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+				req.setAcuerdo(DatosConsulta.getNumAcuerdo());
+				req.setCodcuenta(DatosConsulta.getIdTipoCuenta());
+				req.setDetalle(DatosConsulta.getNumero());
+				
+				ResConsultaAuditoriaDTO res= wsServicios.consultaAuditoria(req);
+				
+				detalles= setDetalles.SetConsultaAuditoria(res);
+				detalles.setNumAcuerdo(DatosConsulta.getNumAcuerdo());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}	
+		}
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles).addObject("bsfOperador", bsfOperador);
     }
     
-  //PANTALLA PARA VERIFICAR LOS DETALLES DE AUDITORIA
+    //PANTALLA PARA VERIFICAR LOS DETALLES DE AUDITORIA
     @RequestMapping(value = "/detalleAuditoria")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
-    public ModelAndView ConsultaDetallesAuditoria() {
+    public ModelAndView ConsultaDetallesAuditoria(@ModelAttribute("Model") DetalleConsultaDTO DatosConsulta, @RequestParam("bsfOperadorAuditoriaDetalles") String bsfOperador) {
+    	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfOperador));
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	detalles.setTitulo("de Auditoría");
-    	detalles.setTipoDetalle("dAu");
+    	
+    	if(bsfOperadorDecrypt.getRespuesta()!=null) {
+			try {
+				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+				ReqConsultaAuditoriaDetallesDTO req= new ReqConsultaAuditoriaDetallesDTO();
+				req.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+				req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+				req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+				req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+				req.setAcuerdo(DatosConsulta.getNumAcuerdo());
+				req.setEmpleado(DatosConsulta.getCodEmpleado());
+				req.setAutorizador(DatosConsulta.getAutorizador());
+				
+				ResConsultaAuditoriaDetalleDTO res= wsServicios.consultaAuditoriaDetalles(req);
+				
+				detalles= setDetalles.SetConsultaAuditoriaDetalles(res);
+				detalles.setNumAcuerdo(DatosConsulta.getNumAcuerdo());
+				detalles.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+				detalles.setCodCentroActual(bsfOp.getBSFOPERADOR().getCENTRO());
+				detalles.setCodEmpleado(DatosConsulta.getCodEmpleado());
+				detalles.setCodEmpleadoAutorizador(DatosConsulta.getAutorizador());
+				detalles.setTerminal(DatosConsulta.getTerminal());
+				detalles.setFechaOperacion(DatosConsulta.getFechaOperacion());
+				detalles.setHoraOperacion(DatosConsulta.getHoraOperacion());
+				detalles.setCodTransaccion(DatosConsulta.getCodAuditoria());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}	
+		}
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
     
-  //PANTALLA PARA VERIFICAR EL ORIGEN 
-    @RequestMapping(value = "/origen")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
-    public ModelAndView ConsultaOrigen() {
+    //PANTALLA PARA VERIFICAR MÁS DATOS DEL APUNTE 
+    @RequestMapping(value = "/masApunte")
+    public ModelAndView ConsultaMasOrigen(@ModelAttribute("Model") DetalleConsultaDTO DatosConsulta) {
+    	if(DatosConsulta.getConcepto().contains("LIQ")) {
+    		DatosConsulta.setOriginadoPor("LIQUIDACION");
+    	}
+    	if(DatosConsulta.getConcepto().contains("CHQ")) {
+    		DatosConsulta.setOriginadoPor("EMISION");
+    	}
+    	DatosConsulta.setTitulo(" ampliada de apunte");
+    	DatosConsulta.setTipoDetalle("mAp");
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", DatosConsulta);
+    }
+    
+    //PANTALLA PARA VERIFICAR EL ORIGEN 
+    @RequestMapping(value = "/origen")
+    public ModelAndView ConsultaOrigen(@ModelAttribute("Model") DetalleConsultaDTO DatosConsulta, @RequestParam("bsfOperadorOrigen") String bsfOperador) {
+    	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfOperador));
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	detalles.setTipoDetalle("em");
-    	if(detalles.getTipoDetalle().equals("li")) {
-    		detalles.setTitulo("de liquidación");
+    	if(bsfOperadorDecrypt.getRespuesta()!=null) {
+    		try {
+    			BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+    			if(DatosConsulta.getConcepto().contains("LIQ")) {
+            		ReqConsultaLiquidacionDTO req = new ReqConsultaLiquidacionDTO();
+            		req.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+            		req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+            		req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+            		req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+            		req.setAcuerdo(DatosConsulta.getNumAcuerdo());
+            		String idOrigen = DatosConsulta.getIdOrigen();
+            		idOrigen= idOrigen.substring(idOrigen.indexOf("-")+1, idOrigen.length());
+            		String fechaLiquidacion=idOrigen.substring(idOrigen.indexOf("-")+1,idOrigen.lastIndexOf("-"));
+            		String detalle = idOrigen.substring(idOrigen.indexOf(fechaLiquidacion)+12, idOrigen.length());
+            		req.setFechaLiquidacion(fechaLiquidacion);
+            		
+            		detalles.setTipoDetalle("li");
+            		detalles.setTitulo("de liquidación");
+            	}
+            	if(DatosConsulta.getConcepto().contains("EMI")) {
+            		detalles.setTipoDetalle("em");
+            		detalles.setTitulo("Emisión de cheque");
+            	}
+    		}
+    		catch (ParseException e) {
+				e.printStackTrace();
+    		}
+        	
     	}
-    	else {
-    		detalles.setTitulo("Emisión de cheque");
-    	}
+    	
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
+    
+    //PANTALLA PARA VERIFICAR MÁS DETALLES DE UN APUNTE
+    /*@RequestMapping(value = "/detalleAuditoria")//@RequestParam("tipo") String tipo, @RequestParam("row") String row
+    public ModelAndView ConsultaMasApunte(@ModelAttribute("Model") DetalleConsultaDTO DatosConsulta, @RequestParam("bsfOperadorAuditoriaDetalles") String bsfOperador) {
+    	ResEncryptORDecryptDTO bsfOperadorDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfOperador));
+    	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+    	
+    	if(bsfOperadorDecrypt.getRespuesta()!=null) {
+			try {
+				BsfOperadorPadreDTO bsfOp = (BsfOperadorPadreDTO) util.jsonToObject(new BsfOperadorPadreDTO(), bsfOperadorDecrypt.getRespuesta());
+				ReqConsultaAuditoriaDetallesDTO req= new ReqConsultaAuditoriaDetallesDTO();
+				req.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
+				req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
+				req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+				req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+				req.setAcuerdo(DatosConsulta.getNumAcuerdo());
+				req.setEmpleado(DatosConsulta.getCodEmpleado());
+				req.setAutorizador(DatosConsulta.getAutorizador());
+				
+				ResConsultaAuditoriaDetalleDTO res= wsServicios.consultaAuditoriaDetalles(req);
+				
+				detalles= setDetalles.SetConsultaAuditoriaDetalles(res);
+				detalles.setNumAcuerdo(DatosConsulta.getNumAcuerdo());
+				detalles.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
+				detalles.setCodCentroActual(bsfOp.getBSFOPERADOR().getCENTRO());
+				detalles.setCodEmpleado(DatosConsulta.getCodEmpleado());
+				detalles.setCodEmpleadoAutorizador(DatosConsulta.getAutorizador());
+				detalles.setTerminal(DatosConsulta.getTerminal());
+				detalles.setFechaOperacion(DatosConsulta.getFechaOperacion());
+				detalles.setHoraOperacion(DatosConsulta.getHoraOperacion());
+				detalles.setCodTransaccion(DatosConsulta.getCodAuditoria());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}	
+		}
+    	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
+    }*/
 
 }

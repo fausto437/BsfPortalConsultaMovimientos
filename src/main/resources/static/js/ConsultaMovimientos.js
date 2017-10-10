@@ -6,13 +6,14 @@ var contBloqueos=0;
 var contRetenciones=0;
 var anterior="";//Variable utilizada para quitar la seleccion del renglon anterior si es que existia uno ya seleccionado.
 var actual=0;//Variable utilizada para guardar el id del elemento seleccionado
+var loading;
 $(document).ready(function () {
 	
 	nomPath = window.location.pathname;
     nomPath = nomPath.substring(1, nomPath.length);
     nomPath = nomPath.split("/", 1);
     nomPath = nomPath + "/";
-    
+    iniBootbox();
 	if(lstApuntes!=null){
 		cargaRow("ap");
 	}
@@ -24,6 +25,22 @@ $(document).ready(function () {
 	}
 	
 })
+
+//Funcion para crear el mensaje de carga de las solicitudes.
+function iniBootbox(){
+	var msg = '<div class="ui-dialog-content ui-widget-content"style="text-align: center">' + '<div class="progress-container"><div class="progress" style="height: 10px"><div class="progress-bar">'
+    + '<div class="progress-shadow">' + '</div></div></div></div><br/>' + '<label class="ui-widget ui-state-default ui-corner-all">Cargando...</label></div>';
+	loading = bootbox.dialog({
+	message : msg,
+	closeButton : false,
+	show : false
+	}).css({
+	'top' : '50%',
+	'margin-top' : function() {
+	    return -(($(this).height() / 2));
+	}
+	});
+}
 
 //Funcion para abrir el detalle del registro seleccionado
 function detalleConsulta(info, tipo){
@@ -51,6 +68,7 @@ function detalleConsulta(info, tipo){
 			}
 		}break;
 		case 'ap':{
+			console.log(lstApuntes[actual]);
 			if($("#tblApuntes").find(".seleccionado").length>0){
 				var str = JSON.stringify(lstApuntes[actual]);
 				$("#row").val(str);
@@ -83,6 +101,7 @@ function seleccionado(id,tipo, index){
 	$("#"+id).addClass('seleccionado');
 	//Se ingresan los valores que serán enviados para la consulta
 	$("#tipo").val(tipo);
+	
 }
 
 //Funcion para cargar los primeros registros de las tablas.
@@ -98,7 +117,7 @@ function cargaRow(tipo){
 					if(lstApuntes.length>i){
 						var id=i+1;
 						StrHtml+="<tr id='movimiento"+id+"'" +
-									"onclick='seleccionado(\"movimiento"+id+"\",\"ap\")'>" +
+									"onclick='seleccionado(\"movimiento"+id+"\",\"ap\","+id+")'>" +
 									"<td>"+lstApuntes[i].concepto+"</td>" +
 									"<td>"+lstApuntes[i].fechaoperacion+"</td>" +
 									"<td>"+lstApuntes[i].fechavalor+"</td>" +
@@ -108,15 +127,38 @@ function cargaRow(tipo){
 									"<td>"+lstApuntes[i].saldo+"</td>" +
 								"</tr>";
 					}
-					
 					else{
-						i=100;
+						
+						i=contApuntes;
 					}
 				}
 				$("#listaApuntes").append(StrHtml);
 			}
 			else{
-				alert("No hay más registros");
+				if(lstApuntes[contApuntes-1]!=undefined){
+					var obj = {
+							"tipo":"ap",
+							"cadenaDatos":JSON.stringify(datosConsulta),
+							"numsec":lstApuntes[contApuntes-1].detalle,
+							"imp":lstApuntes[contApuntes-1].importe
+					}
+					$.ajax({
+					      type: "POST",
+					      url: window.location.protocol + "//" + window.location.host + "/" + nomPath + "cargarRegistros",
+					      beforeSend : function() {
+							    loading.modal('show');
+							},
+					      data: obj,
+					      success: OnSuccess,
+					      failure: function (response) {
+					          bootbox.alert("Fallo: " + response);
+					      }
+					  });
+				}
+				else{
+					msjAlerta("No hay más registros para mostrar.");
+				}
+				
 			}
 			break;
 		}
@@ -142,7 +184,7 @@ function cargaRow(tipo){
 					}
 					
 					else{
-						i=100;
+						i=contBloqueos;
 					}
 				}
 				$("#listaBloqueos").append(StrHtml);
@@ -174,7 +216,7 @@ function cargaRow(tipo){
 					}
 					
 					else{
-						i=100;
+						i=contRetenciones;
 					}
 				}
 				$("#listaRetenciones").append(StrHtml);
@@ -187,6 +229,27 @@ function cargaRow(tipo){
 	}
 }
 
+//Función en caso de encontrar más registros para las tablas
+function OnSuccess(response){
+	loading.modal('hide');
+	if(response.apuntes!=null){
+		lstApuntes=lstApuntes.concat(response.apuntes);
+		cargaRow("ap");
+	}
+	else if(response.bloqueos!=null){
+		lstBloqueos=lstBloqueos.concat(response.bloqueos);
+		cargaRow("b");
+	}
+	else if(response.retenciones!=null){
+		lstRetenciones=lstRetenciones.concat(response.retenciones);
+		cargaRow("r");
+	}
+	else{
+		msjAlerta("No hay más registros para mostrar.");
+	}
+	console.log(response);
+}
+
 //Funcion para pintar la ventana de mensaje emergente.
 //PARAM text Variable que contiene la cadena que se mostrara en el mensaje.
 function msjAlerta(text) {
@@ -197,4 +260,9 @@ function msjAlerta(text) {
 	
 		}
   });
+}
+
+function imprimirReporte(){
+	$("#lista").val(JSON.stringify(lstApuntesImpresion));
+	$("#imprimirReporteForm").submit();
 }

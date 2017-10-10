@@ -21,6 +21,7 @@
 <script th:inline="javascript">
 	console.log([[${Model}]]);
 	console.log([[${cadenaDatos}]]);
+	var lstAnotaciones=[[${Model.anotaciones}]];
     </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
     <input th:field="${cadenaDatos.bsfoperador}"/>
@@ -93,6 +94,7 @@
     	<input th:field="*{titCuenta}"/>
     	<input th:field="*{txtTipoIdentificacion}"/>
     	<input th:field="*{numId}"/>
+    	<input id="lstAnotaciones" name="lstAnotaciones"/>
     </form>
 	    <ul class="list-inline">
 	        <li>

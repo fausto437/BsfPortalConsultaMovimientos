@@ -14,23 +14,22 @@
     <link th:href="@{/css/ConsultasMovimientos.css}" rel="stylesheet"/>
     
     <!-- Agregar los scriptss   -->
-    <script th:src="@{/js/funcionesGenerales.js}"></script>
     <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
     <script th:src="@{/js/bootbox.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
     <script th:src="@{/js/bootstrap-select.js}"></script>
     <script th:src="@{/js/ConsultaMovimientos.js}"></script>
-    
+    <script th:src="@{/js/funcionesGenerales.js}"></script>
     <title>Consulta de Movimientos</title>
 </head>
 <body>
 	<script th:inline="javascript">
 		var lstApuntes = [[${Model.apuntes}]];
+		var lstApuntesImpresion = [[${Model.apuntes}]];
 		var lstBloqueos = [[${Model.bloqueos}]];
 		var lstRetenciones = [[${Model.retenciones}]];
-		console.log([[${Model}]]);
-		console.log([[${datos}]]);
+		var datosConsulta = [[${datos}]];
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
     <input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
@@ -68,11 +67,11 @@
 		    	<br/>
 		    	<label class="textRojo" th:text="${datos.titCuenta}"></label>
 		    	<br/>
-		    	<div class="contenedor-anotaciones" th:if="${anotaciones} eq 's'">
+		    	<div class="contenedor-anotaciones" th:if="${lstAnotaciones} neq null">
 		    		<h2>ANOTACIONES</h2>
 		    		<div class="row">
-		    			<div class="col-md-4 col-xs-4">
-		    				<label class="textAzul">AVISO: <span>CREDENCIAL IFE</span></label>
+		    			<div class="col-md-4 col-xs-4" th:each="anotacion,iteration : ${lstAnotaciones}" th="${iteration.index} &lt; 7">
+		    				<label class="textAzul" th:text="${anotacion.tipoAnotacion}+': '+${anotacion.descripcion}"></label>
 		    			</div>
 		    		</div>
 	    		</div>
@@ -252,7 +251,12 @@
             <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;">Salir</button>
         </div>
         <div class="col-md-4 col-xs-4 text-center">
-            <button onclick="alert('asd');" type="button" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+        	<form id="imprimirReporteForm" method="POST" th:action="@{/imprimir}" class="hidden">
+        		<input id="lista" name="lista"/>
+        		<input th:field="${datos.numAcuerdo}"/>
+        		<input th:field="${datos.titCuenta}"/>
+            </form>
+            <button onclick="imprimirReporte()" type="submit" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
         </div>
         <div class="col-md-4 col-xs-4 text-right">
 	        <form id="formMostrarDetalle" method="POST" th:action="@{/}">

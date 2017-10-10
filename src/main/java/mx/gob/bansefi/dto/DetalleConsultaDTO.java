@@ -16,6 +16,18 @@ public class DetalleConsultaDTO {
 	private String tipoDetalle;
 	@Getter @Setter
 	private String titulo;
+	//DATOS DE APUNTES
+	@Getter @Setter
+	private String tipoOperacion;
+	@Getter @Setter
+	private String concepto;
+	@Getter @Setter
+	private String conceptoCorto;
+	@Getter	@Setter
+	private String idOrigen;
+	//MÁS DATOS DEL APUNTE
+	@Getter	@Setter
+	private String originadoPor;
 	//DATOS DE ANOTACIONES
 	@Getter @Setter
 	private String tipo;
@@ -82,4 +94,42 @@ public class DetalleConsultaDTO {
 	private String codRetencion;
 	@Getter	@Setter
 	private String origen;
+	//DATOS DE AUDITORIA
+	@Getter	@Setter
+	private String terminal;
+	@Getter	@Setter
+	private String fechaOperacion;
+	@Getter	@Setter
+	private String codAuditoria;
+	@Getter	@Setter
+	private String autorizador;
+	@Getter	@Setter
+	private String horaOperacion;
+	@Getter	@Setter
+	private String nombreAutorizador;
+	//MÁS AUDITORIA
+	@Getter	@Setter
+	private String codCentro;
+	@Getter	@Setter
+	private String descCentro;
+	@Getter	@Setter
+	private String codCentroActual;
+	@Getter	@Setter
+	private String descCentroActual;
+	@Getter	@Setter
+	private String nombEnt;
+	@Getter	@Setter
+	private String entidad;
+	@Getter	@Setter
+	private String descEntidad;
+	@Getter	@Setter
+	private String codEmpleadoAutorizador;
+	@Getter	@Setter
+	private String descEmpleadoAutorizador;
+	@Getter	@Setter
+	private String codTransaccion;
+	@Getter	@Setter
+	private String descTransaccion;
+	
+	
 }

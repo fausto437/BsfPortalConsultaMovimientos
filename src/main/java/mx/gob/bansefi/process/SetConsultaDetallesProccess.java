@@ -7,11 +7,15 @@ import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
 import mx.gob.bansefi.dto.Response.ResConsultaAnotacionDetalleDTO;
+import mx.gob.bansefi.dto.Response.ResConsultaApunteDetalleDTO;
+import mx.gob.bansefi.dto.Response.ResConsultaAuditoriaDTO;
+import mx.gob.bansefi.dto.Response.ResConsultaAuditoriaDetalleDTO;
 import mx.gob.bansefi.services.WsServicios;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -29,41 +33,80 @@ public class SetConsultaDetallesProccess {
     private String urlcontext;
 
     private DecimalFormat df = new DecimalFormat("0.00");
-    public DetalleConsultaDTO SetConsultaDetallesApunte() {
+    public DetalleConsultaDTO SetConsultaDetallesApunte(ResConsultaApunteDetalleDTO detalleApunte) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
     	
     	detalles.setTitulo("de Apunte");
-		detalles.setTitular("MARIA DE LOS ANGELES PEREZ FRAGA MONTES ALATORRE");
-		detalles.setProdVendible("CUENTA AHORRO");
-		detalles.setIdTipoCuenta("01");
-		detalles.setTipoCuenta("CLIENTE");
-		detalles.setNumero("25");
-		detalles.setFechaContable("07/03/2014");
-		detalles.setFechaValor("10/03/2014");
-		detalles.setImporte("65000");
-		detalles.setEstatus("H");
-		detalles.setMoneda("MXN");
+		detalles.setTitular(detalleApunte.getNombre());
+		detalles.setProdVendible(detalleApunte.getProducto());
+		detalles.setTipoCuenta(detalleApunte.getTipoDescripcion());
+		detalles.setNumero(detalleApunte.getNumero());
+		detalles.setFechaContable(detalleApunte.getFechaContable()==null?"":detalleApunte.getFechaContable());
+		detalles.setFechaValor(detalleApunte.getFechaValor()==null?"":detalleApunte.getFechaValor());
+		detalles.setMoneda(detalleApunte.getMoneda());
+		detalles.setTipoOperacion(detalleApunte.getTipoOperacion());
+		detalles.setConcepto(detalleApunte.getConcepto());
+		detalles.setConceptoCorto(detalleApunte.getConcepto().replaceAll("[0-9]", ""));
+		try {
+			detalles.setImporte(""+df.parse(detalleApunte.getImporte()));
+		} catch (ParseException e) {
+			detalles.setImporte("0.00");
+			e.printStackTrace();
+		}
+		
     	
-		List<SituacionApunteDTO> lstSitApunte = new ArrayList<SituacionApunteDTO>(); 
+		List<SituacionApunteDTO> lstSitApunte = new ArrayList<SituacionApunteDTO>();
 		SituacionApunteDTO sitApunte = new SituacionApunteDTO();
-		sitApunte.setIndicador("COMUNICACION CLIENTE");
-		sitApunte.setSituacion("NORMAL");
-		lstSitApunte.add(sitApunte);
+		if(detalleApunte.getIndicador1()!=null) {
+			sitApunte.setIndicador(detalleApunte.getIndicador1());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador2()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador2());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador3()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador3());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador4()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador4());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador5()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador5());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador6()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador6());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador7()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador7());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador8()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador8());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador9()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador9());
+			lstSitApunte.add(sitApunte);
+		}
+		if(detalleApunte.getIndicador10()!=null) {
+			sitApunte = new SituacionApunteDTO();
+			sitApunte.setIndicador(detalleApunte.getIndicador10());
+			lstSitApunte.add(sitApunte);
+		}
 		
-		sitApunte = new SituacionApunteDTO();
-		sitApunte.setIndicador("SIT. DE EXTRACTO");
-		sitApunte.setSituacion("EXTRACTO");
-		lstSitApunte.add(sitApunte);
-		
-		sitApunte = new SituacionApunteDTO();
-		sitApunte.setIndicador("SIT. DE ANULACION");
-		sitApunte.setSituacion("NORMAL");
-		lstSitApunte.add(sitApunte);
-		
-		sitApunte = new SituacionApunteDTO();
-		sitApunte.setIndicador("CONTRAPARTIDA");
-		sitApunte.setSituacion("AUTOMATICA");
-		lstSitApunte.add(sitApunte);
 		
 		detalles.setSitApunte(lstSitApunte);
 		
@@ -128,6 +171,42 @@ public class SetConsultaDetallesProccess {
 				detalles.setTipo("AVISO");
 			}break;
 		}
+		return detalles;
+	}
+
+	public DetalleConsultaDTO SetConsultaAuditoria(ResConsultaAuditoriaDTO res) {
+		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+		detalles.setTitulo("Básica de auditoría");
+		detalles.setTipoDetalle("au");
+		detalles.setOrigen(res.getAuditorias().get(0).getEmpleado());
+		detalles.setTerminal(res.getAuditorias().get(0).getTerminal());
+		detalles.setFechaContable(res.getAuditorias().get(0).getFechaContable());
+		detalles.setFechaOperacion(res.getAuditorias().get(0).getFechaOperacion());
+		detalles.setCodAuditoria(res.getAuditorias().get(0).getCodigo());
+		detalles.setCentro(res.getAuditorias().get(0).getCentro());
+		detalles.setCodEmpleado(res.getAuditorias().get(0).getEmpleado());
+		detalles.setAutorizador(res.getAuditorias().get(0).getAutorizador());
+		detalles.setEstatus(res.getAuditorias().get(0).getEstado());
+		try {
+			String nueva_hora=res.getAuditorias().get(0).getHoraOperacion().substring(0, 2)+":"+res.getAuditorias().get(0).getHoraOperacion().substring(2, 4)+":"+res.getAuditorias().get(0).getHoraOperacion().substring(4, 6);
+			detalles.setHoraOperacion(nueva_hora);
+		} catch (Exception e) {
+			detalles.setHoraOperacion("");
+			e.printStackTrace();
+		}
+		
+		return detalles;
+	}
+
+	public DetalleConsultaDTO SetConsultaAuditoriaDetalles(ResConsultaAuditoriaDetalleDTO res) {
+		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+		detalles.setTitulo("de Auditoría");
+		detalles.setTipoDetalle("dAu");
+		detalles.setNombreEmpleado(res.getNombreEmpleado());
+		detalles.setNombreAutorizador(res.getNombreAutorizador());
+		detalles.setCodCentro(res.getCodigoCentro());
+		detalles.setNombEnt(res.getNombEnt());
+		
 		return detalles;
 	}
 }

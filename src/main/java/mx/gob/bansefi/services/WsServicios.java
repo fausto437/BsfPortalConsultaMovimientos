@@ -35,6 +35,12 @@ public class WsServicios {
 	private String urlConsultaAnotaciones;
 	@Value("${url.ConsultaDetalleAnotacion}")
 	private String urlConsultaDetalleAnotacion;
+	@Value("${url.ConsultaDetalleApunte}")
+	private String urlConsultaDetalleApunte;
+	@Value("${url.ConsultaAuditoria}")
+	private String urlConsultaAuditoria;
+	@Value("${url.ConsultaAuditoriaDetalles}")
+	private String urlConsultaAuditoriaDetalles;
 
 	/*
 	 * Definicion de variables mensajes de servicios
@@ -129,7 +135,7 @@ public class WsServicios {
 		ResConsultaApunteDetalleDTO Datos=new ResConsultaApunteDetalleDTO();
 		try
 		{
-			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaBloqueos);
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaDetalleApunte);
 			Datos=(ResConsultaApunteDetalleDTO)util.jsonToObject(Datos,jsonRepuesta);
 		}
 		catch(Exception ex)
@@ -172,6 +178,42 @@ public class WsServicios {
 		catch(Exception ex)
 		{
 			log.error("\nError en el metodo consultaDetalleAnotacion(ReqConsultaAnotacionDetallesDTO Request)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+	
+	/*CONSULTA DE AUDITORIA*/
+	public ResConsultaAuditoriaDTO consultaAuditoria(ReqConsultaAuditoriaDTO Request) {
+		Util util = Util.getInstance();
+		ResConsultaAuditoriaDTO Datos = new ResConsultaAuditoriaDTO();
+		try
+		{
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaAuditoria);
+			Datos=(ResConsultaAuditoriaDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo consultaDetalleAnotacion(ReqConsultaAnotacionDetallesDTO Request)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+
+	/*CONSULTA DE DETALLE DE AUDITORIA*/
+	public ResConsultaAuditoriaDetalleDTO consultaAuditoriaDetalles(ReqConsultaAuditoriaDetallesDTO Request) {
+		Util util = Util.getInstance();
+		ResConsultaAuditoriaDetalleDTO Datos = new ResConsultaAuditoriaDetalleDTO();
+		try
+		{
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaAuditoriaDetalles);
+			Datos=(ResConsultaAuditoriaDetalleDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo consultaAuditoriaDetalles(ReqConsultaAuditoriaDetallesDTO Request)"
 					+ "\nException Message: " + ex.getMessage());
 
 		}

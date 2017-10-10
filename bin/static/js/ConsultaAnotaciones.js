@@ -24,6 +24,8 @@ function detalleConsulta(num, desc, codAnt, codSubAnt, tipo){
 
 //Funcion para continuar con el flujo de la consulta de movimientos
 function continuar(){
+	console.log(lstAnotaciones);
+	$("#lstAnotaciones").val(JSON.stringify(lstAnotaciones))
 	$("#formContinuar").submit();
 }
 

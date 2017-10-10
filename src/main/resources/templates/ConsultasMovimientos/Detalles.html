@@ -21,15 +21,17 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
     <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/page/Detalles.js}"></script>
     
     <title>Consulta de Movimientos</title>
     <script th:inline="javascript">
       console.log([[${Model}]]);
+      var bsfOp= [[${bsfOperador}]];
     </script>
 </head>
 <body>
 <form id="formMasDetalles" method="POST" th:action="@{/detalles}" class="hidden">
-    <input id="bsfoperador" name="bsfoperador"/>
+    <input id="bsfOperador" name="bsfOperador"/>
     <input id="idIntPM" name="idIntPM"/>
     <input id="titulo" name="titulo"/>
     <input id="identificacionPM" name="identificacionPM"/>
@@ -104,6 +106,12 @@
 		===========================================================================================
 		-->
 		<th:block th:if="${Model.tipoDetalle} eq 'em'" th:include="fragments/origen :: emision"></th:block>
+		<!--
+		===========================================================================================
+										Consulta más del apunte
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'mAp'" th:include="fragments/masApunte :: masApunte"></th:block>
     </div>
     <div class="next-btn nav-btn" style="position: absolute;top: 50%;left: 96%">
 		<div>

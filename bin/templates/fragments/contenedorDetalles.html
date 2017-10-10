@@ -69,7 +69,7 @@
             	<div class="col-md-2 col-xs-2">
             		<label class="form-control vertical-align">N&uacute;mero: </label>
             	</div>
-            	<div class="col-md-1 col-xs-1">
+            	<div class="col-md-2 col-xs-2">
             		<input class="form-control" th:value="${Model.numero}" readonly="readonly"/>
             	</div>
             </div>
@@ -133,13 +133,13 @@
             		<label class="form-control vertical-align">Tipo Operaci&oacute;n: </label>
             	</div>
             	<div class="col-md-2 col-xs-2">
-            		<input class="form-control" value="360001" readonly="readonly" />
+            		<input class="form-control" th:value="${Model.tipoOperacion}" readonly="readonly" />
             	</div>
             	<div class="col-md-1 col-xs-1 entre-inputs">
             		<label class="form-control vertical-align">: </label>
             	</div>
             	<div class="col-md-3 col-xs-3">
-            		<input class="form-control" value="LIQUIDACION CUENTAS VISTAS" readonly="readonly"/>
+            		<input class="form-control" th:value="${Model.conceptoCorto}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -148,7 +148,7 @@
             		<label class="form-control vertical-align">Concepto: </label>
             	</div>
             	<div class="col-md-3 col-xs-3">
-            		<input class="form-control" value="LIQ. CTA. VISTAS 0034873" readonly="readonly" />
+            		<input class="form-control" th:value="${Model.concepto}" readonly="readonly" />
             	</div>
             </div>
         </div>
@@ -158,13 +158,39 @@
         		<button class="btn btn-default detalle-apunte">Salir</button>
         	</div>
         	<div class="col-md-3 col-xs-3 text-center">
-        		<button class="btn btn-default detalle-apunte">Auditor&iacute;a</button>
+	        	<form id="formAuditoria" name="formAuditoria" th:object="${Model}" class="hidden" method="POST" th:action="@{/auditoria}">
+	        		<input id="bsfOperadorAuditoria" name="bsfOperadorAuditoria"/>
+	        		<input th:field="*{idTipoCuenta}"/>
+	        		<input th:field="*{numAcuerdo}"/>
+	        		<input th:field="*{numero}"/>
+	        	</form>
+        		<button class="btn btn-default detalle-apunte" onclick="auditoria();">Auditor&iacute;a</button>
         	</div>
         	<div class="col-md-3 col-xs-3 text-center">
-        		<button class="btn btn-default detalle-apunte">M&aacute;s</button>
+        		<form id="formMasApunte" name="formMasApunte" th:object="${Model}" method="POST" th:action="@{/masApunte}">
+	        		<input id="bsfOperadorAuditoria" name="bsfOperadorAuditoria" class="hidden" />
+	        		<input th:field="*{titular}" class="hidden" />
+	        		<input th:field="*{prodVendible}" class="hidden" />
+	        		<input th:field="*{idTipoCuenta}" class="hidden" />
+	        		<input th:field="*{tipoCuenta}" class="hidden" />
+	        		<input th:field="*{moneda}" class="hidden" />
+	        		<input th:field="*{numero}" class="hidden" />
+	        		<input th:field="*{idOrigen}" class="hidden" />
+	        		<input th:field="*{conceptoCorto}" class="hidden" />
+	        		<button class="btn btn-default detalle-apunte" type="submit">M&aacute;s</button>
+	        	</form>
+        		
         	</div>
         	<div class="col-md-3 col-xs-3 text-right">
-        		<button class="btn btn-default detalle-apunte">Origen</button>
+        		<form id="formOrigen" name="formOrigen" th:object="${Model}" class="hidden" method="POST" th:action="@{/origen}">
+	        		<input id="bsfOperadorOrigen" name="bsfOperadorOrigen"/>
+	        		<input th:field="*{idTipoCuenta}"/>
+	        		<input th:field="*{numAcuerdo}"/>
+	        		<input th:field="*{numero}"/>
+	        		<input th:field="*{concepto}"/>
+	        		<input th:field="*{idOrigen}" class="hidden" />
+	        	</form>
+        		<button class="btn btn-default detalle-apunte" onclick="origen();">Origen</button>
         	</div>
         </div>
         <br/>
