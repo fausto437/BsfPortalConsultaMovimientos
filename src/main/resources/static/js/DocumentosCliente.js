@@ -10,7 +10,6 @@ $(document).ready(function()
     $("#txtCodigoPostal").focusout(function (){
         GetLocalidad()
     });
-    //GetLocalidad()
 })
 
 
@@ -107,14 +106,11 @@ function editar(divEditar){
 	var general = $(divEditar);
 	var descripcion = general.find("input");
 	var tipo = general.find("select");
-	console.log(descripcion.val());
-	console.log(tipo.val());
 };
 
 function borrar(divGeneral, idDocumento){
 	$(divGeneral).hide();
 	this.lstBorrados.push(idDocumento);
-	console.log(this.lstBorrados);
 };
 
 function PlantillaAccionista(TitleOption,TitleInput)

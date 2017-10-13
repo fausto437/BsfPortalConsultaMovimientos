@@ -5,11 +5,14 @@ import mx.gob.bansefi.dto.DetalleConsultaDTO;
 import mx.gob.bansefi.dto.GralApunteDTO;
 import mx.gob.bansefi.dto.GralBloqueoDTO;
 import mx.gob.bansefi.dto.GralRetencionDTO;
+import mx.gob.bansefi.dto.LiquidacionDTO;
 import mx.gob.bansefi.dto.SituacionApunteDTO;
 import mx.gob.bansefi.dto.Response.ResConsultaAnotacionDetalleDTO;
 import mx.gob.bansefi.dto.Response.ResConsultaApunteDetalleDTO;
 import mx.gob.bansefi.dto.Response.ResConsultaAuditoriaDTO;
 import mx.gob.bansefi.dto.Response.ResConsultaAuditoriaDetalleDTO;
+import mx.gob.bansefi.dto.Response.ResConsultaEmisionDTO;
+import mx.gob.bansefi.dto.Response.ResConsultaLiquidacionDTO;
 import mx.gob.bansefi.services.WsServicios;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,11 +49,11 @@ public class SetConsultaDetallesProccess {
 		detalles.setMoneda(detalleApunte.getMoneda());
 		detalles.setTipoOperacion(detalleApunte.getTipoOperacion());
 		detalles.setConcepto(detalleApunte.getConcepto());
-		detalles.setConceptoCorto(detalleApunte.getConcepto().replaceAll("[0-9]", ""));
+		detalles.setConceptoCorto(detalleApunte.getConcepto()==null?"":detalleApunte.getConcepto().replaceAll("[0-9]", ""));
 		try {
 			detalles.setImporte(""+df.parse(detalleApunte.getImporte()));
 		} catch (ParseException e) {
-			detalles.setImporte("0.00");
+			detalles.setImporte("");
 			e.printStackTrace();
 		}
 		
@@ -206,6 +209,96 @@ public class SetConsultaDetallesProccess {
 		detalles.setNombreAutorizador(res.getNombreAutorizador());
 		detalles.setCodCentro(res.getCodigoCentro());
 		detalles.setNombEnt(res.getNombEnt());
+		
+		return detalles;
+	}
+
+	public DetalleConsultaDTO SetConsultaLiquidacion(ResConsultaLiquidacionDTO res) {
+		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+		detalles.setTipoDetalle("li");
+		detalles.setTitulo("de liquidación");
+		detalles.setFechaLiquidacion(res.getFechaLiquidacion());
+		detalles.setNumAcuerdo(res.getAcuerdo());
+		detalles.setFechaDesde(res.getFechaDesde());
+		detalles.setFechaHasta(res.getFechaHasta());
+		detalles.setSituacion(res.getSituacion());
+		detalles.setFechaUltimoCobro(res.getFechaUltimoCobro());
+		detalles.setCodigoOperacionLiquidacion(res.getCodigoOperacionLiquidacion());
+		detalles.setMoneda(res.getMoneda());
+		
+		try {
+			detalles.setImporteTotal(""+df.parse(res.getImporteTotal()));
+		} catch (ParseException e) {
+			detalles.setImporteTotal("");
+			e.printStackTrace();
+		}
+		try {
+			detalles.setImportePendiente(""+df.parse(res.getImportePendiente()));
+		} catch (ParseException e) {
+			detalles.setImportePendiente("");
+			e.printStackTrace();
+		}
+		ArrayList<LiquidacionDTO> nuevaLista = new ArrayList<LiquidacionDTO>();
+		for(LiquidacionDTO liq :res.getLiquidaciones()) {
+			LiquidacionDTO nuevaLiq= new LiquidacionDTO();
+			try {
+				nuevaLiq.setImporteFacturado(""+df.parse(liq.getImporteFacturado()));
+			} catch (ParseException e) {
+				nuevaLiq.setImporteFacturado("");
+				e.printStackTrace();
+			}
+			try {
+				nuevaLiq.setImportePendiente(""+df.parse(liq.getImportePendiente()));
+			} catch (ParseException e) {
+				nuevaLiq.setImportePendiente("");
+				e.printStackTrace();
+			}
+			try {
+				nuevaLiq.setImporteCondonado(""+df.parse(liq.getImporteCondonado()));
+			} catch (ParseException e) {
+				nuevaLiq.setImporteCondonado("");
+				e.printStackTrace();
+			}
+			try {
+				nuevaLiq.setImporteAjustado(""+df.parse(liq.getImporteAjustado()));
+			} catch (ParseException e) {
+				nuevaLiq.setImporteAjustado("");
+				e.printStackTrace();
+			}
+			nuevaLiq.setCodigoOrigen(liq.getCodigoOrigen());
+			nuevaLista.add(nuevaLiq);
+		}
+		detalles.setLiquidaciones(nuevaLista);
+		return detalles;
+	}
+
+	public DetalleConsultaDTO SetConsultaEmision(ResConsultaEmisionDTO res) {
+		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
+		detalles.setTipoDetalle("em");
+		detalles.setTitulo("Emisión de cheque");
+		detalles.setTipoTalonario(res.getTipoTalonario());
+		detalles.setNumeroTalonario(res.getNumeroTalonario());
+		detalles.setNombre(res.getNombre());
+		detalles.setNumeroCheque(res.getNumeroCheque());
+		detalles.setCodigoCaja(res.getCodigoCaja());
+		detalles.setConforma(res.getConforma());
+		detalles.setDisposicion(res.getDisposicion());
+		try {
+			detalles.setPagoCheque(""+df.parse(res.getPagoCheque()));
+		} catch (ParseException e) {
+			detalles.setPagoCheque("");
+			e.printStackTrace();
+		}
+		try {
+			detalles.setPagoPendiente(""+df.parse(res.getPagoPendiente()));
+		} catch (ParseException e) {
+			detalles.setPagoPendiente("");
+			e.printStackTrace();
+		}
+		detalles.setCentro(res.getCentro());
+		detalles.setNumAcuerdo(res.getAcuerdo());
+		detalles.setEstado(res.getEstado());
+		detalles.setSituacionPago(res.getSituacionPago());
 		
 		return detalles;
 	}

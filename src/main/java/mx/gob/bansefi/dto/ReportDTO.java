@@ -17,7 +17,7 @@ public class ReportDTO{
 	@Getter @Setter
 	private String plaza;
 	@Getter @Setter
-	private String numcuenta;
+	private String numacuerdo;
 	@Getter @Setter
 	private String titular;
 	@Getter @Setter

@@ -41,6 +41,10 @@ public class WsServicios {
 	private String urlConsultaAuditoria;
 	@Value("${url.ConsultaAuditoriaDetalles}")
 	private String urlConsultaAuditoriaDetalles;
+	@Value("${url.ConsultaLiquidacion}")
+	private String urlConsultaLiquidacion;
+	@Value("${url.ConsultaEmision}")
+	private String urlConsultaEmision;
 
 	/*
 	 * Definicion de variables mensajes de servicios
@@ -214,6 +218,42 @@ public class WsServicios {
 		catch(Exception ex)
 		{
 			log.error("\nError en el metodo consultaAuditoriaDetalles(ReqConsultaAuditoriaDetallesDTO Request)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+
+	/*CONSULTA DE LIQUIDACION*/
+	public ResConsultaLiquidacionDTO consultaLiquidacion(ReqConsultaLiquidacionDTO Request) {
+		Util util = Util.getInstance();
+		ResConsultaLiquidacionDTO Datos = new ResConsultaLiquidacionDTO();
+		try
+		{
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaLiquidacion);
+			Datos=(ResConsultaLiquidacionDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo consultaLiquidacion(ReqConsultaLiquidacionDTO Request)"
+					+ "\nException Message: " + ex.getMessage());
+
+		}
+		return Datos;
+	}
+
+	/*CONSULTA DE EMISION*/
+	public ResConsultaEmisionDTO consultaEmision(ReqConsultaEmisionDTO Request) {
+		Util util = Util.getInstance();
+		ResConsultaEmisionDTO Datos = new ResConsultaEmisionDTO();
+		try
+		{
+			String jsonRepuesta= util.callRestPost(Request,urlRootContext + urlConsultaEmision);
+			Datos=(ResConsultaEmisionDTO)util.jsonToObject(Datos,jsonRepuesta);
+		}
+		catch(Exception ex)
+		{
+			log.error("\nError en el metodo consultaEmision(ReqConsultaEmisionDTO req)"
 					+ "\nException Message: " + ex.getMessage());
 
 		}

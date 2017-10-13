@@ -25,6 +25,10 @@ public class BsfOperadorGenericDTO {
     @Getter @Setter
     private String PASSTCB;
     @Getter @Setter
+    private String NOMBREEMPLEADO;
+    @Getter @Setter
+    private String NOMBRECENTRO;
+    @Getter @Setter
     private TransportDTO TRANSPORT;
 
 }

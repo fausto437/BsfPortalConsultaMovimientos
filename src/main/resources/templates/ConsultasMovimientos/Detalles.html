@@ -113,11 +113,7 @@
 		-->
 		<th:block th:if="${Model.tipoDetalle} eq 'mAp'" th:include="fragments/masApunte :: masApunte"></th:block>
     </div>
-    <div class="next-btn nav-btn" style="position: absolute;top: 50%;left: 96%">
-		<div>
-			<button onclick="alert('test');" type="button" id="next1" class="next-step botonimagen"></button>
-		</div>
-	</div>
 </div>
+<th:block th:include="fragments/nav :: nav"></th:block>
 </body>
 </html>

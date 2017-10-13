@@ -14,5 +14,5 @@ public class ReqConsultaDocumento {
     @Setter @Getter
     private String tipo_documento;
     @Setter @Getter
-    private String id_interno_pe;
+    private int id_interno_pe;
 }

@@ -13,7 +13,6 @@ $(document).ready(function () {
 
 //Funcion para abrir el detalle del registro seleccionado
 function detalleConsulta(num, desc, codAnt, codSubAnt, tipo){
-	console.log(desc);
 	$("#numAnotacion").val(num);
 	$("#desc").val(desc);
 	$("#codAnt").val(codAnt);
@@ -24,7 +23,6 @@ function detalleConsulta(num, desc, codAnt, codSubAnt, tipo){
 
 //Funcion para continuar con el flujo de la consulta de movimientos
 function continuar(){
-	console.log(lstAnotaciones);
 	$("#lstAnotaciones").val(JSON.stringify(lstAnotaciones))
 	$("#formContinuar").submit();
 }

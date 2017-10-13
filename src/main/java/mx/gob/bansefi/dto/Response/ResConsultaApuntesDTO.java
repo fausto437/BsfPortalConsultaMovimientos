@@ -19,5 +19,9 @@ public class ResConsultaApuntesDTO{
 	@Getter @Setter
 	private String cantidad;
 	@Getter @Setter
+	private String fechaOperacion;
+	@Getter @Setter
+	private String horaOperacion;
+	@Getter @Setter
 	private ArrayList<GralApunteDTO> lista;
 }

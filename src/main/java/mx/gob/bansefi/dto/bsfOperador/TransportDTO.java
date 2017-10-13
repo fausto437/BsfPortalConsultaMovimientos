@@ -12,6 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TransportDTO {
 	@Getter	@Setter
+	private String ACUERDO;
+	@Getter	@Setter
 	private String ACTIONBACK;
 	@Getter	@Setter
 	private String TITULO;
@@ -20,7 +22,7 @@ public class TransportDTO {
 	@Getter	@Setter
 	private String TARGET;
 	@Getter	@Setter
-	private DatosTransportDTO IDINTERNOPE;
+	private String IDINTERNOPE;
 	@Getter	@Setter
 	private String MenuDinamico;
 	@Getter	@Setter
@@ -29,4 +31,6 @@ public class TransportDTO {
 	private String MESSAGE;
 	@Getter	@Setter
 	private String STATUS;
+	@Getter	@Setter
+	private String DATOSANTERIORES;
 }

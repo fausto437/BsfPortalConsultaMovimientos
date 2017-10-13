@@ -6,13 +6,16 @@
 </head>
 <body>
 	<div th:fragment="liquidacion">
-<div class="contenedor-campos">
+	<script th:inline="javascript">
+		console.log([[${datos}]]);
+	</script>
+		<div class="contenedor-campos">
     		<div class="row">
             	<div class="col-md-2 col-xs-2">
 	            	<label class="form-control vertical-align">Titular de la cuenta: </label>
             	</div>
             	<div class="col-md-10 col-xs-10">
-	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+	            	<input class="form-control" th:value="${datos.titular}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -21,8 +24,8 @@
             	<div class="col-md-2 col-xs-2">
 	            	<label class="form-control vertical-align">Prod. Vendible: </label>
             	</div>
-            	<div class="col-md-2 col-xs-2">
-	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	<div class="col-md-3 col-xs-3">
+	            	<input class="form-control" th:value="${datos.prodVendible}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -31,7 +34,7 @@
             		<label class="form-control vertical-align">Moneda: </label>
             	</div>
             	<div class="col-md-2 col-xs-2">
-            		<input class="form-control" th:value="${Model.idTipoBloqueo}" readonly="readonly"/>
+            		<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -49,7 +52,7 @@
             		<label class="form-control vertical-align">Situaci&oacute;n: </label>
             	</div>
             	<div class="col-md-2 col-xs-2">
-					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+					<input class="form-control" th:value="${Model.situacion}" readonly="readonly"/>
 	            </div>
 	            <div class="col-md-2 col-xs-2">
             		<label class="form-control vertical-align">Tipo real: </label>
@@ -73,10 +76,10 @@
 	                        </tr>
                         </thead>
                         <tbody>
-	                        <tr th:each="sit : ${Model.sitApunte}">
-	                            <td th:text="${sit.indicador}"></td>
-	                            <td th:text="${sit.situacion}"></td>
-	                            <td th:text="${sit.situacion}"></td>
+	                        <tr th:each="liq : ${Model.liquidaciones}">
+	                            <td th:text="${liq.codigoOrigen}"></td>
+	                            <td th:text="${liq.importeFacturado}"></td>
+	                            <td th:text="${liq.importePendiente}"></td>
 	                        </tr>
                         </tbody>
                     </table>
@@ -89,13 +92,13 @@
             		<label class="form-control vertical-align">Neto Operaci&oacute;n: </label>
             	</div>
             	<div class="col-md-2 col-xs-2">
-					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+					<input class="form-control" th:value="${Model.importeTotal}" readonly="readonly"/>
 	            </div>
 	            <div class="col-md-2 col-xs-2">
             		<label class="form-control vertical-align">Pendiente: </label>
             	</div>
 	            <div class="col-md-2 col-xs-2">
-					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+					<input class="form-control" th:value="${Model.importePendiente}" readonly="readonly"/>
 	            </div>
             </div>
             <br/>
@@ -108,7 +111,7 @@
     	<br/>
     	<div class="row">
         	<div class="col-md-12 col-xs-12 text-center">
-        		<button class="btn btn-default detalle-apunte">Salir</button>
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-2);">Salir</button>
         	</div>
         </div>
         <br/>
@@ -120,10 +123,10 @@
 	            	<label class="form-control vertical-align">Cheque: </label>
             	</div>
             	<div class="col-md-1 col-xs-1">
-	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+	            	<input class="form-control" th:value="${Model.numeroCheque}" readonly="readonly"/>
             	</div>
             	<div class="col-md-2 col-xs-2">
-	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+	            	<input class="form-control" th:value="${Model.numeroCheque}" readonly="readonly"/>
             	</div>
             	<div class="col-md-1 col-xs-1">
 	            	<label class="form-control vertical-align">Acuerdo: </label>
@@ -135,7 +138,7 @@
 	            	<label class="form-control vertical-align">Conforma: </label>
             	</div>
             	<div class="col-md-1 col-xs-1">
-	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+	            	<input class="form-control" th:value="${Model.conforma}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -144,7 +147,7 @@
 	            	<label class="form-control vertical-align">Tituar: </label>
             	</div>
             	<div class="col-md-8 col-xs-8">
-	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+	            	<input class="form-control" th:value="${datos.titular}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -155,13 +158,13 @@
 			            	<label class="form-control vertical-align">Tipo talonario: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.tipoTalonario}" readonly="readonly"/>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
 			            	<label class="form-control vertical-align">Disposici&oacute;n: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.disposicion}" readonly="readonly"/>
 		            	</div>
 		            </div>
 		            <br/>
@@ -170,13 +173,13 @@
 			            	<label class="form-control vertical-align">Importe cheque: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.pagoCheque}" readonly="readonly"/>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
 			            	<label class="form-control vertical-align">Importe pendiente: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.pagoPendiente}" readonly="readonly"/>
 		            	</div>
 		            </div>
 		            <br/>
@@ -185,28 +188,28 @@
 			            	<label class="form-control vertical-align">N&uacute;mero Talonario: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.numeroTalonario}" readonly="readonly"/>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
 			            	<label class="form-control vertical-align">Fecha de Caducidad: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.fechaDesde}" readonly="readonly"/>
 		            	</div>
 		            </div>
 		            <br/>
 		            <div class="row">
 		            	<div class="col-md-3 col-xs-3">
-			            	<label class="form-control vertical-align">Acuerdo: </label>
+			            	<label class="form-control vertical-align">Acuerdo Cargo: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.fecha}" readonly="readonly"/>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<label class="form-control vertical-align">Cargo: </label>
+			            	<label class="form-control vertical-align">Centro: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
 		            	</div>
 		            </div>
             	</div>
@@ -218,7 +221,7 @@
 	            		</div>
 	            		<div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+				            	<input class="" type="radio" value="0" th:field="${Model.situacionPago}" readonly="readonly"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">No pagado</label>
@@ -226,7 +229,7 @@
 			            </div>
 			            <div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+				            	<input class="" type="radio" value="1" th:field="${Model.situacionPago}" readonly="readonly"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">Total</label>
@@ -234,7 +237,7 @@
 			            </div>
 			            <div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+				            	<input class="" type="radio" value="2" th:field="${Model.situacionPago}" readonly="readonly"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">Parcial</label>
@@ -242,7 +245,7 @@
 			            </div>
 			            <div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+				            	<input class="" type="radio" value="3" th:field="${Model.situacionPago}" readonly="readonly"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">Duplicado</label>
@@ -257,7 +260,7 @@
             		<label class="form-control vertical-align">Estado: </label>
             	</div>
             	<div class="col-md-2 col-xs-2">
-					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+					<input class="form-control" th:value="${Model.estado}" readonly="readonly"/>
 	            </div>
             </div>
             <br/>
@@ -269,7 +272,7 @@
     	<br/>
     	<div class="row">
         	<div class="col-md-12 col-xs-12 text-center">
-        		<button class="btn btn-default detalle-apunte">Salir</button>
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-2);">Salir</button>
         	</div>
         </div>
         <br/>

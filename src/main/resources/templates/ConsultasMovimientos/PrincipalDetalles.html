@@ -52,7 +52,6 @@
         	<div th:if="${tipo} eq 1">
         		<th:block th:include="ConsultasMovimientos/Detalles :: anotacion"></th:block>
         	</div>
-            <div id="fadeRet" class="black_overlay"></div>
             <br/>
         </div>
     </div>
@@ -63,5 +62,6 @@
         </li>
     </ul>
 </div>
+<th:block th:include="fragments/nav :: nav"></th:block>
 </body>
 </html>

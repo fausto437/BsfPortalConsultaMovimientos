@@ -20,12 +20,15 @@
     <script th:src="@{/js/jquery.mask.js}"></script>
     <script th:src="@{/js/BuscadorApuntes.js}"></script>
     <script th:src="@{/js/Validaciones.js}"></script>
+    <script th:src="@{/js/funcionesGenerales.js}"></script>
     <title>Consulta de Movimientos</title>
 </head>
 <body>
 <script th:inline="javascript">
 	var verificaDigitalizacion =[[${Model.verificaDigitalizacion}]];
 	console.log([[${Model}]]);
+	var numeroAcuerdo= [[${Model.numAcuerdo}]];
+	var relacionDoc = [[${Model.relacionDoc}]];
     </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
     
@@ -34,9 +37,9 @@
         <div class="contenedor">
             <div class="contenedor-form">
                 <div class="titulo centrar-objeto btn-inline-set">
-                    <button id="breadcum"
+                    <button id="breadcumSpecial"
                             class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
-                            onclick="regresarMenuFrecuente();" type="submit" role="button" aria-disabled="false">
+                            type="submit" role="button" aria-disabled="false">
                         <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
                         <span class="ui-button-text ui-c">ui-button</span></button>
                     <div>
@@ -44,8 +47,13 @@
                     </div>
                 </div>
                 <div class="contenedor-campos">
+                	<form id="formBuscarAcuerdo" name="formBuscarAcuerdo" class="hidden" method="POST" th:action="${urlActionFind}">
+					   	<input id="BSFOPERADOR" name="BSFOPERADOR"/>
+					</form>
                 	<form id="frmBusquedaMovimientosGral" method="POST" th:object="${Model}" th:action="@{/consultaGeneral}">
 	                	<input th:field="*{bsfoperador}" class="hidden"/>
+	                	<input th:field="*{verificaDigitalizacion}" class="hidden"/>
+	                	<input id="relacion" name="relacion"  class="hidden"/>
 					    <input id="tipo" name="tipo" class="hidden"/>
 	                    <div id="formBusqueda" class="container">
 	                    	<div class="row-felx">
@@ -66,7 +74,7 @@
 	                    				</div>
 	                    				<div class="col-md-1 col-xs-1">
 	                    				<br/>
-		                    				<button type="button" class="btn btn-primary btn-circle btn-xs" id="btnBusquedas" onclick="getNombre();">
+		                    				<button type="button" class="btn btn-primary btn-circle btn-xs" id="btnBusquedas" onclick="buscarPersona();">
 				                            	<i class="fa fa-search fa-16" aria-hidden="true"></i><i class="fa fa-bars" aria-hidden="true"></i>
 					                        </button>
 	                    				</div>
@@ -97,7 +105,7 @@
 	                    					<label>Fecha</label>
 	                    					<div th:field="fechaDesde" 
 	                    						class="input-group date FechaCompleta" 
-	                    						data-provide="datepicker">
+	                    						data-provide="datepicker" data-date-end-date="0d">
 	                                            <input type="text" class="form-control" placeholder="DESDE"
 	                                            		th:field="*{fechaDesde}"/>
 	                                            <div class="input-group-addon">
@@ -109,9 +117,9 @@
 	                    					<br/>
 	                    					<div th:field="fechaHasta" 
 	                    						class="input-group date FechaCompleta" 
-	                    						data-provide="datepicker">
+	                    						data-provide="datepicker" data-date-end-date="0d">
 	                                            <input type="text" class="form-control" placeholder="HASTA"
-	                                            		th:field="*{fechaHasta}"/>
+	                                            		th:field="*{fechaHasta}" />
 	                                            <div class="input-group-addon">
 	                                                <span class="glyphicon glyphicon-th"></span>
 	                                            </div>
@@ -157,7 +165,7 @@
 					    <div id="digitalizar" class="hidden text-center" style="height:425px;">
 					    	<iframe id="ifrmModalDigitalizacion" name="ifrmModalDigitalizacion"
 					            style="border: 0; width: 100%; height: 100%;" padding="border-width: 10px;"></iframe>
-					            <button type="button" class="btn btn-danger pull-right" onclick="cancelarDigitalizacion();" style="display: inline-block;margin: 5% 0;">Cancelar</button>
+					            <!-- <button type="button" class="btn btn-danger pull-right" onclick="cancelarDigitalizacion();" style="display: inline-block;margin: 5% 0;">Cancelar</button> -->
 					    </div>
 	            	<form id="formDigita" name="formDigita" method="POST" th:action="${urlActionBack}" target="ifrmModalDigitalizacion">
 					   	<input type="hidden" id="TRANSPORT" name="TRANSPORT" value=""/>
@@ -167,5 +175,6 @@
             </div>
         </div>
     </div>
+    <th:block th:include="fragments/nav :: nav"></th:block>
 </body>
 </html>

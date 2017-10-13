@@ -17,7 +17,5 @@ public class ReqAltaRelacionDocumento {
     @Setter @Getter
     private String IdTipoOperacion;
     @Setter @Getter
-    private int IdOperacion;
-    @Setter @Getter
-    private String IdDocumentoTCB;
+    private String IdOperacion;
 }

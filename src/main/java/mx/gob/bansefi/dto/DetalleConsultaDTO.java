@@ -1,5 +1,6 @@
 package mx.gob.bansefi.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -130,6 +131,44 @@ public class DetalleConsultaDTO {
 	private String codTransaccion;
 	@Getter	@Setter
 	private String descTransaccion;
-	
-	
+	//DATOS DE LIQUIDACIÓN
+	@Getter	@Setter
+	private String fechaLiquidacion;
+	@Getter	@Setter
+	private String fechaDesde;
+	@Getter	@Setter
+	private String fechaHasta;
+	@Getter	@Setter
+	private String fechaUltimoCobro;
+	@Getter	@Setter
+	private String codigoOperacionLiquidacion;
+	@Getter	@Setter
+	private String importeTotal;
+	@Getter	@Setter
+	private String importePendiente;
+	@Getter	@Setter
+	private ArrayList<LiquidacionDTO> liquidaciones;
+	//DATOS DE EMISION
+	@Getter	@Setter
+	private String tipoTalonario;
+	@Getter	@Setter
+	private String numeroTalonario;
+	@Getter	@Setter
+	private String nombre;
+	@Getter	@Setter
+	private String numeroCheque;
+	@Getter	@Setter
+	private String codigoCaja;
+	@Getter	@Setter
+	private String conforma;
+	@Getter	@Setter
+	private String disposicion;
+	@Getter	@Setter
+	private String pagoCheque;
+	@Getter	@Setter
+	private String pagoPendiente;
+	@Getter	@Setter
+	private String estado;
+	@Getter	@Setter
+	private String situacionPago;
 }

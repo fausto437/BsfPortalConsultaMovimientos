@@ -230,3 +230,35 @@ function CargaComboRestringido(Combo, nomCatalago,Valor){
         console.log("Ocurri&#243; un error: loadAll: " +err.message);
     }
 }
+
+function CargaComboLimitado(Combo, nomCatalago,Valor){
+	var limites=["51","52","54","58","59","60","64","65","66","67","68","69","70"];
+    try {
+        var active = dataBase.result;
+        var data = active.transaction([nomCatalago], "readonly");
+        var object = data.objectStore(nomCatalago);
+        var elements = [];
+        object.openCursor().onsuccess = function (e) {
+            var result = e.target.result;
+            if (result === null) {
+                return;
+            }
+            elements.push(result.value);
+            result.continue();
+        };
+        data.oncomplete = function () {
+            Combo.append('<option value="Null">SELECCIONE UN VALOR</option>');
+            for (var key in elements) {
+            	if(limites.includes(elements[key].identificador)){
+                    if(Valor==elements[key].identificador)
+                        Combo.append('<option value="'+elements[key].identificador+'" selected>'+elements[key].descripcion +'</option>');
+                    else
+                        Combo.append('<option value="'+elements[key].identificador+'">'+elements[key].descripcion +'</option>');
+            	}
+            }
+            active.close();
+        };
+    } catch(err) {
+        console.log("Ocurri&#243; un error: loadAll: " +err.message);
+    }
+}

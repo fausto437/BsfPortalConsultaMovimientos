@@ -35,4 +35,6 @@ public class BusquedaDTO {
 	private String formato;
 	@Getter @Setter
 	private String verificaDigitalizacion;
+	@Getter @Setter
+	private AltaDocumentoTCBDTO relacionDoc;
 }

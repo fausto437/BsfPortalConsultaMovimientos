@@ -47,9 +47,6 @@ function detalleConsulta(info, tipo){
 	var valido=false;
 	switch(tipo){
 		case 'a':{
-			console.log("anotacion");
-			$("#bsfoperador").val("bla");
-			$("#numAnotacion").val("bla2");
 			$("#tipo").val(tipo);
 			valido=true;
 		}break;
@@ -68,7 +65,6 @@ function detalleConsulta(info, tipo){
 			}
 		}break;
 		case 'ap':{
-			console.log(lstApuntes[actual]);
 			if($("#tblApuntes").find(".seleccionado").length>0){
 				var str = JSON.stringify(lstApuntes[actual]);
 				$("#row").val(str);
@@ -190,7 +186,7 @@ function cargaRow(tipo){
 				$("#listaBloqueos").append(StrHtml);
 			}
 			else{
-				alert("No hay más registros");
+				msjAlerta("No hay más registros para mostrar.");
 			}
 			break;
 		}
@@ -222,7 +218,7 @@ function cargaRow(tipo){
 				$("#listaRetenciones").append(StrHtml);
 			}
 			else{
-				alert("No hay más registros");
+				msjAlerta("No hay más registros para mostrar.");
 			}
 			break;
 		}
@@ -233,7 +229,9 @@ function cargaRow(tipo){
 function OnSuccess(response){
 	loading.modal('hide');
 	if(response.apuntes!=null){
-		lstApuntes=lstApuntes.concat(response.apuntes);
+		lstApuntes=response.apuntes;
+		contApuntes=0;
+		$("#listaApuntes tr").remove();
 		cargaRow("ap");
 	}
 	else if(response.bloqueos!=null){
@@ -247,7 +245,6 @@ function OnSuccess(response){
 	else{
 		msjAlerta("No hay más registros para mostrar.");
 	}
-	console.log(response);
 }
 
 //Funcion para pintar la ventana de mensaje emergente.
@@ -262,7 +259,32 @@ function msjAlerta(text) {
   });
 }
 
+//Función para imprimir el reporte.
 function imprimirReporte(){
-	$("#lista").val(JSON.stringify(lstApuntesImpresion));
-	$("#imprimirReporteForm").submit();
+	var obj={
+			"lista":JSON.stringify(lstApuntesImpresion),
+			"numAcuerdo":$("#acuerdo").val(),
+			"titCuenta":$("#titular").val(),
+			"fechaDesde":$("#fechaDesde").val(),
+			"fechaHasta":$("#fechaHasta").val()
+	}
+	$.ajax({
+	      type: "POST",
+	      url: window.location.protocol + "//" + window.location.host + "/" + nomPath + "imprimir",
+	      beforeSend : function() {
+			    loading.modal('show');
+			},
+	      data: obj,
+	      success: function(data){
+	    	  loading.modal('hide');
+              bootbox.alert({
+                  size: "large",
+                  message: '<iframe src="data:application/pdf;base64,' + data + '" style="width:100%;height:100%" seamless=""></iframe>',
+                  className: "alertDoc"
+              });
+	      },
+	      failure: function (response) {
+	          bootbox.alert("Fallo: " + response);
+	      }
+	  });
 }

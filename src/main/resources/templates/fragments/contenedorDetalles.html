@@ -155,7 +155,7 @@
         <br/>
         <div class="row">
         	<div class="col-md-3 col-xs-3">
-        		<button class="btn btn-default detalle-apunte">Salir</button>
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
         	</div>
         	<div class="col-md-3 col-xs-3 text-center">
 	        	<form id="formAuditoria" name="formAuditoria" th:object="${Model}" class="hidden" method="POST" th:action="@{/auditoria}">
@@ -188,6 +188,9 @@
 	        		<input th:field="*{numAcuerdo}"/>
 	        		<input th:field="*{numero}"/>
 	        		<input th:field="*{concepto}"/>
+	        		<input th:field="*{titular}"/>
+	        		<input th:field="*{prodVendible}"/>
+	        		
 	        		<input th:field="*{idOrigen}" class="hidden" />
 	        	</form>
         		<button class="btn btn-default detalle-apunte" onclick="origen();">Origen</button>
