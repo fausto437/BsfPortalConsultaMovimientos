@@ -34,6 +34,8 @@
     <input id="codAnt" name="codAnt"/>
     <input id="desc" name="desc"/>
     <input id="codSubAnt" name="codSubAnt"/>
+    <input id="subcodigo" name="subcodigo"/>
+    <input id="area" name="area"/>
     <input id="tipo" name="tipo"/>
 </form>
 	<div class="container_48">
@@ -72,7 +74,9 @@
 	                        </thead>
 	                        <tbody>
 		                        <tr th:each="anotaciones,iterationStatus : ${Model.anotaciones}" 
-		                        th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.anotacion} + '\',\'' + ${anotaciones.descripcion} + '\',\'' + ${anotaciones.codAnt} + '\',\'' + ${anotaciones.codSubAnt} + '\',\'a\' );'">
+		                        th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.anotacion} + '\',\'' + ${anotaciones.descripcion}
+		                        			+ '\',\'' + ${anotaciones.textSubAnt}+ '\',\'' + ${anotaciones.area}  
+		                        			+ '\',\'' + ${anotaciones.codAnt} + '\',\'' + ${anotaciones.codSubAnt} + '\',\'a\' );'">
 		                            <td th:text="${anotaciones.anotacion}"></td>
 		                            <td th:text="${anotaciones.descripcion}"></td>
 		                            <td th:text="${anotaciones.tipoAnotacion}"></td>

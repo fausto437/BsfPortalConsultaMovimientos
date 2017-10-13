@@ -30,8 +30,6 @@ import mx.gob.bansefi.services.SecurityWS;
 import mx.gob.bansefi.services.WsServicios;
 import mx.gob.bansefi.utils.Util;
 import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -39,6 +37,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -134,7 +133,7 @@ public class ConsultasController {
         }
     }
     
-    //PANTALLA PRINCIPAL DE BUSQUEDA DESPU…S DE LA DIGITALIZACI”N
+    //PANTALLA PRINCIPAL DE BUSQUEDA DESPU√âS DE LA DIGITALIZACI√ìN
     @RequestMapping(value = "/busquedaDig{idDoc}")
     public ModelAndView BusquedaDespuesDeDigitalizar(@RequestParam("TRANSPORT") String TRANSPORT) {
     	BusquedaDTO busquedaDatos = new BusquedaDTO();
@@ -149,8 +148,8 @@ public class ConsultasController {
 				ResEncryptORDecryptDTO datosDecrypt = securityWs.decrypt(new ReqEncryptORDecryptDTO(bsfOp.getBSFOPERADOR().getTRANSPORT().getIDINTERNOPE()));
 				
 				DatosEncryptDigitaliza datosDeDigitalizacion = (DatosEncryptDigitaliza) util.jsonToObject(new DatosEncryptDigitaliza(), datosDecrypt.getRespuesta());
-				//LOS DATOS PARA LA RELACION DEL DOCUMENTO SE GUARDAR¡N HASTA REALIZAR LA CONSULTA DE LAS TRANSACCIONES SE REALIZARA
-				//LA RELACI”N
+				//LOS DATOS PARA LA RELACION DEL DOCUMENTO SE GUARDAR√ÅN HASTA REALIZAR LA CONSULTA DE LAS TRANSACCIONES SE REALIZARA
+				//LA RELACI√ìN
 				datosRelacion.setCentro(bsfOp.getBSFOPERADOR().getCENTRO());
 				datosRelacion.setCodTipoDoc(""+datosDeDigitalizacion.getCodDoc());
 				datosRelacion.setDescDoc(datosDeDigitalizacion.getDescDoc());
@@ -363,7 +362,8 @@ public class ConsultasController {
     @RequestMapping(value = "/detalleAnotacion")
     public ModelAndView ConsultaDetalleAnotaciones(@RequestParam("bsfoperador") String bsfoperador,@RequestParam("titular") String titular, 
     		@RequestParam("numAnotacion") String numAnotacion, @RequestParam("tipo") String tipo, @RequestParam("numAcuerdo") String numAcuerdo,
-    		@RequestParam("codAnt") String codAnt, @RequestParam("codSubAnt") String codSubAnt, @RequestParam("desc") String descripcion) {
+    		@RequestParam("codAnt") String codAnt, @RequestParam("codSubAnt") String codSubAnt, @RequestParam("desc") String descripcion,
+    		@RequestParam("subcodigo") String subcodigo, @RequestParam("area") String area) {
     	
     	try {
     		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
@@ -384,6 +384,8 @@ public class ConsultasController {
     			detalles.setTipoDetalle(tipo);
             	detalles.setNumAcuerdo(numAcuerdo);
             	detalles.setDescripcion(descripcion);
+            	detalles.setArea(area);
+            	detalles.setSubcodigo(subcodigo);
     		}
         	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     	}
@@ -452,8 +454,8 @@ public class ConsultasController {
 	    		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
 	    		reqApuntes.setNumsec("0");
 	    		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
-	    		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
-	    		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+	    		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":DatosGenerales.getFechaDesde());
+	    		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":DatosGenerales.getFechaHasta());
 	    		reqApuntes.setAcceso("S");
 	    		reqApuntes.setImpsdo("0");
 	    		reqApuntes.setFormato(DatosGenerales.getFormato());
@@ -481,13 +483,13 @@ public class ConsultasController {
         		return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
         	}
     		
-		} catch (ParseException | net.minidev.json.parser.ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ModelAndView("error/500").addObject("msgError", "ERROR AL RECIBIR LOS DATOS");
 		}
     }
     
-    //CARGAR M¡S REGISTROS EN LAS TABLAS PRINCIPALES
+    //CARGAR M√ÅS REGISTROS EN LAS TABLAS PRINCIPALES
     @RequestMapping("/cargarRegistros")
     public ConsultaPrincipalDTO CargarRegistros(@RequestParam("cadenaDatos") String cadenaDatosGenerales,
     		@RequestParam("tipo") String tipo, @RequestParam("numsec") String numsec, @RequestParam("imp") String imp){
@@ -622,6 +624,7 @@ public class ConsultasController {
 					detalles= setDetalles.SetConsultaDetallesBloqueo(renglonBloqueo);
 					detalles.setTitular(titular);
     				detalles.setNumAcuerdo(acuerdo);
+    				detalles.setMotivo(renglonBloqueo.getMotivo());
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
@@ -743,13 +746,13 @@ public class ConsultasController {
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles);
     }
     
-    //PANTALLA PARA VERIFICAR M¡S DATOS DEL APUNTE 
+    //PANTALLA PARA VERIFICAR M√ÅS DATOS DEL APUNTE 
     @RequestMapping(value = "/masApunte")
     public ModelAndView ConsultaMasOrigen(@ModelAttribute("Model") DetalleConsultaDTO DatosConsulta) {
-    	if(DatosConsulta.getConcepto().contains("LIQ")) {
+    	if(DatosConsulta.getConceptoCorto().contains("LIQ")) {
     		DatosConsulta.setOriginadoPor("LIQUIDACION");
     	}
-    	if(DatosConsulta.getConcepto().contains("CHQ")) {
+    	if(DatosConsulta.getConceptoCorto().contains("CHQ")) {
     		DatosConsulta.setOriginadoPor("EMISION");
     	}
     	DatosConsulta.setTitulo(" ampliada de apunte");
@@ -801,10 +804,10 @@ public class ConsultasController {
             		req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
             		req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
             		String acuerdo= DatosConsulta.getIdOrigen();
-            		acuerdo=acuerdo.substring(acuerdo.lastIndexOf("-")+1, acuerdo.length());
-            		req.setAcuerdo(acuerdo);
+            		acuerdo=acuerdo.substring(acuerdo.lastIndexOf("    ")+1, acuerdo.length());
+            		req.setAcuerdo(acuerdo.trim());
             		String concepto = DatosConsulta.getConcepto();
-            		String codCaja = concepto.substring(concepto.indexOf(":")+1, concepto.indexOf("-")-1);
+            		String codCaja = concepto.substring(concepto.indexOf(":")+1, concepto.indexOf("-"));
             		req.setCodigoCaja(codCaja);
             		String numChq = concepto.substring(concepto.indexOf("-")+1, concepto.length());
             		req.setNumCheque(numChq);
@@ -813,6 +816,7 @@ public class ConsultasController {
             		ResConsultaEmisionDTO res = wsServicios.consultaEmision(req);
             		
             		detalles=setDetalles.SetConsultaEmision(res);
+            		detalles.setReqNumeroCheque(""+Integer.parseInt(numChq.trim()));
             		
             	}
     		}
@@ -825,7 +829,7 @@ public class ConsultasController {
     	return new ModelAndView(packageTemplates + "/Detalles").addObject("Model", detalles).addObject("datos", DatosConsulta);
     }
     
-    //M…TODO PARA GENERAR EL BSFOPERADOR QUE SE ENVIAR¡ AL M”DULO DE BUSQUEDA DE ACUERDO
+    //M√âTODO PARA GENERAR EL BSFOPERADOR QUE SE ENVIAR√Å AL M√ìDULO DE BUSQUEDA DE ACUERDO
     @RequestMapping(value = "/busquedaPersonaEncriptar", method = RequestMethod.POST)
     public ResEncryptORDecryptDTO encripcion(@ModelAttribute("obj") DatosEncryptDigitaliza datos) {
     	String url = urlLocalHost + context + "/";

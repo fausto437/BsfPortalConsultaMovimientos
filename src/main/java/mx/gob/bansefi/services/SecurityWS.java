@@ -93,7 +93,7 @@ public class SecurityWS {
 		return res;
 	}
 	
-	//MÉTODO DE DESENCRIPCIPON
+	//METODO DE DESENCRIPCIPON
 	public ResEncryptORDecryptDTO decrypt(ReqEncryptORDecryptDTO req) {
 		ResEncryptORDecryptDTO res = new ResEncryptORDecryptDTO ();
 		try {

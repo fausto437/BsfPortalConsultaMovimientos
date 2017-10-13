@@ -12,12 +12,14 @@ $(document).ready(function () {
 })
 
 //Funcion para abrir el detalle del registro seleccionado
-function detalleConsulta(num, desc, codAnt, codSubAnt, tipo){
+function detalleConsulta(num, desc, subcod, area, codAnt, codSubAnt, tipo){
 	$("#numAnotacion").val(num);
 	$("#desc").val(desc);
 	$("#codAnt").val(codAnt);
 	$("#codSubAnt").val(codSubAnt);
 	$("#tipo").val(tipo);
+	$("#subcodigo").val(subcod);
+	$("#area").val(area);
 	$("#formMostrarDetalle").submit();
 }
 

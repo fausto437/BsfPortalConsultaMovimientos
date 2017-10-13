@@ -25,4 +25,8 @@ public class GralAnotacionDTO {
     String codSubAnt;
     @Getter	@Setter
     String tipoAnotacion;
+    @Getter	@Setter
+    String textSubAnt;
+    @Getter	@Setter
+    String area;
 }

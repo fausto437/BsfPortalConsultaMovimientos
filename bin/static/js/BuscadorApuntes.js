@@ -5,7 +5,6 @@ var numId=false;
 var validId=false;
 var loading;
 $(document).ready(function(){
-	
 	nomPath = window.location.pathname;
     nomPath = nomPath.substring(1, nomPath.length);
     nomPath = nomPath.split("/", 1);
@@ -229,6 +228,8 @@ function mostrarOpcDigitalizar(element){
 
 //Funcion para realizar la busqueda del nombre del titular de la cuenta.
 function getNombre(){
+	verificaDigitalizacion=="0";
+	validId=false;
 	if($("#numAcuerdo").val().length<1){
 		numId=false;
 		msjAlerta("Verificar el número de cuenta");

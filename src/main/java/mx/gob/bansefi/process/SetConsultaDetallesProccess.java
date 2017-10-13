@@ -118,7 +118,7 @@ public class SetConsultaDetallesProccess {
     
     public DetalleConsultaDTO SetConsultaDetallesRetencion(GralRetencionDTO renglonRetencion) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-    	detalles.setTitulo("de Retenci髇");
+    	detalles.setTitulo("de Retenci贸n");
     	detalles.setCodEmpleado(renglonRetencion.getEmpleado());
     	detalles.setIdTipoRetencion(renglonRetencion.getTipo());
     	detalles.setTipoRetencion("");
@@ -157,7 +157,7 @@ public class SetConsultaDetallesProccess {
 	
 	public DetalleConsultaDTO SetAnotacionDetalles(ResConsultaAnotacionDetalleDTO res, String codTipo) {
 		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-		detalles.setTitulo("Detalle de Anotaci髇");
+		detalles.setTitulo("Detalle de Anotaci贸n");
 		detalles.setCodEmpleado(res.getIdEmpleado());
 		detalles.setFecha(res.getFechaUltimaModificacion());
 		switch(codTipo) {
@@ -179,7 +179,7 @@ public class SetConsultaDetallesProccess {
 
 	public DetalleConsultaDTO SetConsultaAuditoria(ResConsultaAuditoriaDTO res) {
 		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-		detalles.setTitulo("B醩ica de auditor韆");
+		detalles.setTitulo("B谩sica de auditor铆a");
 		detalles.setTipoDetalle("au");
 		detalles.setOrigen(res.getAuditorias().get(0).getEmpleado());
 		detalles.setTerminal(res.getAuditorias().get(0).getTerminal());
@@ -203,7 +203,7 @@ public class SetConsultaDetallesProccess {
 
 	public DetalleConsultaDTO SetConsultaAuditoriaDetalles(ResConsultaAuditoriaDetalleDTO res) {
 		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
-		detalles.setTitulo("de Auditor韆");
+		detalles.setTitulo("de Auditor铆a");
 		detalles.setTipoDetalle("dAu");
 		detalles.setNombreEmpleado(res.getNombreEmpleado());
 		detalles.setNombreAutorizador(res.getNombreAutorizador());
@@ -216,7 +216,7 @@ public class SetConsultaDetallesProccess {
 	public DetalleConsultaDTO SetConsultaLiquidacion(ResConsultaLiquidacionDTO res) {
 		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
 		detalles.setTipoDetalle("li");
-		detalles.setTitulo("de liquidaci髇");
+		detalles.setTitulo("de liquidaci贸n");
 		detalles.setFechaLiquidacion(res.getFechaLiquidacion());
 		detalles.setNumAcuerdo(res.getAcuerdo());
 		detalles.setFechaDesde(res.getFechaDesde());
@@ -275,7 +275,7 @@ public class SetConsultaDetallesProccess {
 	public DetalleConsultaDTO SetConsultaEmision(ResConsultaEmisionDTO res) {
 		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
 		detalles.setTipoDetalle("em");
-		detalles.setTitulo("Emisi髇 de cheque");
+		detalles.setTitulo("Emisi贸n de cheque");
 		detalles.setTipoTalonario(res.getTipoTalonario());
 		detalles.setNumeroTalonario(res.getNumeroTalonario());
 		detalles.setNombre(res.getNombre());
@@ -284,14 +284,14 @@ public class SetConsultaDetallesProccess {
 		detalles.setConforma(res.getConforma());
 		detalles.setDisposicion(res.getDisposicion());
 		try {
-			detalles.setPagoCheque(""+df.parse(res.getPagoCheque()));
-		} catch (ParseException e) {
+			detalles.setPagoCheque(df.format(Double.parseDouble(res.getPagoCheque())));
+		} catch (Exception e) {
 			detalles.setPagoCheque("");
 			e.printStackTrace();
 		}
 		try {
-			detalles.setPagoPendiente(""+df.parse(res.getPagoPendiente()));
-		} catch (ParseException e) {
+			detalles.setPagoPendiente(""+df.format(Double.parseDouble(res.getPagoPendiente())));
+		} catch (Exception e) {
 			detalles.setPagoPendiente("");
 			e.printStackTrace();
 		}

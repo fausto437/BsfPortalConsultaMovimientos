@@ -106,7 +106,7 @@ public class WizardDocumentosController {
         return res;
     }
     
-    /*METODO PARA GENERAR EL BSFOPERADOR QUE SE ENVIARÁ AL MÓDULO DE DIGITALIZACIÓN*/
+    /*METODO PARA GENERAR EL BSFOPERADOR QUE SE ENVIARA AL MODULO DE DIGITALIZACION*/
     @RequestMapping(value = "/encriptar", method = RequestMethod.POST)
     public ResEncryptORDecryptDTO encripcion(@RequestParam("objStr") String datos) {
     	String url = urlLocalHost + context + "/busquedaDig";

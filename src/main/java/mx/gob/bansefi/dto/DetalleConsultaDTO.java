@@ -26,7 +26,7 @@ public class DetalleConsultaDTO {
 	private String conceptoCorto;
 	@Getter	@Setter
 	private String idOrigen;
-	//MÁS DATOS DEL APUNTE
+	//MAS DATOS DEL APUNTE
 	@Getter	@Setter
 	private String originadoPor;
 	//DATOS DE ANOTACIONES
@@ -108,7 +108,7 @@ public class DetalleConsultaDTO {
 	private String horaOperacion;
 	@Getter	@Setter
 	private String nombreAutorizador;
-	//MÁS AUDITORIA
+	//MAS AUDITORIA
 	@Getter	@Setter
 	private String codCentro;
 	@Getter	@Setter
@@ -131,7 +131,7 @@ public class DetalleConsultaDTO {
 	private String codTransaccion;
 	@Getter	@Setter
 	private String descTransaccion;
-	//DATOS DE LIQUIDACIÓN
+	//DATOS DE LIQUIDACION
 	@Getter	@Setter
 	private String fechaLiquidacion;
 	@Getter	@Setter
@@ -155,6 +155,8 @@ public class DetalleConsultaDTO {
 	private String numeroTalonario;
 	@Getter	@Setter
 	private String nombre;
+	@Getter	@Setter
+	private String reqNumeroCheque;
 	@Getter	@Setter
 	private String numeroCheque;
 	@Getter	@Setter

@@ -124,7 +124,7 @@ public class DocumentosClient {
     }
     
     /*
-     * Metodo para consumir servicio de relación de documento con la persona.
+     * Metodo para consumir servicio de relaciÃ³n de documento con la persona.
      */
     public ResAltaRelacionDocumento relacionarDocumento(String idDigitalizacion, String fechaHora) {
     	//ResAltaDocumentoTCB resId = new ResAltaDocumentoTCB();
@@ -155,7 +155,7 @@ public class DocumentosClient {
                 nodos.add("RESPONSE");
                 resId = (ResAltaDocumentoTCB) this.util.jsonToObject(resId, jsonRes, nodos);
                 if(resId.getSTATUS().equals("1")){
-                	//Hacer la relación de los documentos a la operación
+                	//Hacer la relaciÃ³n de los documentos a la operaciÃ³n
                 	String idOperacion = datos.getAltaDocumentosPersona().getTerminal().substring(datos.getAltaDocumentosPersona().getTerminal().length()-7);
                 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 	Date date = new Date();

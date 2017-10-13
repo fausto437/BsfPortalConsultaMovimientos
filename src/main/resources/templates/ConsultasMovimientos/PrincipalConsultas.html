@@ -30,8 +30,6 @@
 		var lstBloqueos = [[${Model.bloqueos}]];
 		var lstRetenciones = [[${Model.retenciones}]];
 		var datosConsulta = [[${datos}]];
-		console.log([[${datos}]]);
-		console.log([[${Model.apuntes}]]);
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
     <input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
@@ -45,11 +43,14 @@
     <div class="contenedor">
         <div class="contenedor-form">
             <div class="titulo centrar-objeto btn-inline-set">
-                <button id="breadcum" name="breadcum"
+	            <form id="formMostrarDetalle" method="POST" th:action="@{/}">
+		    		<input id="BSFOPERADOR" class="hidden" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
+		            <button id="breadcum" name="breadcum"
                         class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
-                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
-                    <span class="ui-button-text ui-c">ui-button</span>
-                </button>
+	                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+	                    <span class="ui-button-text ui-c">ui-button</span>
+	                </button>
+		        </form>
                 <h1>
                     <label class="titulo h1" id="lblTitulo">Consulta de Movimientos</label>
                 </h1>
