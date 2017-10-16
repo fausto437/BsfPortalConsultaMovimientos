@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/BuscadorApuntes.css}" rel="stylesheet"/>
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/jquery.mask.js}"></script>
+    <script th:src="@{/js/BuscadorApuntes.js}"></script>
+    <script th:src="@{/js/Validaciones.js}"></script>
+    <script th:src="@{/js/funcionesGenerales.js}"></script>
+    <title>Consulta de Movimientos</title>
+</head>
+<body>
+<script th:inline="javascript">
+	var verificaDigitalizacion =[[${Model.verificaDigitalizacion}]];
+	console.log([[${Model}]]);
+	var numeroAcuerdo= [[${Model.numAcuerdo}]];
+	var relacionDoc = [[${Model.relacionDoc}]];
+    </script>
+<form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
+    
+</form>
+<div class="container_48">
+        <div class="contenedor">
+            <div class="contenedor-form">
+                <div class="titulo centrar-objeto btn-inline-set">
+                    <button id="breadcumSpecial"
+                            class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                            type="submit" role="button" aria-disabled="false">
+                        <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                        <span class="ui-button-text ui-c">ui-button</span></button>
+                    <div>
+                    	<h2 class="gris-b">Consulta de Movimientos</h2>
+                    </div>
+                </div>
+                <div class="contenedor-campos">
+                	<form id="formBuscarAcuerdo" name="formBuscarAcuerdo" class="hidden" method="POST" th:action="${urlActionFind}">
+					   	<input id="BSFOPERADOR" name="BSFOPERADOR"/>
+					</form>
+                	<form id="frmBusquedaMovimientosGral" method="POST" th:object="${Model}" th:action="@{/consultaGeneral}">
+	                	<input th:field="*{bsfoperador}" class="hidden"/>
+	                	<input th:field="*{verificaDigitalizacion}" class="hidden"/>
+	                	<input id="relacion" name="relacion"  class="hidden"/>
+					    <input id="tipo" name="tipo" class="hidden"/>
+	                    <div id="formBusqueda" class="container">
+	                    	<div class="row-felx">
+	                    		<div>
+	                                <label>Introduzca el número de cuenta y el cliente que desea consultar sus movimientos</label>
+	                                <br/>
+	                                <br/>
+	                                <label class="textRojo">* Campos Obligatorios</label>
+	                            </div>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row">
+	                    		<div class="col-md-10 col-xs-10">
+	                    			<div class="row">
+	                    				<div class="col-md-3 col-xs-3">
+	                    					<label>N° de cuenta</label><span class="textRojo">*</span>
+	                    					<input th:field="*{numAcuerdo}" class="form-control" onblur="getNombre();"/>
+	                    				</div>
+	                    				<div class="col-md-1 col-xs-1">
+	                    				<br/>
+		                    				<button type="button" class="btn btn-primary btn-circle btn-xs" id="btnBusquedas" onclick="buscarPersona();">
+				                            	<i class="fa fa-search fa-16" aria-hidden="true"></i><i class="fa fa-bars" aria-hidden="true"></i>
+					                        </button>
+	                    				</div>
+	                    				<div class="col-md-8 col-xs-8">
+	                    					<label>Titular de la cuenta</label> <br/>
+	                    					<input th:field="*{titCuenta}" class="form-control" readonly="readonly"/>
+	                    					<input th:field="*{idInternoPe}" class="form-control hidden" readonly="readonly"/>
+	                    				</div>
+	                    			</div>
+	                    			<br/>
+	                    			<div class="row">
+	                    				<div class="col-md-5 col-xs-5">
+	                    					<label>Tipo de identificaci&oacute;n</label><span class="textRojo">*</span><br/>
+											<div class=" Requeridos">
+												<input th:field="*{txtTipoIdentificacion}" type="text" class="form-control hidden"/>
+												<input th:field="*{codTipoIdentificacion}" type="text" class="form-control hidden"/>
+												<select th:field="*{cboTipoIdentificacion}" class="form-control"></select>
+											</div>
+	                    				</div>
+	                    				<div class="col-md-3 col-xs-3">
+	                    					<label>Identificaci&oacute;n</label><span class="textRojo">*</span><br/>
+	                    					<input th:field="*{numId}" class="form-control AlfaNumerico"  maxlength="14"/>
+	                    				</div>
+	                    			</div>
+	                    			<br/>
+	                    			<div class="row">
+	                    				<div class="col-md-3 col-xs-3">
+	                    					<label>Fecha</label>
+	                    					<div th:field="fechaDesde" 
+	                    						class="input-group date FechaCompleta" 
+	                    						data-provide="datepicker" data-date-end-date="0d">
+	                                            <input type="text" class="form-control" placeholder="DESDE"
+	                                            		th:field="*{fechaDesde}"/>
+	                                            <div class="input-group-addon">
+	                                                <span class="glyphicon glyphicon-th"></span>
+	                                            </div>
+                                        	</div>
+	                    				</div>
+	                    				<div class="col-md-3 col-xs-3">
+	                    					<br/>
+	                    					<div th:field="fechaHasta" 
+	                    						class="input-group date FechaCompleta" 
+	                    						data-provide="datepicker" data-date-end-date="0d">
+	                                            <input type="text" class="form-control" placeholder="HASTA"
+	                                            		th:field="*{fechaHasta}" />
+	                                            <div class="input-group-addon">
+	                                                <span class="glyphicon glyphicon-th"></span>
+	                                            </div>
+                                        	</div>
+	                    				</div>
+	                    				<div class="col-md-4 col-xs-4 col-md-offset-1">
+	                    					<br/>
+	                    					<button type="button" class="btn btn-primary" id="btnValidarId" onclick="validarId();">
+					                            Validar identificaci&oacute;n
+					                        </button>
+	                    				</div>
+	                    			</div>
+	                    		</div>
+	                    		<div class="col-md-2 col-xs-2 text-center">
+	                    			<button type="button" class="btn btn-primary btn-xl btnBuscador" id="btnBusquedas" onclick="consultarInformacion();">
+			                            <h3><i class="fa fa-search" style="font-size: 55px;"></i></h3>
+			                            <h4>Consultar</h4>
+			                        </button>
+	                    		</div>
+	                    	</div>
+	                    	<br/>
+	                        <div class="row">
+	                            <div class="grid_40">
+		                            <div class="col-md-12">
+		                            	<label>Formato</label>
+		                            </div>
+		                            <br/>
+		                            <br/>
+	                            	<div class="col-md-12 opt-radio">
+		                            	<input th:field="*{formato}" type="radio" value="OFICINA" class=""/>
+										<label class="control-label">Oficina</label>
+										<span class="opt-radio">
+											<input th:field="*{formato}" type="radio" value="CLIENTE" class=""/>
+											<label class="control-label">Cliente</label>
+										</span>
+		                            </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    </form>
+	                    <br/>
+	                    <!--                          OPCIONES DIGITALIZACIÓN                       -->
+					    <div id="digitalizar" class="hidden text-center" style="height:425px;">
+					    	<iframe id="ifrmModalDigitalizacion" name="ifrmModalDigitalizacion"
+					            style="border: 0; width: 100%; height: 100%;" padding="border-width: 10px;"></iframe>
+					            <!-- <button type="button" class="btn btn-danger pull-right" onclick="cancelarDigitalizacion();" style="display: inline-block;margin: 5% 0;">Cancelar</button> -->
+					    </div>
+	            	<form id="formDigita" name="formDigita" method="POST" th:action="${urlActionBack}" target="ifrmModalDigitalizacion">
+					   	<input type="hidden" id="TRANSPORT" name="TRANSPORT" value=""/>
+					</form>
+				</div>
+				
+            </div>
+        </div>
+    </div>
+    <th:block th:include="fragments/nav :: nav"></th:block>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+</head>
+<body>
+	<div th:fragment="anotaciones">
+        <div class="contenedor-campos">
+            <br/>
+             <div class="row tabla-titulos">
+	             <div class="col-md-3 col-xs-3">
+	             	<span>TIPO: </span>
+	             	<label class="datos-informacion" th:text="${Model.tipo}"></label>
+	             </div>
+	             <div class="col-md-6 col-xs-6">
+	             	<span>SUBC&Oacute;DIGO: </span>
+	             	<label class="datos-informacion" th:text="${Model.subcodigo}"></label>
+	             </div>
+	             <div class="col-md-3 col-xs-3">
+	             	<span>&Aacute;REA: </span>
+	             	<label class="datos-informacion" th:text="${Model.area}"></label>
+	             </div>
+             </div>
+             <div class="row renglon-datos">
+             	<div class="col-md-2 col-xs-2">
+             		<label th:text="${Model.fecha}"></label>
+             	</div>
+             	<div class="col-md-10 col-xs-10">
+             		<h3 class="textAzul" th:text="${Model.descripcion}"></h3>
+             		<br/>
+             		<label>Empleado: </label><label th:text="${Model.codEmpleado}"></label><label th:text="', '+${Model.nombreEmpleado}" th:if="${Model.nombreEmpleado} neq null"></label>
+             		<br/>
+             		<label th:text="${Model.nota}"></label>
+             	</div>
+             </div>
+        </div>
+    </div>
+    <div th:fragment="apunte">
+        <div class="contenedor-campos">
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Titular de la cuenta: </label>
+            	</div>
+            	<div class="col-md-10 col-xs-10">
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Prod. Vendible: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.prodVendible}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">	
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo cuenta: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.idTipoCuenta}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.tipoCuenta}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">N&uacute;mero: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.numero}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Contable: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.fechaContable}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Valor: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.fechaValor}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Importe: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.importe}" readonly="readonly" />
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.estatus}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Moneda: </label>	
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
+            	</div>
+            </div>
+			<br/>
+           	<div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<table class="table table-striped table-bordered" 
+             				id="tblIndicadores"
+             				style="width:50%;margin:0 auto;background-color:#FFF;">
+                        <thead>
+	                        <tr>
+	                            <th>Indicador</th>
+	                            <th>Situación del apunte</th>
+	                        </tr>
+                        </thead>
+                        <tbody>
+	                        <tr th:each="sit : ${Model.sitApunte}">
+	                            <td th:text="${sit.indicador}"></td>
+	                            <td th:text="${sit.situacion}"></td>
+	                        </tr>
+                        </tbody>
+                    </table>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo Operaci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.tipoOperacion}" readonly="readonly" />
+            	</div>
+            	<div class="col-md-1 col-xs-1 entre-inputs">
+            		<label class="form-control vertical-align">: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.conceptoCorto}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Concepto: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.concepto}" readonly="readonly" />
+            	</div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+        	<div class="col-md-3 col-xs-3">
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
+        	</div>
+        	<div class="col-md-3 col-xs-3 text-center">
+	        	<form id="formAuditoria" name="formAuditoria" th:object="${Model}" class="hidden" method="POST" th:action="@{/auditoria}">
+	        		<input id="bsfOperadorAuditoria" name="bsfOperadorAuditoria"/>
+	        		<input th:field="*{idTipoCuenta}"/>
+	        		<input th:field="*{numAcuerdo}"/>
+	        		<input th:field="*{numero}"/>
+	        	</form>
+        		<button class="btn btn-default detalle-apunte" onclick="auditoria();">Auditor&iacute;a</button>
+        	</div>
+        	<div class="col-md-3 col-xs-3 text-center">
+        		<form id="formMasApunte" name="formMasApunte" th:object="${Model}" method="POST" th:action="@{/masApunte}">
+	        		<input id="bsfOperadorAuditoria" name="bsfOperadorAuditoria" class="hidden" />
+	        		<input th:field="*{titular}" class="hidden" />
+	        		<input th:field="*{prodVendible}" class="hidden" />
+	        		<input th:field="*{idTipoCuenta}" class="hidden" />
+	        		<input th:field="*{tipoCuenta}" class="hidden" />
+	        		<input th:field="*{moneda}" class="hidden" />
+	        		<input th:field="*{numero}" class="hidden" />
+	        		<input th:field="*{idOrigen}" class="hidden" />
+	        		<input th:field="*{conceptoCorto}" class="hidden" />
+	        		<button class="btn btn-default detalle-apunte" type="submit">M&aacute;s</button>
+	        	</form>
+        		
+        	</div>
+        	<div class="col-md-3 col-xs-3 text-right">
+        		<form id="formOrigen" name="formOrigen" th:object="${Model}" class="hidden" method="POST" th:action="@{/origen}">
+	        		<input id="bsfOperadorOrigen" name="bsfOperadorOrigen"/>
+	        		<input th:field="*{idTipoCuenta}"/>
+	        		<input th:field="*{numAcuerdo}"/>
+	        		<input th:field="*{numero}"/>
+	        		<input th:field="*{concepto}"/>
+	        		<input th:field="*{titular}"/>
+	        		<input th:field="*{prodVendible}"/>
+	        		
+	        		<input th:field="*{idOrigen}" class="hidden" />
+	        	</form>
+        		<button class="btn btn-default detalle-apunte" onclick="origen();">Origen</button>
+        	</div>
+        </div>
+        <br/>
+    </div>
+    <div th:fragment="bloqueo">
+        <div class="contenedor-campos">
+        	<div class="row">
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Acuerdo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">N&uacute;mero de Empleado: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.codEmpleado}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Centro: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            	</div>
+            </div>
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<label class="form-control vertical-align">Primer Titular de la cuenta: </label>
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo de bloqueo: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.idTipoBloqueo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.tipoBloqueo}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Alta: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Motivo de Bloqueo: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.motivo}" readonly="readonly" />
+            	</div>
+            </div>
+			<br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Situaci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.situacion}" readonly="readonly" />
+            	</div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+        	<div class="col-md-12 col-xs-12 text-center">
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
+        	</div>
+        </div>
+        <br/>
+    </div>
+    <div th:fragment="retencion">
+    	<div class="contenedor-campos">
+    		<div class="row">
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Acuerdo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Centro: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Moneda: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
+            	</div>
+            </div>
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<label class="form-control vertical-align">Primer Titular de la cuenta: </label>
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo de retencion: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.tipoRetencion}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<label class="form-control vertical-align">Situación: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.situacion}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Importe de retencion: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.importe}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-1 col-xs-1">
+					<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Alta: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Cod. retenci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.idTipoRetencion}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Origen apunte: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.origen}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+    	</div>
+    	<br/>
+    	<div class="row">
+        	<div class="col-md-12 col-xs-12 text-center">
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
+        	</div>
+        </div>
+        <br/>
+    </div>
+</body>
+</html>

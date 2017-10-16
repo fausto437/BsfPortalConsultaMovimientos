@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <!--<script th:src="@{/js/DatoGenerales.js}"></script>
+    <script th:src="@{/js/page/Documentos.js}"></script>
+    -->
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    
+    <title>Consulta de Movimientos</title>
+</head>
+<body>
+<form id="formActualizarPM" method="POST" th:action="@{/editPM2}" class="hidden">
+    <input id="BSFOPERADOR" name="BSFOPERADOR"/>
+    <input id="idIntPM" name="idIntPM"/>
+    <input id="titulo" name="titulo"/>
+    <input id="identificacionPM" name="identificacionPM"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+                <button id="breadcum" name="breadcum"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                    <span class="ui-button-text ui-c">ui-button</span>
+                </button>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo">Consulta de Movimientos</label>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/> <br/>
+    <!--  th:object="${Model}"-->
+    <div class="row">
+        <div class="contenedor-campos">
+        	<div th:if="${tipo} eq 1">
+        		<th:block th:include="ConsultasMovimientos/Detalles :: anotacion"></th:block>
+        	</div>
+            <br/>
+        </div>
+    </div>
+    <br/>
+    <ul class="list-inline">
+        <li>
+            <button onclick="alert('asd');" type="button" class="btn btn-primary" style="width: 150px;">Continuar</button>
+        </li>
+    </ul>
+</div>
+<th:block th:include="fragments/nav :: nav"></th:block>
+</body>
+</html>

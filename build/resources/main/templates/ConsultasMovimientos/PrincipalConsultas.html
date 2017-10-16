@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/ConsultasMovimientos.css}" rel="stylesheet"/>
+    
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
+    <script th:src="@{/js/funcionesGenerales.js}"></script>
+    <title>Consulta de Movimientos</title>
+</head>
+<body>
+	<script th:inline="javascript">
+		var lstApuntes = [[${Model.apuntes}]];
+		var lstApuntesImpresion = [[${Model.apuntes}]];
+		var lstBloqueos = [[${Model.bloqueos}]];
+		var lstRetenciones = [[${Model.retenciones}]];
+		var datosConsulta = [[${datos}]];
+	</script>
+<form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
+    <input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
+    <input id="titulo" name="titulo"/>
+    <input id="tipo" name="tipo"/>
+    <input id="row" name="row"/>
+    <input id="acuerdo" name="acuerdo" th:value="${datos.numAcuerdo}"/>
+    <input id="titular" name="titular" th:value="${datos.titCuenta}"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+	            <form id="formMostrarDetalle" method="POST" th:action="@{/}">
+		    		<input id="BSFOPERADOR" class="hidden" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
+		            <button id="breadcum" name="breadcum"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+	                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+	                    <span class="ui-button-text ui-c">ui-button</span>
+	                </button>
+		        </form>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo">Consulta de Movimientos</label>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="row">
+    	<div class="contenedor-campos conteiner">
+    		<div class="seccion">
+	    		<label>N&uacute;mero de cuenta</label>
+		    	<br/>
+		    	<label class="textRojo" th:text="${datos.numAcuerdo}"></label>
+		    	<br/>
+		    	<label>Cliente</label>
+		    	<br/>
+		    	<label class="textRojo" th:text="${datos.titCuenta}"></label>
+		    	<br/>
+		    	<div class="contenedor-anotaciones" th:if="${lstAnotaciones} neq null">
+		    		<h2>ANOTACIONES</h2>
+		    		<div class="row">
+		    			<div class="col-md-4 col-xs-4" th:each="anotacion,iteration : ${lstAnotaciones}" th="${iteration.index} &lt; 7">
+		    				<label class="textAzul" th:text="${anotacion.tipoAnotacion}+': '+${anotacion.descripcion}"></label>
+		    			</div>
+		    		</div>
+	    		</div>
+    		</div>
+    		<br/>
+    		<br/>
+    		<!-- SECCION DE BLOQUEOS -->
+    		<div class="seccion">
+	            <div class="Datos">
+	            	<h2 class="textAzul">Bloqueos</h2>
+	            	<br/>
+	            	<div class="text-center sin-registros textRojo" th:if="${Model.bloqueos} eq null">
+	            		<h3>La cuenta no tiene bloqueos.</h3>
+	            	</div>
+	            	<table class="table table-bordered table-striped" 
+	            			id="tblBloqueos" 
+		             		style="width: 100%"
+		             		th:if="${Model.bloqueos} neq null">
+	                        <thead>
+	                        <tr>
+	                            <th>Tipo</th>
+	                            <th>Estado</th>
+	                            <th>Fecha Alta</th>
+	                            <th>Fecha VTO.</th>
+	                            <th>Motivo de bloqueo</th>
+	                            <th>Empleado</th>
+	                            <th>Centro</th>
+	                            <th>Importe</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody id="listaBloqueos">
+	                        <!-- Se agregan los renglones de manera dinamica -->
+	                		</tbody>
+	                </table>
+	                <div class="row" th:if="${Model.bloqueos} neq null">
+					    <div class="col-md-4 col-xs-4">
+					    	<div sd:pagination-summary=""></div>
+					    </div>
+					    <div class="col-md-4 col-xs-4 text-center">
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('b');" th:if="${Model.bloqueos.size()}&gt; 10">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<br/>
+		                	<br/>
+		                	<button onclick="detalleConsulta('','b' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
+	                	</div>
+	                	<!--  
+					    <div class="col-md-4 col-xs-4">
+					    	<nav class="pull-right">
+							<ul class="pagination" sd:pagination="pager">
+								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+								<li th:each="numeroPagina: ${#numbers.sequence(0, Model.bloqueos.size()/50)}">
+									<a href="#"><span th:text="${numeroPagina + 1}"></span></a>
+								</li>
+								<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+							</ul>
+						</nav>
+					    </div>-->
+					</div>
+	            </div>
+        	</div>
+        	<br/>
+    		<br/>
+    		<!-- SECCION DE RETENCIONES -->
+    		<div class="seccion">
+	            <div class="Datos">
+	            	<h2 class="textAzul">Retenciones</h2>
+	            	<br/>
+	            	<div class="text-center sin-registros textRojo" th:if="${Model.retenciones} eq null">
+	            		<h3>La cuenta no tiene retenciones.</h3>
+	            	</div>
+	            	<table class="table table-bordered table-striped" 
+	            			id="tblRetenciones" 
+		             		style="width: 100%"
+		             		th:if="${Model.retenciones} neq null">
+	                        <thead>
+	                        <tr>
+	                            <th>Tipo</th>
+	                            <th>Estado</th>
+	                            <th>Fecha Alta</th>
+	                            <th>Fecha VTO.</th>
+	                            <th>Concepto</th>
+	                            <th>Empleado</th>
+	                            <th>Origen</th>
+	                            <th>Importe</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody id="listaRetenciones">
+	                        	<!-- Se agregan los renglones de manera dinamica -->
+	                		</tbody>
+	                </table>
+	                <div class="row" th:if="${Model.retenciones} neq null">
+					    <div class="col-md-4 col-xs-4">
+					    	<div sd:pagination-summary=""></div>
+					    </div>
+					    <div class="col-md-4 col-xs-4 text-center">
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('r');" th:if="${Model.retenciones.size()}&gt; 10">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<br/>
+		                	<br/>
+		                	<button onclick="detalleConsulta('','r' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
+	                	</div>
+	                	<!-- 
+					    <div class="col-md-4 col-xs-4">
+					    	<nav class="pull-right">
+								<ul class="pagination" sd:pagination="pager">
+									<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+									<li th:each="numeroPagina: ${#numbers.sequence(0, Model.retenciones.size()/50)}">
+										<a href="#"><span th:text="${numeroPagina + 1}"></span></a>
+									</li>
+									<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+								</ul>
+							</nav>
+					    </div> -->	
+					</div>
+	            </div>
+        	</div>
+        	<br/>
+    		<br/>
+    		<!-- SECCION DE MOVIMIENTOS -->
+    		<div class="seccion">
+	            <div class="Datos">
+	            	<h2 class="textAzul">Movimientos</h2>
+	            	<br/>
+	            	<div class="text-center sin-registros textRojo" th:if="${Model.apuntes} eq null">
+	            		<h3>La cuenta no tiene movimientos.</h3>
+	            	</div>
+	            	<table class="table table-bordered table-striped" 
+	            			id="tblApuntes" 
+		             		style="width: 100%"
+		             		th:if="${Model.apuntes} neq null">
+	                        <thead>
+	                        <tr>
+	                            <th>Concepto</th>
+	                            <th>F. Operaci&oacute;n</th>
+	                            <th>F. Valor</th>
+	                            <th>Of. Terminal</th>
+	                            <th>S</th>
+	                            <th>Importe</th>
+	                            <th>Saldo</th>
+	                        </tr>
+	                        </thead>
+	                        <tbody id="listaApuntes">
+	                        <!-- Se agregan los renglones de manera dinamica -->
+	                		</tbody>
+	                </table>
+	                <div class="row" th:if="${Model.apuntes} neq null">
+					    <div class="col-md-4 col-xs-4">
+					    	<div sd:pagination-summary=""></div>
+					    </div>
+					    <div class="col-md-4 col-xs-4 text-center">
+		                	<label class="textAzul cargar-registros" onclick="cargaRow('ap');" th:if="${Model.apuntes.size()}&gt; 10">Ver m&aacute;s resultados <i class="fa fa-refresh" aria-hidden="true"></i></label>
+		                	<br/>
+		                	<br/>
+		                	<button onclick="detalleConsulta('','ap' );" type="button" class="btn btn-primary" style="width: 150px;">Seleccionar</button>
+	                	</div>
+	                	<!-- 
+					    <div class="col-md-4 col-xs-4">
+					    	<nav class="pull-right">
+							<ul class="pagination" sd:pagination="pager">
+								<li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+								<li th:each="numeroPagina: ${#numbers.sequence(0, Model.apuntes.size()/50)}">
+									<a href="#"><span th:text="${numeroPagina + 1}"></span></a>
+								</li>
+								<li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+							</ul>
+						</nav>
+					    </div> -->
+					</div>
+	                <br/>
+	            </div>
+        	</div>
+    	</div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <div class="row" style="margin-bottom:50px;">
+        <div class="col-md-4 col-xs-4">
+            <button id="btnMenuDinamico" name="btnMenuDinamico" type="button" class="btn btn-default" style="width: 170px;">Salir</button>
+        </div>
+        <div class="col-md-4 col-xs-4 text-center">
+        	<input th:field="${datos.fechaDesde}" class="hidden"/>
+        	<input th:field="${datos.fechaHasta}" class="hidden"/>
+            <button onclick="imprimirReporte()" type="submit" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+        </div>
+        <div class="col-md-4 col-xs-4 text-right">
+	        <form id="formMostrarDetalle" method="POST" th:action="@{/}">
+	    		<input id="BSFOPERADOR" class="hidden" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
+	            <button type="submit" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>
+	        </form>
+        </div>
+    </div>
+</div>
+<th:block th:include="fragments/nav :: nav"></th:block>
+</body>
+</html>

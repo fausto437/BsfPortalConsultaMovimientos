@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-datepicker.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/ConsultasMovimientos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/ContenedorDetalles.css}" rel="stylesheet"/>
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/page/Detalles.js}"></script>
+    
+    <title>Consulta de Movimientos</title>
+    <script th:inline="javascript">
+      console.log([[${Model}]]);
+      var bsfOp= [[${bsfOperador}]];
+    </script>
+</head>
+<body>
+<form id="formMasDetalles" method="POST" th:action="@{/detalles}" class="hidden">
+    <input id="bsfOperador" name="bsfOperador"/>
+    <input id="idIntPM" name="idIntPM"/>
+    <input id="titulo" name="titulo"/>
+    <input id="identificacionPM" name="identificacionPM"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+                <button onclick="window.history.go(-1);"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                    <span class="ui-button-text ui-c">ui-button</span>
+                </button>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo" th:if="${Model.tipoDetalle} neq 'em'">Consulta 
+                    	<span th:text="${Model.titulo}"></span>	
+                    </label>
+                    <span th:text="${Model.titulo}" th:if="${Model.tipoDetalle} eq 'em'"></span>
+                    <h2 class="textRojo" th:if="${Model.tipoDetalle} eq 'a'" th:text="${Model.numAcuerdo}"></h2>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="row">
+	    <!--
+		===========================================================================================
+										Detalles de anotaciones
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'a'" th:include="fragments/contenedorDetalles :: anotaciones"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de apuntes
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'ap'" th:include="fragments/contenedorDetalles :: apunte"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de bloqueos
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'b'" th:include="fragments/contenedorDetalles :: bloqueo"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de retencion
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'r'" th:include="fragments/contenedorDetalles :: retencion"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de auditoria
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'au'" th:include="fragments/auditoria :: auditoria"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de auditoria
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'dAu'" th:include="fragments/auditoria :: detallesAuditoria"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de liquidación
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'li'" th:include="fragments/origen :: liquidacion"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de emision de cheque
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'em'" th:include="fragments/origen :: emision"></th:block>
+		<!--
+		===========================================================================================
+										Consulta más del apunte
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'mAp'" th:include="fragments/masApunte :: masApunte"></th:block>
+    </div>
+</div>
+<th:block th:include="fragments/nav :: nav"></th:block>
+</body>
+</html>

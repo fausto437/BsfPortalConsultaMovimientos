@@ -32,7 +32,7 @@ public class SetConsultaPrincipalProccess {
     private String urlcontext;
 
     private DecimalFormat df = new DecimalFormat("0.00");
-    //Función para llenar los campos de la tabla de bloqueos
+    //Funcion para llenar los campos de la tabla de bloqueos
     public List<GralBloqueoDTO> SetConsultaBloqueos(List<GralBloqueoDTO> lstBloqueos){
     	List<GralBloqueoDTO> nuevaLista = new ArrayList<GralBloqueoDTO>();
     	for (GralBloqueoDTO datoBloqueo : lstBloqueos) {
@@ -67,7 +67,7 @@ public class SetConsultaPrincipalProccess {
     	return nuevaLista;
     }
     
-    //Función para llenar las tablas de la pantalla principal con datos de prueba
+    //Funcion para llenar las tablas de la pantalla principal con datos de prueba
     public ConsultaPrincipalDTO SetConsultaPrincipal() {
     	ConsultaPrincipalDTO detalles = new ConsultaPrincipalDTO();
     	
@@ -282,7 +282,7 @@ public class SetConsultaPrincipalProccess {
         return detalles;
     }
 
-    //Función para llenar la tabla de anotaciones con datos de prueba
+    //Funcion para llenar la tabla de anotaciones con datos de prueba
    public ArrayList<GralAnotacionDTO> SetConsultaAnotaciones(ArrayList<GralAnotacionDTO> lstAnotaciones) {
     	
 	   ArrayList<GralAnotacionDTO> nuevaLista = new ArrayList<GralAnotacionDTO>();
@@ -322,7 +322,7 @@ public class SetConsultaPrincipalProccess {
     	return nuevaLista;
     }
 
-    //Función para llenar la tabla de retenciones con los datos de la consulta
+    //Funcion para llenar la tabla de retenciones con los datos de la consulta
 	public List<GralRetencionDTO> setConsultaRetenciones(List<GralRetencionDTO> lstRetenciones) {
 		List<GralRetencionDTO> nuevaLista = new ArrayList<GralRetencionDTO>();
     	for (GralRetencionDTO datoRetencion : lstRetenciones) {

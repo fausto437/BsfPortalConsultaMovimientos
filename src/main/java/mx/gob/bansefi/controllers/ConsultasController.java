@@ -29,7 +29,6 @@ import mx.gob.bansefi.process.SetReporteProccess;
 import mx.gob.bansefi.services.SecurityWS;
 import mx.gob.bansefi.services.WsServicios;
 import mx.gob.bansefi.utils.Util;
-import net.minidev.json.JSONArray;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -37,6 +36,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
 
+import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
