@@ -127,7 +127,7 @@ public class WizardDocumentosController {
 						+ "\", \"USERTCB\": \"" + bsfOp.getBSFOPERADOR().getUSERTCB()+ "\", \"SESSIONID\": \"\","
 						+ "\"TRANSPORT\": {\"IDINTERNOPE\": \""+encryptDatos.getRespuesta().toString()+"\", \"ACTIONBACK\": \""+url
 						+ "\", \"TITULO\": \"Digitalizar documento " + datosGenerales.getDescDoc()
-	                    + "\", \"TIPODOCUMENTO\": \"" + datosGenerales.getCodDoc() + "\",\"TARGET\": \"_top\"}}}";
+	                    + "\", \"TIPODOCUMENTO\": \"" + datosGenerales.getCodDoc() + "\",\"TARGET\": \"framePrincipal\"}}}";
 				ResEncryptORDecryptDTO encrypt = securityWs.encrypt(new ReqEncryptORDecryptDTO(aencriptar));
 				System.out.println("############Texto a encriptado###########\n " + encrypt.getRespuesta().toString());
 				if (encrypt.getError() != null) {

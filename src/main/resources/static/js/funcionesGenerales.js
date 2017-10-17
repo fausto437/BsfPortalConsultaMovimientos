@@ -25,7 +25,14 @@ $(document).ready(function () {
     $(".btnMenuDinamico").click(function() {
 	parent.regresarMenuFrecuente();
     });
+    redimencionar();
 })
+
+function redimencionar() {
+	setTimeout(function() {
+	    parent.setFrame();
+	}, 1500);
+}
 
 //Función para regresar a la pantalla principal
 function realizarOtraBusqueda(){

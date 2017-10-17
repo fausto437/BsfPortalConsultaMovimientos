@@ -55,7 +55,7 @@
 	                	<input th:field="*{verificaDigitalizacion}" class="hidden"/>
 	                	<input id="relacion" name="relacion"  class="hidden"/>
 					    <input id="tipo" name="tipo" class="hidden"/>
-	                    <div id="formBusqueda" class="container">
+	                    <div id="formBusqueda" class="container-fluid">
 	                    	<div class="row-felx">
 	                    		<div>
 	                                <label>Introduzca el número de cuenta y el cliente que desea consultar sus movimientos</label>
@@ -150,10 +150,10 @@
 		                            <br/>
 	                            	<div class="col-md-12 opt-radio">
 		                            	<input th:field="*{formato}" type="radio" value="OFICINA" class=""/>
-										<label class="control-label">Oficina</label>
+										<label class="control-label" for="formato1">Oficina</label>
 										<span class="opt-radio">
 											<input th:field="*{formato}" type="radio" value="CLIENTE" class=""/>
-											<label class="control-label">Cliente</label>
+											<label class="control-label" for="formato2">Cliente</label>
 										</span>
 		                            </div>
 	                            </div>
@@ -175,6 +175,5 @@
             </div>
         </div>
     </div>
-    <th:block th:include="fragments/nav :: nav"></th:block>
 </body>
 </html>
