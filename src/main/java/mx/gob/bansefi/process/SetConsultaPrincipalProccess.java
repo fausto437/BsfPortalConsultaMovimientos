@@ -41,7 +41,7 @@ public class SetConsultaPrincipalProccess {
     		nuevoObj.setConcepto(datoBloqueo.getConcepto()==null?"":datoBloqueo.getConcepto());
     		nuevoObj.setEmpleado(datoBloqueo.getEmpleado()==null?"":datoBloqueo.getEmpleado());
     		nuevoObj.setFechaAlta(datoBloqueo.getFechaAlta()==null?"":datoBloqueo.getFechaAlta());
-    		nuevoObj.setFechaVTO(datoBloqueo.getFechaVTO()==null?"":datoBloqueo.getFechaVTO());
+    		nuevoObj.setFechaVTO(datoBloqueo.getFechaVTO()==null||datoBloqueo.getFechaVTO().equals("00/00/0000")||datoBloqueo.getFechaVTO().equals("31/12/9999")?"":datoBloqueo.getFechaVTO());
     		/*try {
 				String nueva_fecha=datoBloqueo.getFechaVTO().substring(6, 8)+"/"+datoBloqueo.getFechaVTO().substring(4, 6)+"/"+datoBloqueo.getFechaVTO().substring(0, 4);
 				nuevoObj.setFechaVTO(nueva_fecha);
@@ -59,11 +59,9 @@ public class SetConsultaPrincipalProccess {
     		
     		nuevoObj.setMotivo(datoBloqueo.getMotivo()==null?"":datoBloqueo.getMotivo());
     		nuevoObj.setTipo(datoBloqueo.getTipo()==null?"":datoBloqueo.getTipo());
-    		nuevoObj.setEstado("ACTIVO");
+    		nuevoObj.setEstado(datoBloqueo.getEstado()==null?"ACTIVO":SetSituacion(datoBloqueo.getEstado()));
     		nuevaLista.add(nuevoObj);
     	}
-    	
-    	
     	return nuevaLista;
     }
     
@@ -328,7 +326,7 @@ public class SetConsultaPrincipalProccess {
     	for (GralRetencionDTO datoRetencion : lstRetenciones) {
     		GralRetencionDTO nuevoObj = new GralRetencionDTO();
     		nuevoObj.setTipo(datoRetencion.getTipo()==null?"":datoRetencion.getTipo());
-    		nuevoObj.setEstado("ACTIVO");
+    		nuevoObj.setEstado(datoRetencion.getEstado()==null?"ACTIVO":SetSituacion(datoRetencion.getEstado()));
     		try {
 				String nueva_fecha=datoRetencion.getFechaAlta().substring(6, 8)+"/"+datoRetencion.getFechaAlta().substring(4, 6)+"/"+datoRetencion.getFechaAlta().substring(0, 4);
 				nuevoObj.setFechaAlta(nueva_fecha);
@@ -338,7 +336,7 @@ public class SetConsultaPrincipalProccess {
 			}
     		try {
 				String nueva_fecha=datoRetencion.getFechaVTO().substring(6, 8)+"/"+datoRetencion.getFechaVTO().substring(4, 6)+"/"+datoRetencion.getFechaVTO().substring(0, 4);
-				nuevoObj.setFechaVTO(nueva_fecha);
+				nuevoObj.setFechaVTO(nueva_fecha.equals("00/00/0000")||nueva_fecha.equals("31/12/9999")?"":nueva_fecha);
 			} catch (Exception e) {
 				nuevoObj.setFechaVTO("");
 				e.printStackTrace();
@@ -398,5 +396,24 @@ public class SetConsultaPrincipalProccess {
     	
     	
     	return nuevaLista;
+	}
+	
+	public String SetSituacion(String codSituacion) {
+		String situacion="";
+		switch(codSituacion) {
+			case "A":{
+				situacion= "ACTIVO";
+			}break;
+			case "I":{
+				situacion= "INACTIVO";
+			}break;
+			case "V":{
+				situacion= "VENCIDO";
+			}break;
+			case "C":{
+				situacion= "CANCELADO";
+			}break;
+		}
+		return situacion;
 	}
 }

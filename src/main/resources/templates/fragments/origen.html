@@ -117,6 +117,9 @@
         <br/>
     </div>
     <div th:fragment="emision">
+	    <script th:inline="javascript">
+			console.log([[${Model}]]);
+		</script>
         <div class="contenedor-campos">
     		<div class="row">
             	<div class="col-md-1 col-xs-1">
@@ -194,7 +197,7 @@
 			            	<label class="form-control vertical-align">Fecha de Caducidad: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.fechaDesde}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
 		            	</div>
 		            </div>
 		            <br/>
@@ -203,7 +206,7 @@
 			            	<label class="form-control vertical-align">Acuerdo Cargo: </label>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
-			            	<input class="form-control" th:value="${Model.fecha}" readonly="readonly"/>
+			            	<input class="form-control" th:value="${Model.acuerdoCargo}" readonly="readonly"/>
 		            	</div>
 		            	<div class="col-md-3 col-xs-3">
 			            	<label class="form-control vertical-align">Centro: </label>
@@ -221,7 +224,7 @@
 	            		</div>
 	            		<div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" value="0" th:field="${Model.situacionPago}" readonly="readonly"/>
+				            	<input class="disabled-click" type="radio" value="0" th:field="${Model.situacionPago}"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">No pagado</label>
@@ -229,7 +232,7 @@
 			            </div>
 			            <div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" value="1" th:field="${Model.situacionPago}" readonly="readonly"/>
+				            	<input class="disabled-click" type="radio" value="1" th:field="${Model.situacionPago}"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">Total</label>
@@ -237,7 +240,7 @@
 			            </div>
 			            <div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" value="2" th:field="${Model.situacionPago}" readonly="readonly"/>
+				            	<input class="disabled-click" type="radio" value="2" th:field="${Model.situacionPago}"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">Parcial</label>
@@ -245,7 +248,7 @@
 			            </div>
 			            <div class="row">
 		            		<div class="col-md-1 col-xs-1">
-				            	<input class="" type="radio" value="3" th:field="${Model.situacionPago}" readonly="readonly"/>
+				            	<input class="disabled-click" type="radio" value="3" th:field="${Model.situacionPago}"/>
 			            	</div>
 			            	<div class="col-md-8 col-xs-8">
 			            		<label class="form-control vertical-align">Duplicado</label>

@@ -39,4 +39,6 @@ public class ResConsultaEmisionDTO extends CabeceraDTO{
 	private String estado;
 	@Getter @Setter
 	private String situacionPago;
+	@Getter @Setter
+	private String fechaVencimiento;
 }

@@ -32,9 +32,7 @@ import java.util.List;
  */
 @Service
 public class SetConsultaDetallesProccess {
-    @Value("${url.context}")
-    private String urlcontext;
-
+    
     private DecimalFormat df = new DecimalFormat("0.00");
     public DetalleConsultaDTO SetConsultaDetallesApunte(ResConsultaApunteDetalleDTO detalleApunte) {
     	DetalleConsultaDTO detalles = new DetalleConsultaDTO();
@@ -123,14 +121,14 @@ public class SetConsultaDetallesProccess {
     	detalles.setIdTipoRetencion(renglonRetencion.getTipo());
     	detalles.setTipoRetencion("");
     	detalles.setFechaAlta(renglonRetencion.getFechaAlta());
-		detalles.setFechaVto(renglonRetencion.getFechaVTO());
+		detalles.setFechaVto(renglonRetencion.getFechaVTO().equals("00/00/0000")?"":renglonRetencion.getFechaVTO());
 		detalles.setMotivo(renglonRetencion.getConcepto());
 		detalles.setSituacion(renglonRetencion.getEstado());
 		detalles.setImporte(renglonRetencion.getImporte());
 		detalles.setOrigen(renglonRetencion.getOrigen());
 		detalles.setMoneda("MXN");
 		try {
-			String centro = renglonRetencion.getOrigen().substring(0, renglonRetencion.getOrigen().indexOf('-'));
+			String centro = renglonRetencion.getOrigen().substring(0,4);
 			detalles.setCentro(centro);
 		}
 		catch(Exception e) {
@@ -147,7 +145,7 @@ public class SetConsultaDetallesProccess {
 		detalles.setMotivo(renglonBloqueo.getConcepto());
 		detalles.setSituacion(renglonBloqueo.getEstado());
 		detalles.setFechaAlta(renglonBloqueo.getFechaAlta());
-		detalles.setFechaVto(renglonBloqueo.getFechaVTO());
+		detalles.setFechaVto(renglonBloqueo.getFechaVTO().equals("00/00/0000")?"":renglonBloqueo.getFechaVTO());
 		detalles.setCodEmpleado(renglonBloqueo.getEmpleado());
 		detalles.setCentro(renglonBloqueo.getCentro());
 		detalles.setImporte(renglonBloqueo.getImporte());
@@ -299,7 +297,26 @@ public class SetConsultaDetallesProccess {
 		detalles.setNumAcuerdo(res.getAcuerdo());
 		detalles.setEstado(res.getEstado());
 		detalles.setSituacionPago(res.getSituacionPago());
-		
+		detalles.setFechaVto("");
 		return detalles;
+	}
+	
+	public String SetSituacion(String codSituacion) {
+		String situacion="";
+		switch(codSituacion) {
+		case "A":{
+			situacion= "ACTIVO";
+		}break;
+		case "I":{
+			situacion= "INACTIVO";
+		}break;
+		case "V":{
+			situacion= "VENCIDO";
+		}break;
+		case "C":{
+			situacion= "CANCELADO";
+		}break;
+	}
+	return situacion;
 	}
 }

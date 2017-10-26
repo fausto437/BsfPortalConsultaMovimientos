@@ -173,4 +173,6 @@ public class DetalleConsultaDTO {
 	private String estado;
 	@Getter	@Setter
 	private String situacionPago;
+	@Getter	@Setter
+	private String acuerdoCargo;
 }

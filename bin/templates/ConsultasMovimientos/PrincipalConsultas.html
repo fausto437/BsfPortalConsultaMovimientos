@@ -21,6 +21,7 @@
     <script th:src="@{/js/bootstrap-select.js}"></script>
     <script th:src="@{/js/ConsultaMovimientos.js}"></script>
     <script th:src="@{/js/funcionesGenerales.js}"></script>
+    <script th:src="@{/js/Validaciones.js}"></script>
     <title>Consulta de Movimientos</title>
 </head>
 <body>
@@ -30,11 +31,16 @@
 		var lstBloqueos = [[${Model.bloqueos}]];
 		var lstRetenciones = [[${Model.retenciones}]];
 		var datosConsulta = [[${datos}]];
+		var error= [[${Model.error}]];
+		var catalogoTpBloqueo=[];
+		var catalogoTpRetenciones=[];
+		console.log([[${Model}]]);
 	</script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalles}" class="hidden">
     <input id="BSFOPERADOR" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
     <input id="titulo" name="titulo"/>
     <input id="tipo" name="tipo"/>
+    <input id="descripcion" name="descripcion"/>
     <input id="row" name="row"/>
     <input id="acuerdo" name="acuerdo" th:value="${datos.numAcuerdo}"/>
     <input id="titular" name="titular" th:value="${datos.titCuenta}"/>
@@ -196,13 +202,13 @@
 	            <div class="Datos">
 	            	<h2 class="textAzul">Movimientos</h2>
 	            	<br/>
-	            	<div class="text-center sin-registros textRojo" th:if="${Model.apuntes} eq null">
+	            	<div class="text-center sin-registros textRojo" th:if="${Model.apuntes} eq null or ${Model.apuntes.size()} eq 0">
 	            		<h3>La cuenta no tiene movimientos.</h3>
 	            	</div>
 	            	<table class="table table-bordered table-striped" 
 	            			id="tblApuntes" 
 		             		style="width: 100%"
-		             		th:if="${Model.apuntes} neq null">
+		             		th:if="${Model.apuntes} neq null and ${Model.apuntes.size()} neq 0">
 	                        <thead>
 	                        <tr>
 	                            <th>Concepto</th>
@@ -218,7 +224,7 @@
 	                        <!-- Se agregan los renglones de manera dinamica -->
 	                		</tbody>
 	                </table>
-	                <div class="row" th:if="${Model.apuntes} neq null">
+	                <div class="row" th:if="${Model.apuntes} neq null and ${Model.apuntes.size()} neq 0">
 					    <div class="col-md-4 col-xs-4">
 					    	<div sd:pagination-summary=""></div>
 					    </div>
@@ -256,10 +262,10 @@
         <div class="col-md-4 col-xs-4 text-center">
         	<input th:field="${datos.fechaDesde}" class="hidden"/>
         	<input th:field="${datos.fechaHasta}" class="hidden"/>
-            <button onclick="imprimirReporte()" type="submit" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+            <button onclick="imprimirReporte()" type="submit" class="btn btn-default" style="width: 170px;" th:if="${Model.apuntes} neq null and ${Model.apuntes.size()} neq 0"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
         </div>
         <div class="col-md-4 col-xs-4 text-right">
-	        <form id="formMostrarDetalle" method="POST" th:action="@{/}">
+	        <form id="formOtraBusqueda" method="POST" th:action="@{/}">
 	    		<input id="BSFOPERADOR" class="hidden" name="BSFOPERADOR" th:value="${datos.bsfoperador}"/>
 	            <button type="submit" class="btn btn-primary" style="width: 170px;">Realizar otra consulta</button>
 	        </form>

@@ -21,13 +21,16 @@ $(document).ready(function(){
 		msjAlerta("Hubo un error en el proceso de digitalización. Intente de nuevo.");
 	}
 	if(verificaDigitalizacion!=null&&verificaDigitalizacion!="2"&&verificaDigitalizacion!="0"){
-		//msjAlerta("La identificación fue validadá correctamente, ingrese las fechas y formato para realizar la consulta.");
+		//msjAlerta("La identificación fue validada correctamente, ingrese las fechas y formato para realizar la consulta.");
 		 $('#cboTipoIdentificacion').prop('disabled', 'disabled');
 		$("#numId").prop('readonly', 'readonly');
 		$("#btnValidarId").addClass('disabled');
 	}
 	if(numeroAcuerdo!=null&&verificaDigitalizacion=="0"){
 		getNombre();
+	}
+	if(errMsg!=null){
+		msjAlerta(errMsg);
 	}
 })
 
@@ -254,6 +257,8 @@ function getNombre(){
 			    $("#idInternoPe").val(data.idInternoPe);
 			    $('#cboTipoIdentificacion').prop('disabled', false);
 				$("#numId").prop('readonly', false);
+				$("#numId").val("");
+				$("#txtTipoIdentificacion").val("");
 				$("#btnValidarId").removeClass('disabled');
 				verificaDigitalizacion="0";
 			}
@@ -294,10 +299,10 @@ function consultarInformacion(){
 			msjAlerta("Verificar el número de cuenta.");
 			return;
 		}
-		if(validId==false){
+		/*if(validId==false){
 			msjAlerta("Validar identificación del titular.");
 			return;
-		}
+		}*/
 	}
 	$("#relacion").val(JSON.stringify(relacionDoc));
 	//Se valida si se han ingresado ambas fechas.

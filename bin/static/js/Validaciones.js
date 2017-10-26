@@ -262,3 +262,28 @@ function CargaComboLimitado(Combo, nomCatalago,Valor){
         console.log("Ocurri&#243; un error: loadAll: " +err.message);
     }
 }
+
+function catalogo(nomCatalago, tipo){
+    try {
+    	var active = dataBase.result;
+        var data = active.transaction([nomCatalago], "readonly");
+        var object = data.objectStore(nomCatalago);
+        object.openCursor().onsuccess = function (e) {
+            var result = e.target.result;
+            if (result === null) {
+            	cargaRow(tipo);
+                return;
+            }
+            if(tipo=="b"){
+            	catalogoTpBloqueo.push(result.value);
+            }
+            else if(tipo=="r"){
+            	catalogoTpRetenciones.push(result.value);
+            }
+            
+            result.continue();
+        };
+    } catch(err) {
+        console.log("Ocurrió un error loadAll: " +err.message);
+    }
+}

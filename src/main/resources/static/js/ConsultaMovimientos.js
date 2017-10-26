@@ -7,8 +7,8 @@ var contRetenciones=0;
 var anterior="";//Variable utilizada para quitar la seleccion del renglon anterior si es que existia uno ya seleccionado.
 var actual=0;//Variable utilizada para guardar el id del elemento seleccionado
 var loading;
+
 $(document).ready(function () {
-	
 	nomPath = window.location.pathname;
     nomPath = nomPath.substring(1, nomPath.length);
     nomPath = nomPath.split("/", 1);
@@ -17,14 +17,75 @@ $(document).ready(function () {
 	if(lstApuntes!=null){
 		cargaRow("ap");
 	}
+	startDB();
+	/*
 	if(lstBloqueos!=null){
-		cargaRow("b");
+		cargarCatalogosBloqueos();//"catalogo_bloqueos","b");
 	}
 	if(lstRetenciones!=null){
-		cargaRow("r");
+		cargarCatalogosRetenciones();//"catalogo_retenciones","r");
+	}*/
+	if(error!=null){
+		msjError(error);
 	}
-	
 })
+
+//Funcion para realizar el cambio de tipo de bloqueo por su descripcion.
+function startDB() {
+    try {
+
+        dataBase = indexedDB.open('bansefi', 1);
+        dataBase.onsuccess = function (e) {
+        	if(lstBloqueos!=null){
+        		catalogo("catalogo_bloqueos","b");
+        	}
+        	if(lstRetenciones!=null){
+        		catalogo("catalogo_retenciones","r");
+        	}
+        	/*var active = dataBase.result;
+            var data = active.transaction(["catalogo_bloqueos"], "readonly");
+            var object = data.objectStore("catalogo_bloqueos");
+            object.openCursor().onsuccess = function (e) {
+                var result = e.target.result;
+                if (result === null) {
+                	cargaRow("b");
+                    return;
+                }
+                catalogoTpBloqueo.push(result.value);
+                result.continue();
+            };*/
+        };
+    }catch (err) {
+        console.log("Ocurrió un error startDB: " + err.message);
+    }
+}
+
+//Funcion para realizar el cambio de tipo de retencion por su descripcion.
+function cargarCatalogosRetenciones() {
+    try {
+    	console.log(dataBase);
+    	if(dataBase.readyState=="done"){
+    		console.log("cargada");
+    	}
+        dataBase2 = indexedDB.open('bansefi', 1);
+        dataBase2.onsuccess = function (e) {
+        	var active = dataBase2.result;
+            var data = active.transaction(["catalogo_retenciones"], "readonly");
+            var object = data.objectStore("catalogo_retenciones");
+            object.openCursor().onsuccess = function (e) {
+                var result = e.target.result;
+                if (result === null) {
+                	cargaRow("r");
+                    return;
+                }
+                catalogoTpRetenciones.push(result.value);
+                result.continue();
+            };
+        };
+    }catch (err) {
+        console.log("Ocurrió un error startDB: " + err.message);
+    }
+}
 
 //Funcion para crear el mensaje de carga de las solicitudes.
 function iniBootbox(){
@@ -80,15 +141,9 @@ function detalleConsulta(info, tipo){
 	}
 }
 
-//Funcion para continuar con el flujo de la consulta de movimientos
-function continuar(){
-	$("#bsfoperador").val("bla");
-	$("#formContinuar").submit();
-}
-
 //Funcion para resaltar renglón de informacion seleccionada.
 //Se ingresan tambien los valores en los input del form a enviar 
-function seleccionado(id,tipo, index){
+function seleccionado(id,tipo, index, desc){
 	if(anterior!=""){
 		$("#"+anterior).removeClass('seleccionado');
 	}
@@ -97,6 +152,7 @@ function seleccionado(id,tipo, index){
 	$("#"+id).addClass('seleccionado');
 	//Se ingresan los valores que serán enviados para la consulta
 	$("#tipo").val(tipo);
+	$("#descripcion").val(desc);
 	
 }
 
@@ -113,7 +169,7 @@ function cargaRow(tipo){
 					if(lstApuntes.length>i){
 						var id=i+1;
 						StrHtml+="<tr id='movimiento"+id+"'" +
-									"onclick='seleccionado(\"movimiento"+id+"\",\"ap\","+id+")'>" +
+									"onclick='seleccionado(\"movimiento"+id+"\",\"ap\","+id+",\"\")'>" +
 									"<td>"+lstApuntes[i].concepto+"</td>" +
 									"<td>"+lstApuntes[i].fechaoperacion+"</td>" +
 									"<td>"+lstApuntes[i].fechavalor+"</td>" +
@@ -152,7 +208,9 @@ function cargaRow(tipo){
 					  });
 				}
 				else{
-					msjAlerta("No hay más registros para mostrar.");
+					if(contApuntes!=0){
+						msjAlerta("No hay más registros para mostrar.");
+					}
 				}
 				
 			}
@@ -166,9 +224,17 @@ function cargaRow(tipo){
 				for(i; i<contBloqueos;i++){
 					if(lstBloqueos.length>i){
 						var id=i+1;
+						var objTipo = catalogoTpBloqueo.find(function (element){
+							return element.identificador === lstBloqueos[i].tipo;
+						});
+						if(objTipo==undefined){
+							objTipo={
+								"descripcion":lstBloqueos[i].tipo
+							}
+						}
 						StrHtml+="<tr id='bloqueo"+id+"'" +
-									"onclick='seleccionado(\"bloqueo"+id+"\",\"b\","+id+")'>" +
-									"<td>"+lstBloqueos[i].tipo+"</td>" +
+									"onclick='seleccionado(\"bloqueo"+id+"\",\"b\","+id+", \""+objTipo.descripcion+"\")'>" +
+									"<td>"+objTipo.descripcion +"</td>" +
 									"<td>"+lstBloqueos[i].estado+"</td>" +
 									"<td>"+lstBloqueos[i].fechaAlta+"</td>" +
 									"<td>"+lstBloqueos[i].fechaVTO+"</td>" +
@@ -198,9 +264,17 @@ function cargaRow(tipo){
 				for(i; i<contRetenciones;i++){
 					if(lstRetenciones.length>i){
 						var id=i+1;
+						var objTipo = catalogoTpRetenciones.find(function (element){
+							return element.identificador === lstRetenciones[i].tipo.trim();
+						});
+						if(objTipo==undefined){
+							objTipo={
+								"descripcion":lstRetenciones[i].tipo
+							}
+						}
 						StrHtml+="<tr id='retencion"+id+"'" +
-									"onclick='seleccionado(\"retencion"+id+"\",\"r\","+id+")'>" +
-									"<td>"+lstRetenciones[i].tipo+"</td>" +
+									"onclick='seleccionado(\"retencion"+id+"\",\"r\","+id+",\""+objTipo.descripcion+"\")'>" +
+									"<td>"+objTipo.descripcion+"</td>" +
 									"<td>"+lstRetenciones[i].estado+"</td>" +
 									"<td>"+lstRetenciones[i].fechaAlta+"</td>" +
 									"<td>"+lstRetenciones[i].fechaVTO+"</td>" +
@@ -257,6 +331,18 @@ function msjAlerta(text) {
 	
 		}
   });
+}
+
+//Funcion para pintar la ventana de mensaje emergente de error.
+//PARAM text Variable que contiene la cadena que se mostrara en el mensaje.
+function msjError(text) {
+bootbox.alert({
+	message : '<p style="overflow: hidden; float: left; margin-left: 5%;" class="">' + '<img style="margin: -220px 0px -240px 0px;" src="/' + nomPath + 'img/messages-g.png" /></p>'
+		+ '<div class="text-center text-alert"><label>¡Atención!</label><br/>' + '<label>' + text + '</label></div>',
+		callback : function() {
+			$("#formOtraBusqueda").submit();
+		}
+});
 }
 
 //Función para imprimir el reporte.

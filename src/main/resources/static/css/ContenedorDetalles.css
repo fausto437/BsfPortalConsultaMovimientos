@@ -29,3 +29,7 @@
 	padding: 0;
     width: 2%;
 }
+.disabled-click{
+	cursor: not-allowed; /* aesthetics */
+    pointer-events: none;
+}

@@ -23,4 +23,6 @@ public class ConsultaPrincipalDTO {
 	private List<GralBloqueoDTO> bloqueos;
 	@Getter @Setter
 	private List<GralRetencionDTO> retenciones;
+	@Getter @Setter
+	private String error;
 }

@@ -18,5 +18,7 @@ public class ResConsultaNombreDTO{
 	@Getter @Setter
 	private CabeceraDTO cabecera;
 	@Getter @Setter
-	private List<NombreDTO> nombres;
+	private String nombre;
+	@Getter @Setter
+	private String idInternoPe;
 }
