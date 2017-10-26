@@ -7,7 +7,7 @@ var charReplacer = '#';
 	$(document).ready(function ($) {
 	    var isLateralNavAnimating = false;
 	
-	    //abrir y cerrar navegacion lateral
+	    //abrir y cerrar navegaci�n lateral
 	    $('.cd-nav-trigger').on('click', function (event) {
 	        event.preventDefault();
 	        //stop if nav animation is running 
@@ -91,7 +91,7 @@ String.prototype.removeDiacritics = function() {
 }
 
 /**
- * Funicion llamada antes de cambiar de pantalla para mostrar la carga de la 
+ * Funi�n llamada antes de cambiar de pantalla para mostrar la carga de la 
  * siguiente ventana 
  */
 window.onbeforeunload = function(e) {

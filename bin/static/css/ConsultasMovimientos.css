@@ -1,0 +1,120 @@
+@CHARSET "ISO-8859-1";
+
+.ContenedorCliente{
+	padding:15px;
+	background-color: #0499ca;
+}
+.ContenedorRepresentnte{
+	padding:15px;
+	background-color: #6f6f71;
+}
+.ContenedorCuentas{
+	background-color: #CCC;
+	height: 180px;
+	text-align:center;
+}
+.LabelCliente{
+	color:#FFF;
+}
+.DatosCliente{
+	font-weight:bold;
+	color: #FFF;
+}
+.TablaCuentas{
+	width:100%;
+}
+.TablaCuentas th{
+	background-color: #CCC;
+	text-align: center;
+	padding: 5px;
+}
+.TablaCuentas td{
+	background-color: #FFF;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #D9EBF5;
+  cursor:pointer;
+}
+.btnAltaCuenta{
+	background-color: transparent;
+	border: none;
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 20px;
+	background-position: center;
+	border: none;
+	background-image: url("../img/encabezado/avatar.png");
+	display:inline-block;
+	background-size: cover;
+	vertical-align:sub;
+}
+.btnOpciones{
+	background-color: transparent;
+	border: none;
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 20px;
+	background-position: center;
+	border: none;
+	background-image: url("../img/encabezado/avatar.png");
+	display:inline-block;
+	background-size: cover;
+	vertical-align:sub;
+}
+.btnImprimir{
+	background-color: transparent;
+	border: none;
+	background-repeat: no-repeat;
+	height: 20px;
+	width: 20px;
+	background-position: center;
+	border: none;
+	background-image: url("../img/encabezado/avatar.png");
+	display:inline-block;
+	background-size: cover;
+	vertical-align:sub;
+}
+.seccion{
+	background-color:#F3F3F3;
+	padding: 28px;
+}
+.contenedor-anotaciones{
+	margin-top:20px;
+	padding: 10px 15px;
+	border: solid 2px #FCB92C;
+	background-color:#FFF;
+}
+.contenedor-anotaciones>h2{
+	color:#8D7855;
+}
+.contenedor-anotaciones>div>div{
+	margin-bottom:20px;
+}
+.contenedor-anotaciones>div>div>.textAzul{
+	font-weight:600;
+}
+.cargar-registros{
+	cursor:pointer;
+}
+.seccion>.Datos>table{
+	background-color:#FFF;
+}
+.seccion>.Datos>table>thead>tr>th{
+	text-align: center;
+	background-color:#CCC;
+}
+.seccion>.Datos>table>tbody>:hover td, .table-hover tbody tr:hover th {
+  background-color: #D9EBF5;
+  cursor:pointer;
+ }
+ .seccion>.Datos>table>tbody>.seleccionado{
+ 	background-color:#0499ca;
+ }
+ .detalle-apunte{
+ 	width:160px;
+ 	background-color:#EBEBEB;
+ 	color:#ACB0B4;
+ }
+ .sin-registros{
+ 	font-weight:bold;
+ }

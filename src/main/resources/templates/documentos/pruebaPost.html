@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title>Prueba POST</title>
+</head>
+<body>
+	<br />
+	<br />
+	<br />
+ 	<form th:action="@{/documentos}" method="POST" th:object="${DocumentosMODEL}" >
+ 		bsf
+ 		<input name="bsfOperador" id="bsfOperador" />
+ 		<br /> IdIntPE -->
+ 		<input name="idIntPe" id="idIntPe" />
+ 		<button id="btn" type="submit">Abrir Buscar</button>
+ 	</form>
+	<!--<form th:action="@{/addDocumentos}" method="POST" th:object="${AddDocumentosMODEL}" >
+		bsf
+		<input name="bsfOperador" id="bsfOperador" />
+		<br /> IdIntPE
+		<input name="idIntPe" id="idIntPe" />
+		<br /> nombre
+		<input name="nombrePersonaMoral" id="nombrePersonaMoral" />
+		<button id="btn" type="submit">Abrir Buscar</button>
+	</form>-->
+</body>
+</html>

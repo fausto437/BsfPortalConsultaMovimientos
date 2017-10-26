@@ -1,9 +1,5 @@
 #
-<<<<<<< HEAD
 #Mon Oct 23 16:52:38 CDT 2017
-=======
-#Tue Oct 17 18:50:07 CDT 2017
->>>>>>> branch 'desarrollo' of https://github.com/fausto437/BsfPortalConsultaTransacciones.git
 org.eclipse.jdt.core.compiler.debug.localVariable=generate
 org.eclipse.jdt.core.compiler.compliance=1.8
 org.eclipse.jdt.core.compiler.codegen.unusedLocal=preserve
