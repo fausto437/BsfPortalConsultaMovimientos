@@ -18,13 +18,6 @@ $(document).ready(function () {
 		cargaRow("ap");
 	}
 	startDB();
-	/*
-	if(lstBloqueos!=null){
-		cargarCatalogosBloqueos();//"catalogo_bloqueos","b");
-	}
-	if(lstRetenciones!=null){
-		cargarCatalogosRetenciones();//"catalogo_retenciones","r");
-	}*/
 	if(error!=null){
 		msjError(error);
 	}
@@ -42,18 +35,6 @@ function startDB() {
         	if(lstRetenciones!=null){
         		catalogo("catalogo_retenciones","r");
         	}
-        	/*var active = dataBase.result;
-            var data = active.transaction(["catalogo_bloqueos"], "readonly");
-            var object = data.objectStore("catalogo_bloqueos");
-            object.openCursor().onsuccess = function (e) {
-                var result = e.target.result;
-                if (result === null) {
-                	cargaRow("b");
-                    return;
-                }
-                catalogoTpBloqueo.push(result.value);
-                result.continue();
-            };*/
         };
     }catch (err) {
         console.log("Ocurrió un error startDB: " + err.message);

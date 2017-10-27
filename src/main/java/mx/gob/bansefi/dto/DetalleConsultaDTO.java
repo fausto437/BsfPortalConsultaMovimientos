@@ -147,6 +147,8 @@ public class DetalleConsultaDTO {
 	@Getter	@Setter
 	private String importePendiente;
 	@Getter	@Setter
+	private String tipoLiquidacion;
+	@Getter	@Setter
 	private ArrayList<LiquidacionDTO> liquidaciones;
 	//DATOS DE EMISION
 	@Getter	@Setter

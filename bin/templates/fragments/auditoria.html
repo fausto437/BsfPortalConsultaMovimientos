@@ -36,7 +36,7 @@
             		<label class="form-control vertical-align">Centro Operaci&oacute;n: </label>
             	</div>
             	<div class="col-md-2 col-xs-2">
-            		<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            		<input class="form-control" th:value="${Model.codCentro}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
@@ -101,6 +101,11 @@
 	        		<input class="hidden" th:field="*{fechaOperacion}"/>
 	        		<input class="hidden" th:field="*{horaOperacion}"/>
 	        		<input class="hidden" th:field="*{codAuditoria}"/>
+	        		<input class="hidden" th:field="*{codCentro}"/>
+	        		<input class="hidden" th:field="*{descCentro}"/>
+	        		<input class="hidden" th:field="*{descCentroActual}"/>
+	        		<input class="hidden" th:field="*{nombreEmpleado}"/>
+	        		<input class="hidden" th:field="*{situacion}"/>
 		        	<button class="btn btn-default detalle-apunte" type="submit">M&aacute;s</button>
 		        </form>
         	</div>

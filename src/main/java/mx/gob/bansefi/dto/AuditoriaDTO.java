@@ -22,7 +22,13 @@ public class AuditoriaDTO{
 	@Getter @Setter
 	private String centro;
 	@Getter @Setter
+	private String nombreCentro;
+	@Getter @Setter
+	private String nombreSucursal;
+	@Getter @Setter
 	private String empleado;
+	@Getter @Setter
+	private String nombreEmpleado;
 	@Getter	@Setter
 	private String autorizador;
 	@Getter	@Setter

@@ -299,10 +299,10 @@ function consultarInformacion(){
 			msjAlerta("Verificar el número de cuenta.");
 			return;
 		}
-		if(validId==false){
+		/*if(validId==false){
 			msjAlerta("Validar identificación del titular.");
 			return;
-		}
+		}*/
 	}
 	$("#relacion").val(JSON.stringify(relacionDoc));
 	//Se valida si se han ingresado ambas fechas.

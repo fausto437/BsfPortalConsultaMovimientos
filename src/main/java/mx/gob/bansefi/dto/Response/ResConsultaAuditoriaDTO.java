@@ -16,7 +16,9 @@ import mx.gob.bansefi.dto.GralAnotacionDTO;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResConsultaAuditoriaDTO extends CabeceraDTO {
-    @Getter @Setter
+public class ResConsultaAuditoriaDTO {
+	@Getter @Setter
+    private CabeceraDTO cabecera;
+	@Getter @Setter
     private ArrayList<AuditoriaDTO> auditorias;
 }

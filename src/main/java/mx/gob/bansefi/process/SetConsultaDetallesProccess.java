@@ -47,7 +47,7 @@ public class SetConsultaDetallesProccess {
 		detalles.setMoneda(detalleApunte.getMoneda());
 		detalles.setTipoOperacion(detalleApunte.getTipoOperacion());
 		detalles.setConcepto(detalleApunte.getConcepto());
-		detalles.setConceptoCorto(detalleApunte.getConcepto()==null?"":detalleApunte.getConcepto().replaceAll("[0-9]", ""));
+		detalles.setConceptoCorto(detalleApunte.getTexto()==null?"":detalleApunte.getTexto());
 		try {
 			detalles.setImporte(""+df.parse(detalleApunte.getImporte()));
 		} catch (ParseException e) {
@@ -59,52 +59,62 @@ public class SetConsultaDetallesProccess {
 		List<SituacionApunteDTO> lstSitApunte = new ArrayList<SituacionApunteDTO>();
 		SituacionApunteDTO sitApunte = new SituacionApunteDTO();
 		if(detalleApunte.getIndicador1()!=null) {
-			sitApunte.setIndicador(detalleApunte.getIndicador1());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto1());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor1());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador2()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador2());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto2());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor2());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador3()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador3());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto3());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor3());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador4()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador4());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto4());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor4());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador5()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador5());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto5());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor5());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador6()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador6());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto6());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor6());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador7()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador7());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto7());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor7());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador8()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador8());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto8());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor8());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador9()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador9());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto9());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor9());
 			lstSitApunte.add(sitApunte);
 		}
 		if(detalleApunte.getIndicador10()!=null) {
 			sitApunte = new SituacionApunteDTO();
-			sitApunte.setIndicador(detalleApunte.getIndicador10());
+			sitApunte.setIndicador(detalleApunte.getIndicador_texto10());
+			sitApunte.setSituacion(detalleApunte.getIndicador_valor10());
 			lstSitApunte.add(sitApunte);
 		}
 		
@@ -157,6 +167,7 @@ public class SetConsultaDetallesProccess {
 		DetalleConsultaDTO detalles = new DetalleConsultaDTO();
 		detalles.setTitulo("Detalle de Anotación");
 		detalles.setCodEmpleado(res.getIdEmpleado());
+		detalles.setNombreEmpleado(res.getNombreEmpleado().equals("no hay")?"":res.getNombreEmpleado());
 		detalles.setFecha(res.getFechaUltimaModificacion());
 		switch(codTipo) {
 			case "1":{
@@ -184,10 +195,13 @@ public class SetConsultaDetallesProccess {
 		detalles.setFechaContable(res.getAuditorias().get(0).getFechaContable());
 		detalles.setFechaOperacion(res.getAuditorias().get(0).getFechaOperacion());
 		detalles.setCodAuditoria(res.getAuditorias().get(0).getCodigo());
-		detalles.setCentro(res.getAuditorias().get(0).getCentro());
+		detalles.setCodCentro(res.getAuditorias().get(0).getCentro());
+		detalles.setDescCentroActual(res.getAuditorias().get(0).getNombreSucursal());
 		detalles.setCodEmpleado(res.getAuditorias().get(0).getEmpleado());
+		detalles.setNombreEmpleado(res.getAuditorias().get(0).getNombreEmpleado());
+		detalles.setDescCentro(res.getAuditorias().get(0).getNombreCentro());
 		detalles.setAutorizador(res.getAuditorias().get(0).getAutorizador());
-		detalles.setEstatus(res.getAuditorias().get(0).getEstado());
+		detalles.setSituacion(SetSituacion(res.getAuditorias().get(0).getEstado()));
 		try {
 			String nueva_hora=res.getAuditorias().get(0).getHoraOperacion().substring(0, 2)+":"+res.getAuditorias().get(0).getHoraOperacion().substring(2, 4)+":"+res.getAuditorias().get(0).getHoraOperacion().substring(4, 6);
 			detalles.setHoraOperacion(nueva_hora);
@@ -293,11 +307,17 @@ public class SetConsultaDetallesProccess {
 			detalles.setPagoPendiente("");
 			e.printStackTrace();
 		}
+		try {
+			String nueva_fecha=res.getFechaVencimiento().substring(6, 8)+"/"+res.getFechaVencimiento().substring(4, 6)+"/"+res.getFechaVencimiento().substring(0, 4);
+			detalles.setFechaVto(nueva_fecha);
+		} catch (Exception e) {
+			detalles.setFechaVto("");
+			e.printStackTrace();
+		}
 		detalles.setCentro(res.getCentro());
 		detalles.setNumAcuerdo(res.getAcuerdo());
 		detalles.setEstado(res.getEstado());
-		detalles.setSituacionPago(res.getSituacionPago());
-		detalles.setFechaVto("");
+		detalles.setSituacionPago(res.getSituacionPago());	
 		return detalles;
 	}
 	
@@ -315,6 +335,9 @@ public class SetConsultaDetallesProccess {
 		}break;
 		case "C":{
 			situacion= "CANCELADO";
+		}break;
+		default:{
+			situacion= "";
 		}break;
 	}
 	return situacion;

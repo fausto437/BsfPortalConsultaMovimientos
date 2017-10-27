@@ -712,6 +712,7 @@ public class ConsultasController {
 				req.setPassword(bsfOp.getBSFOPERADOR().getPASSTCB());
 				req.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
 				req.setTerminal(bsfOp.getBSFOPERADOR().getTERMINAL());
+				req.setSucursal(bsfOp.getBSFOPERADOR().getCENTRO());
 				req.setAcuerdo(DatosConsulta.getNumAcuerdo());
 				req.setCodcuenta(DatosConsulta.getIdTipoCuenta());
 				req.setDetalle(DatosConsulta.getNumero());
@@ -752,11 +753,15 @@ public class ConsultasController {
 				detalles.setEntidad(bsfOp.getBSFOPERADOR().getENTIDAD());
 				detalles.setCodCentroActual(bsfOp.getBSFOPERADOR().getCENTRO());
 				detalles.setCodEmpleado(DatosConsulta.getCodEmpleado());
+				detalles.setNombreEmpleado(DatosConsulta.getNombreEmpleado());
 				detalles.setCodEmpleadoAutorizador(DatosConsulta.getAutorizador());
 				detalles.setTerminal(DatosConsulta.getTerminal());
 				detalles.setFechaOperacion(DatosConsulta.getFechaOperacion());
 				detalles.setHoraOperacion(DatosConsulta.getHoraOperacion());
 				detalles.setCodTransaccion(DatosConsulta.getCodAuditoria());
+				detalles.setDescCentro(DatosConsulta.getDescCentro());
+				detalles.setDescCentroActual(DatosConsulta.getDescCentroActual());
+				detalles.setSituacion(DatosConsulta.getSituacion());
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}	
@@ -813,6 +818,7 @@ public class ConsultasController {
             		ResConsultaLiquidacionDTO res = wsServicios.consultaLiquidacion(req);
             		
             		detalles=setDetalles.SetConsultaLiquidacion(res);
+            		detalles.setTipoLiquidacion(DatosConsulta.getConceptoCorto());
             		
             	}
             	if(DatosConsulta.getConcepto().contains("EMI")) {

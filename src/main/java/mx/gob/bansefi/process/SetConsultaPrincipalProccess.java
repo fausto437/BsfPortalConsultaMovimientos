@@ -413,6 +413,9 @@ public class SetConsultaPrincipalProccess {
 			case "C":{
 				situacion= "CANCELADO";
 			}break;
+			default:{
+				situacion= "";
+			}break;
 		}
 		return situacion;
 	}

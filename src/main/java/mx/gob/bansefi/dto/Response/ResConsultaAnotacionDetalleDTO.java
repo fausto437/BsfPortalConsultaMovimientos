@@ -16,6 +16,8 @@ public class ResConsultaAnotacionDetalleDTO extends CabeceraDTO{
 	@Getter @Setter
 	private String idEmpleado;
 	@Getter @Setter
+	private String nombreEmpleado;
+	@Getter @Setter
 	private String fechaPlanificacion;
 	@Getter @Setter
 	private String fechaUltimaModificacion;
