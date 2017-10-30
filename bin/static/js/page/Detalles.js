@@ -12,6 +12,7 @@ $(document).ready(function () {
     nomPath = nomPath.substring(1, nomPath.length);
     nomPath = nomPath.split("/", 1);
     nomPath = nomPath + "/";
+    parent.setFrame();
 });
 
 //Función para consultar los datos de auditoría.

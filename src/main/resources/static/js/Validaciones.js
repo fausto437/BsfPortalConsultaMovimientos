@@ -232,7 +232,7 @@ function CargaComboRestringido(Combo, nomCatalago,Valor){
 }
 
 function CargaComboLimitado(Combo, nomCatalago,Valor){
-	var limites=["51","52","54","58","59","60","64","65","66","67","68","69","70"];
+	var limites=["51","52","54","58","59","60","64","65","66","67","68","69","70","72"];
     try {
         var active = dataBase.result;
         var data = active.transaction([nomCatalago], "readonly");

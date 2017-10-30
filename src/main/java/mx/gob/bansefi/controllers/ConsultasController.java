@@ -296,8 +296,8 @@ public class ConsultasController {
     		    	        		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
     		    	        		reqApuntes.setNumsec("0");
     		    	        		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
-    		    	        		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":"");
-    		    	        		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":"");
+    		    	        		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":formatoFechaBusqueda(DatosGenerales.getFechaDesde()));
+    		    	        		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":formatoFechaBusqueda(DatosGenerales.getFechaHasta()));
     		    	        		reqApuntes.setAcceso("S");
     		    	        		reqApuntes.setImpsdo("0");
     		    	        		reqApuntes.setFormato(DatosGenerales.getFormato());
@@ -470,8 +470,8 @@ public class ConsultasController {
 	    		reqApuntes.setUsuario(bsfOp.getBSFOPERADOR().getUSERTCB());
 	    		reqApuntes.setNumsec("0");
 	    		reqApuntes.setAcuerdo(DatosGenerales.getNumAcuerdo());
-	    		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":DatosGenerales.getFechaDesde());
-	    		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":DatosGenerales.getFechaHasta());
+	    		reqApuntes.setFechadesde(DatosGenerales.getFechaDesde()==null||DatosGenerales.getFechaDesde().isEmpty()?"00/00/0000":formatoFechaBusqueda(DatosGenerales.getFechaDesde()));
+	    		reqApuntes.setFechahasta(DatosGenerales.getFechaHasta()==null||DatosGenerales.getFechaHasta().isEmpty()?"00/00/0000":formatoFechaBusqueda(DatosGenerales.getFechaHasta()));
 	    		reqApuntes.setAcceso("S");
 	    		reqApuntes.setImpsdo("0");
 	    		reqApuntes.setFormato(DatosGenerales.getFormato());
@@ -885,6 +885,17 @@ public class ConsultasController {
 		else {
 			return null;
 		}
+    }
+    
+    public String formatoFechaBusqueda(String fecha) {
+    	String nueva_fecha="";
+    	try {
+    		fecha=fecha.replaceAll("/", "");
+			nueva_fecha=fecha.substring(4, 8)+fecha.substring(2, 4)+fecha.substring(0, 2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return nueva_fecha;
     }
 
 }
