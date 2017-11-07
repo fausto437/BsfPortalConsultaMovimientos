@@ -1,8 +1,5 @@
 package mx.gob.bansefi.process;
 
-import mx.gob.bansefi.dto.Request.GetLocalidadDTO;
-import mx.gob.bansefi.dto.Request.GetLocalidadRequestDTO;
-import mx.gob.bansefi.dto.Response.GetLocalidadResponseDTO;
 import mx.gob.bansefi.services.WsServicios;
 //import scala.annotation.meta.setter;
 
@@ -25,8 +22,6 @@ import java.util.List;
 public class SetReporteProccess {
     @Value("${url.context}")
     private String urlcontext;
-    @Value("${url.getLocalidad}")
-    private String urlgetLocalidad;
 
     private DecimalFormat df = new DecimalFormat("0.00");
     public WsServicios ArmarRequest( ) {

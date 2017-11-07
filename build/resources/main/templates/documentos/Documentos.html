@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/Wizard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/PersonasMorales.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/page/Documentos.js}"></script>
+    <script th:src="@{/js/page/digitalizarAlta.js}"></script>
+    <title>Alta Persona Moral</title>
+    <script th:inline="javascript">
+        idPersona = [[${model.idIntPe}]];
+        bsfOperador = [[${model.bsfOperador}]];
+        console.log(bsfOperador)
+        bsfOperadorDTO = [[${model.bsfOperadorDTO}]];
+        console.log(bsfOperadorDTO)
+
+        var txtTipoCedula=[[${model.bsfOperadorDTO}]];
+        var titulo=[[${model.titulo}]];
+        var identificacionPM=[[${model.identificacionPM}]];
+        listDocumentos = [[${list}]];
+    </script>
+</head>
+<body>
+<form id="formDigita" name="formDigita" method="POST" th:action="${urlActionBack}" target="ifrmModalDigitalizacion">
+    <input type="hidden" id="TRANSPORT" name="TRANSPORT" value=""/>
+</form>
+<form id="formActualizarPM" method="POST" th:action="@{/editPM2}" class="hidden">
+    <input id="bsfOperador" name="bsfOperador"/>
+    <input id="idIntPe" name="idIntPe"/>
+    <input id="titulo" name="titulo"/>
+    <input id="identificacionPM" name="identificacionPM"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+                <button id="breadcum" name="breadcum"
+                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                    <span class="ui-button-text ui-c">ui-button</span>
+                </button>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo">Consulta de Movimientos</label>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/> <br/>
+    <div class="row">
+        <div class="contenedor-campos">
+            <div id="ifrmModalDigitaContainerRet" name="ifrmModalDigitaContainerRet"
+                 style="height: 1050px" padding="border-width: 10px;">
+                <iframe id="ifrmModalDigitalizacion" name="ifrmModalDigitalizacion"
+                        style="border: 0; width: 100%; height: 100%;" padding="border-width: 10px;"></iframe>
+            </div>
+            <div id="fadeRet" class="black_overlay"></div>
+            <br/>
+            <!-- 			</form> -->
+        </div>
+    </div>
+    <br/>
+    <ul class="list-inline pull-left ">
+        <li>
+            <button id="breadcumCancel" type="button" class="btn btn-default divStep1 btnMenuDinamico"
+                    style="width: 150px; background-color: #ebebeb !important">Salir
+            </button>
+        </li>
+    </ul>
+    <ul class="list-inline pull-right ">
+        <li>
+            <button onclick="imprimir();" type="button" class="btn btn-primary" style="width: 150px;">Imprimir C&eacute;dula</button>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

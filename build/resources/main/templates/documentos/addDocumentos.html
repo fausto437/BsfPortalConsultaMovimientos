@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <!-- Agregar los estilos    -->
+    <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
+    <link th:href="@{/css/base.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/Wizard.css}" rel="stylesheet"/>
+    <link th:href="@{/css/PersonasMorales.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
+    <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+    <!-- Agregar los scriptss   -->
+    <script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+    <!--<script th:src="@{/js/DatoGenerales.js}"></script>  -->
+    <script th:src="@{/js/bootbox.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
+    <script th:src="@{/js/bootstrap-select.js}"></script>
+    <script th:src="@{/js/page/Documentos.js}"></script>
+    <script th:src="@{/js/page/digitalizarConsulta.js}"></script>
+    <title>Alta Persona Moral</title>
+    <script th:inline="javascript">
+        idPersona = [[${model.idIntPe}]];
+        bsfOperador = [[${model.bsfOperador}]];
+        bsfOperadorDTO = [[${model.bsfOperadorDTO}]];
+        listDocumentos = [[${list}]];
+        nomPe = [[${model.nombrePersonaMoral}]];
+    </script>
+</head>
+<body>
+<!-- 	<p style="overflow: hidden; float: left;" class="hidden"> -->
+<!-- 		<img style="margin: -220px 0px -260px 0px;" th:src="@{/img/messages-g.png}" /> -->
+<!-- 	</p> -->
+<!-- 	<p style="overflow: hidden; float: left;" class="hidden"> -->
+<!-- 		<img style="margin: -8px 0px -470px 0px;" th:src="@{/img/messages-g.png}" /> -->
+<!-- 	</p> -->
+<!-- 	<p style="overflow: hidden; float: left;" class="hidden"> -->
+<!-- 		<img style="margin: -390px 0px -90px 0px;" th:src="@{/img/messages-g.png}" /> -->
+<!-- 	</p> -->
+<form id="formDigita" name="formDigita" method="POST" th:action="${urlActionBack}" target="ifrmModalDigitalizacion">
+    <input type="hidden" id="TRANSPORT" name="TRANSPORT" value=""/>
+</form>
+<form id="formFicha" name="formDigita" method="POST" th:action="@{/FichaCliente}">
+    <input type="hidden" id="bsfOperadorFicha" name="BSFOPERADOR"/>
+</form>
+<div class="container_48">
+    <div class="contenedor">
+        <div class="contenedor-form">
+            <div class="titulo centrar-objeto btn-inline-set">
+                <button id="returFicha" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+                    <span class="ui-button-text ui-c">ui-button</span>
+                </button>
+                <h1>
+                    <label class="titulo h1" id="lblTitulo">Documentos de cliente </label>
+                    <label class="textAzul h1" th:text="${model.nombrePersonaMoral}"></label>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <br/> <br/>
+
+    <div class="row">
+        <div class="contenedor-campos">
+            <div class="Datos margin2" id="documentos1">
+                <h3 class="textAzul">Seleccione el tipo de documento que va a digitalizar</h3>
+
+                <p>Tipo Documento</p>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 40%">
+                            <select id="tipo_documento" class="form-control" style="width: 100%">
+                                <option value="">SELECCIONE</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button id="addDoc" class="ui-button ui-widget ui-state-default ui-corner-all
+								ui-button-icon-only btn-icono btn-anadir" alt="Añadir" title="" type="button"
+                                    role="button"
+                                    aria-disabled="false" oldtitle="Añadir" aria-describedby="ui-tooltip-j_idt84">
+                                <span class="ui-button-icon-left ui-icon ui-c ui-icon-circle-plus"></span>
+                                <span class="ui-button-text ui-c">ui-button</span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+
+                <div th:if="${not #lists.isEmpty(list)}" align="center">
+                    <table id="tblListDocs" class="table table-striped table-bordered dt-responsive nowrap"
+                           style="boder: 1px solid; width: 70%">
+                        <thead>
+                        <tr class="Encabezado">
+                            <th>Tipo Documento</th>
+                            <th>Descripci&oacute;n</th>
+                            <th>Fecha</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="documents,id : ${list}" style="cursor: pointer">
+                            <td th:id="${documents.id_documento}" onclick="muestraDoc(this)"
+                                th:text="${documents.id_tipo_documento}" style="width: 100px;"></td>
+                            <td th:id="${documents.id_documento}" onclick="muestraDoc(this)"
+                                th:text="${documents.descripcion}"></td>
+                            <td th:id="${documents.id_documento}" onclick="muestraDoc(this)"
+                                th:text="${documents.fecha}"></td>
+                            <td th:id="${documents.id_documento}">
+                                <span th:id="${documents.id_documento}" onclick="bajaDocumento(this)"
+                                      class="ui-button-icon-left ui-icon ui-c ui-icon-trash"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <br/> <br/>
+                </div>
+            </div>
+            <div id="ifrmModalDigitaContainerRet" name="ifrmModalDigitaContainerRet" class="hidden"
+                 style="height: 1050px" padding="border-width: 10px;">
+                <iframe id="ifrmModalDigitalizacion" name="ifrmModalDigitalizacion"
+                        style="border: 0; width: 100%; height: 100%;" padding="border-width: 10px;"></iframe>
+            </div>
+            <div id="fadeRet" class="black_overlay"></div>
+            <br/>
+        </div>
+    </div>
+    <br/>
+    <ul class="list-inline pull-left ">
+        <li>
+            <button id="breadcumCancel" type="button" class="btn btn-default divStep1 btnMenuDinamico"
+                    style="width: 150px; background-color: #ebebeb !important">Salir
+            </button>
+        </li>
+    </ul>
+    <ul class="list-inline pull-right ">
+        <li>
+            <button type="button" class="btn btn-primary" style="width: 150px;">Imprimir C&eacute;dula</button>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

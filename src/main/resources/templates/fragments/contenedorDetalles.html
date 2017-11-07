@@ -11,27 +11,27 @@
              <div class="row tabla-titulos">
 	             <div class="col-md-3 col-xs-3">
 	             	<span>TIPO: </span>
-	             	<label class="datos-informacion">INFORMATIVA</label>
+	             	<label class="datos-informacion" th:text="${Model.tipo}"></label>
 	             </div>
 	             <div class="col-md-6 col-xs-6">
 	             	<span>SUBC&Oacute;DIGO: </span>
-	             	<label class="datos-informacion">ANOTACION GENERAL EXPEDIENTE</label>
+	             	<label class="datos-informacion" th:text="${Model.subcodigo}"></label>
 	             </div>
 	             <div class="col-md-3 col-xs-3">
 	             	<span>&Aacute;REA: </span>
-	             	<label class="datos-informacion">COMERCIAL</label>
+	             	<label class="datos-informacion" th:text="${Model.area}"></label>
 	             </div>
              </div>
              <div class="row renglon-datos">
              	<div class="col-md-2 col-xs-2">
-             		<label>04/05/2014</label>
+             		<label th:text="${Model.fecha}"></label>
              	</div>
              	<div class="col-md-10 col-xs-10">
-             		<h3 class="textAzul">asociacion tarjeta incompleta</h3>
+             		<h3 class="textAzul" th:text="${Model.descripcion}"></h3>
              		<br/>
-             		<label>Empleado: </label><label> E1661194,</label><label>ALEXA EN LPARC</label>
+             		<label>Empleado: </label><label th:text="${Model.codEmpleado}"></label><label th:text="', '+${Model.nombreEmpleado}" th:if="${Model.nombreEmpleado} neq null"></label>
              		<br/>
-             		<label>No se pudo realizar la asociaci&oacute;n de la tarjeta</label>
+             		<label th:text="${Model.nota}"></label>
              	</div>
              </div>
         </div>
@@ -39,57 +39,77 @@
     <div th:fragment="apunte">
         <div class="contenedor-campos">
             <div class="row">
-            	<div class="col-md-12 col-xs-12">
-	            	<label>Titular de la cuenta: </label>
-	            	<input value="MARIA DE LOS ANGELES PEREZ FRAGA" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Titular de la cuenta: </label>
+            	</div>
+            	<div class="col-md-10 col-xs-10">
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
             <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Prod. Vendible: </label>
+            	</div>
             	<div class="col-md-3 col-xs-3">
-            		<label>Prod. Vendible: </label>
-            		<input value="Cuenta ahorro" readonly="readonly"/>
+            		<input class="form-control" th:value="${Model.prodVendible}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
-            <div class="row">
-            	<div class="col-md-3 col-xs-3">
-            		<label>Tipo cuenta: </label>
-            		<input value="01" readonly="readonly" style="width:30px;"/>
-            		<input value="Cliente" readonly="readonly"/>
+            <div class="row">	
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo cuenta: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.idTipoCuenta}" readonly="readonly"/>
             	</div>
             	<div class="col-md-2 col-xs-2">
-            		<label>N&uacute;mero: </label>	
-            		<input value="25" readonly="readonly" style="width:30px;"/>
+            		<input class="form-control" th:value="${Model.tipoCuenta}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">N&uacute;mero: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.numero}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-3 col-xs-3">
-            		<label>Fecha Contable: </label>
-            		<input value="07/03/2014" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Contable: </label>
             	</div>
             	<div class="col-md-3 col-xs-3">
-            		<label>Fecha Valor: </label>	
-            		<input value="10/03/2014" readonly="readonly"/>
+					<input class="form-control" th:value="${Model.fechaContable}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Valor: </label>
             	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.fechaValor}" readonly="readonly"/>
+	            </div>
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-3 col-xs-3">
-            		<label>Importe: </label>
-            		<input value="65,000.00" readonly="readonly" />
-            		<input value="H" readonly="readonly" style="width:30px;"/>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Importe: </label>
             	</div>
-            	<div class="col-md-3 col-xs-3">
-            		<label>Moneda: </label>	
-            		<input value="MXN" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.importe}" readonly="readonly" />
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.estatus}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Moneda: </label>	
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
             	</div>
             </div>
 			<br/>
            	<div class="row">
             	<div class="col-md-12 col-xs-12">
-            		<table class="table table-bordered" 
+            		<table class="table table-striped table-bordered" 
              				id="tblIndicadores"
              				style="width:50%;margin:0 auto;background-color:#FFF;">
                         <thead>
@@ -99,29 +119,9 @@
 	                        </tr>
                         </thead>
                         <tbody>
-                        <!-- 
-	                        <tr th:each="anotaciones,iterationStatus : ${Model}" th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.noanotacion} + '\',\'a\' );'">
-	                            <td th:text="${anotaciones.noanotacion}"></td>
-	                            <td th:text="${anotaciones.descr}"></td>
-	                            <td th:text="${anotaciones.tipoanotacion}"></td>
-	                            <td th:text="${anotaciones.fechactivacion}"></td>
-	                            <td th:text="${anotaciones.prioridad}"></td>
-	                        </tr> -->
-	                        <tr>
-	                        	<td>COMUNICACION CLIENTE</td>
-	                        	<td>NORMAL</td>
-	                        </tr>
-	                        <tr>
-	                        	<td>SIT. DE EXTRACTO</td>
-	                        	<td>EXTRACT</td>
-	                        </tr>
-	                        <tr>
-	                        	<td>SIT. DE ANULACION</td>
-	                        	<td>NORMAL</td>
-	                        </tr>
-	                        <tr>
-	                        	<td>CONTRAPARTIDA</td>
-	                        	<td>AUTOMATICA</td>
+	                        <tr th:each="sit : ${Model.sitApunte}">
+	                            <td th:text="${sit.indicador}"></td>
+	                            <td th:text="${sit.situacion}"></td>
 	                        </tr>
                         </tbody>
                     </table>
@@ -129,36 +129,251 @@
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-6 col-xs-6">
-            		<label>Tipo Operaci&oacute;n: </label>
-            		<input value="360001" readonly="readonly" />
-            		<label>: </label>
-            		<input value="LIQUIDACION CUENTAS VISTAS" readonly="readonly"/>
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo Operaci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.tipoOperacion}" readonly="readonly" />
+            	</div>
+            	<div class="col-md-1 col-xs-1 entre-inputs">
+            		<label class="form-control vertical-align">: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.conceptoCorto}" readonly="readonly"/>
             	</div>
             </div>
             <br/>
             <div class="row">
-            	<div class="col-md-6 col-xs-6">
-            		<label>Concepto: </label>
-            		<input value="LIQ. CTA. VISTAS 0034873" readonly="readonly" />
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Concepto: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.concepto}" readonly="readonly" />
             	</div>
             </div>
         </div>
         <br/>
         <div class="row">
         	<div class="col-md-3 col-xs-3">
-        		<button class="btn btn-default detalle-apunte">Salir</button>
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
         	</div>
         	<div class="col-md-3 col-xs-3 text-center">
-        		<button class="btn btn-default detalle-apunte">Auditor&iacute;a</button>
+	        	<form id="formAuditoria" name="formAuditoria" th:object="${Model}" class="hidden" method="POST" th:action="@{/auditoria}">
+	        		<input id="bsfOperadorAuditoria" name="bsfOperadorAuditoria"/>
+	        		<input th:field="*{idTipoCuenta}"/>
+	        		<input th:field="*{numAcuerdo}"/>
+	        		<input th:field="*{numero}"/>
+	        	</form>
+        		<button class="btn btn-default detalle-apunte" onclick="auditoria();">Auditor&iacute;a</button>
         	</div>
         	<div class="col-md-3 col-xs-3 text-center">
-        		<button class="btn btn-default detalle-apunte">M&aacute;s</button>
+        		<form id="formMasApunte" name="formMasApunte" th:object="${Model}" method="POST" th:action="@{/masApunte}">
+	        		<input id="bsfOperadorAuditoria" name="bsfOperadorAuditoria" class="hidden" />
+	        		<input th:field="*{titular}" class="hidden" />
+	        		<input th:field="*{prodVendible}" class="hidden" />
+	        		<input th:field="*{idTipoCuenta}" class="hidden" />
+	        		<input th:field="*{tipoCuenta}" class="hidden" />
+	        		<input th:field="*{moneda}" class="hidden" />
+	        		<input th:field="*{numero}" class="hidden" />
+	        		<input th:field="*{idOrigen}" class="hidden" />
+	        		<input th:field="*{conceptoCorto}" class="hidden" />
+	        		<button class="btn btn-default detalle-apunte" type="submit">M&aacute;s</button>
+	        	</form>
+        		
         	</div>
         	<div class="col-md-3 col-xs-3 text-right">
-        		<button class="btn btn-default detalle-apunte">Origen</button>
+        		<form id="formOrigen" name="formOrigen" th:object="${Model}" class="hidden" method="POST" th:action="@{/origen}">
+	        		<input id="bsfOperadorOrigen" name="bsfOperadorOrigen"/>
+	        		<input th:field="*{idTipoCuenta}"/>
+	        		<input th:field="*{numAcuerdo}"/>
+	        		<input th:field="*{numero}"/>
+	        		<input th:field="*{concepto}"/>
+	        		<input th:field="*{titular}"/>
+	        		<input th:field="*{prodVendible}"/>
+	        		
+	        		<input th:field="*{idOrigen}" class="hidden" />
+	        	</form>
+        		<button class="btn btn-default detalle-apunte" onclick="origen();">Origen</button>
         	</div>
         </div>
+        <br/>
+    </div>
+    <div th:fragment="bloqueo">
+        <div class="contenedor-campos">
+        	<div class="row">
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Acuerdo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">N&uacute;mero de Empleado: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.codEmpleado}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Centro: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            	</div>
+            </div>
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<label class="form-control vertical-align">Primer Titular de la cuenta: </label>
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo de bloqueo: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<input class="form-control" th:value="${Model.idTipoBloqueo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.tipoBloqueo}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Alta: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Motivo de Bloqueo: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+            		<input class="form-control" th:value="${Model.motivo}" readonly="readonly" />
+            	</div>
+            </div>
+			<br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Situaci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.situacion}" readonly="readonly" />
+            	</div>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+        	<div class="col-md-12 col-xs-12 text-center">
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
+        	</div>
+        </div>
+        <br/>
+    </div>
+    <div th:fragment="retencion">
+    	<div class="contenedor-campos">
+    		<div class="row">
+            	<div class="col-md-2 col-xs-2">
+	            	<label class="form-control vertical-align">Acuerdo: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+	            	<input class="form-control" th:value="${Model.numAcuerdo}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Centro: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.centro}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<label class="form-control vertical-align">Moneda: </label>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+	            	<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
+            	</div>
+            </div>
+            <div class="row">
+            	<div class="col-md-12 col-xs-12">
+            		<label class="form-control vertical-align">Primer Titular de la cuenta: </label>
+	            	<input class="form-control" th:value="${Model.titular}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Tipo de retencion: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.tipoRetencion}" readonly="readonly"/>
+            	</div>
+            	<div class="col-md-1 col-xs-1">
+            		<label class="form-control vertical-align">Situación: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+            		<input class="form-control" th:value="${Model.situacion}" readonly="readonly"/>
+            	</div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Importe de retencion: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.importe}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-1 col-xs-1">
+					<input class="form-control" th:value="${Model.moneda}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Alta: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaAlta}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Fecha Vencimiento: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.fechaVto}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+            <div class="row">
+            	<div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Cod. retenci&oacute;n: </label>
+            	</div>
+            	<div class="col-md-2 col-xs-2">
+					<input class="form-control" th:value="${Model.idTipoRetencion}" readonly="readonly"/>
+	            </div>
+	            <div class="col-md-2 col-xs-2">
+            		<label class="form-control vertical-align">Origen apunte: </label>
+            	</div>
+            	<div class="col-md-3 col-xs-3">
+					<input class="form-control" th:value="${Model.origen}" readonly="readonly"/>
+	            </div>
+            </div>
+            <br/>
+    	</div>
+    	<br/>
+    	<div class="row">
+        	<div class="col-md-12 col-xs-12 text-center">
+        		<button class="btn btn-default detalle-apunte" onclick="window.history.go(-1);">Salir</button>
+        	</div>
+        </div>
+        <br/>
     </div>
 </body>
 </html>

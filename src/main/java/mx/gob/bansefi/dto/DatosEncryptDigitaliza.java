@@ -4,36 +4,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class DatosEncryptDigitaliza {
-
+	@Getter @Setter
 	private String BSFOPERADOR;
+	@Getter @Setter
 	private String idInternoPe;
-	private String tipoDoc;
 	@Getter @Setter
 	private String descDoc;
 	@Getter @Setter
-	private String alta;
+	private String descDocDB;
 	@Getter @Setter
-	private String nombre;
-
-	public DatosEncryptDigitaliza() {
-		super();
-	}
-	public String getBSFOPERADOR() {
-		return BSFOPERADOR;
-	}
-	public void setBSFOPERADOR(String bSFOPERADOR) {
-		BSFOPERADOR = bSFOPERADOR;
-	}
-	public String getIdInternoPe() {
-		return idInternoPe;
-	}
-	public void setIdInternoPe(String idInternoPe) {
-		this.idInternoPe = idInternoPe;
-	}
-	public String getTipoDoc() {
-		return tipoDoc;
-	}
-	public void setTipoDoc(String tipoDoc) {
-		this.tipoDoc = tipoDoc;
-	}
+	private String codDoc;
+	@Getter @Setter
+	private String cuenta;
+	@Getter @Setter
+	private String idTCB;
+	@Getter @Setter
+	private String titular;
+	@Getter @Setter
+	private String alta;
 }

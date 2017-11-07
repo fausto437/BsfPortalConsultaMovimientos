@@ -11,25 +11,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GralAnotacionDTO {
-	@Getter @Setter
-	private String numCuenta;
-	@Getter @Setter
-	private String cliente;
-	//DATOS DE ANOTACIONES
-	@Getter @Setter
-	private String tipo;
-	@Getter @Setter
-	private String subcodigo;
-	@Getter @Setter
-	private String area;
-	@Getter @Setter
-	private String fecha;
 	@Getter	@Setter
-	private String descripcion;
-	@Getter	@Setter
-	private String codEmpleado;
-	@Getter	@Setter
-	private String nombreEmpleado;
-	@Getter	@Setter
-	private String nota;
+    String anotacion;
+    @Getter	@Setter
+    String descripcion;
+    @Getter	@Setter
+    String codAnt;
+    @Getter	@Setter
+    String fechaActivacion;
+    @Getter	@Setter
+    String prioridad;
+    @Getter	@Setter
+    String codSubAnt;
+    @Getter	@Setter
+    String tipoAnotacion;
+    @Getter	@Setter
+    String textSubAnt;
+    @Getter	@Setter
+    String area;
 }

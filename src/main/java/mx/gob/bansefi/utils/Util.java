@@ -11,25 +11,25 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * Autor: JosÈ ¡ngel Hern·ndez Gonz·lez
+ * Autor: Jos√© √Ångel Hern√°ndez Gonz√≥lez
  * Fecha: 29/03/2017
  */
 public final class Util<T> {
 
     /*
-     * Se define variable del mismo tipo que la clase para implementaciÛn de patrÛn singleton.
+     * Se define variable del mismo tipo que la clase para implementacion de patron singleton.
      */
     private static Util util;
 
     /*
-     * Constructor privado para construir patrÛn singleton.
+     * Constructor privado para construir patron singleton.
      */
     private Util() {
 
     }
 
     /*
-     * MÈtodo estatico que devuelve instancia del tipo de clase para patrÛn singleton.
+     * Metodo estatico que devuelve instancia del tipo de clase para patron singleton.
      */
     public static Util getInstance() {
         if(util == null)
@@ -38,7 +38,7 @@ public final class Util<T> {
     }
 
     /*
-     * MÈtodo utilitario para convertir un json a un objeto.
+     * Metodo utilitario para convertir un json a un objeto.
      */
     public Object jsonToObject(T objectRes, String json, ArrayList<String> nodos) throws ParseException {
         Gson gson = new Gson();
@@ -57,7 +57,7 @@ public final class Util<T> {
         }
     }
     /*
-     * MÈtodo utilitario para convertir un json a un objeto sin nodos.
+     * Metodo utilitario para convertir un json a un objeto sin nodos.
      */
     public Object jsonToObject(T objectRes, String json) throws ParseException {
         Gson gson = new Gson();
@@ -74,7 +74,7 @@ public final class Util<T> {
     }
 
     /*
-     * MÈtodo utilitario para convertir un objeto a un json.
+     * Metodo utilitario para convertir un objeto a un json.
      */
     public String objectToJson(T object) {
         Gson gson = new Gson();
@@ -82,7 +82,7 @@ public final class Util<T> {
     }
 
     /*
-     * MÈtodo utilitario para realizar llamada REST por el mÈtodo POST
+     * Metodo utilitario para realizar llamada REST por el metodo POST
      */
     public String callRestPost(Object obj, String uri) {
         Util util = Util.getInstance();

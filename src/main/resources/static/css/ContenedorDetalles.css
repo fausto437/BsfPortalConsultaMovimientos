@@ -17,3 +17,19 @@
 	margin:0 8px;
 	background-color: #E4E5E3;
 }
+.detalle-datos{
+	width:100%;
+}
+.vertical-align{
+	background: transparent;
+    border: none;
+    box-shadow: none;
+}
+.entre-inputs{
+	padding: 0;
+    width: 2%;
+}
+.disabled-click{
+	cursor: not-allowed; /* aesthetics */
+    pointer-events: none;
+}

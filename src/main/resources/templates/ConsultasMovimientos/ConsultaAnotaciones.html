@@ -14,72 +14,103 @@
     <script th:src="@{/js/bootbox.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
-    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
+    <script th:src="@{/js/ConsultaAnotaciones.js}"></script>
+    <script th:src="@{/js/funcionesGenerales.js}"></script>
     <title>Consulta de Movimientos</title>
 </head>
 <body>
+<script th:inline="javascript">
+	console.log([[${Model}]]);
+	console.log([[${cadenaDatos}]]);
+	console.log([[${relacion}]]);
+	var lstAnotaciones=[[${Model.anotaciones}]];
+	var relacionDoc = [[${cadenaDatos.relacionDoc}]];
+    </script>
 <form id="formMostrarDetalle" method="POST" th:action="@{/detalleAnotacion}" class="hidden">
-    <input id="bsfoperador" name="bsfoperador"/>
+    <input th:field="${cadenaDatos.bsfoperador}"/>
+    <input th:field="${cadenaDatos.numAcuerdo}"/>
+    <input id="titular" name="titular" th:value="${titular}"/>
     <input id="numAnotacion" name="numAnotacion"/>
+    <input id="codAnt" name="codAnt"/>
+    <input id="desc" name="desc"/>
+    <input id="codSubAnt" name="codSubAnt"/>
+    <input id="subcodigo" name="subcodigo"/>
+    <input id="area" name="area"/>
     <input id="tipo" name="tipo"/>
 </form>
-<div class="container_48">
-    <div class="contenedor">
-        <div class="contenedor-form">
-            <div class="titulo centrar-objeto btn-inline-set">
-                <button id="breadcum" name="breadcum"
-                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
-                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
-                    <span class="ui-button-text ui-c">ui-button</span>
-                </button>
-                <h1>
-                    <label class="titulo h1" id="lblTitulo">Anotaciones de</label><h2 class="textAzul">KARINA MONDRAGON MARTINEZ </h2><h1><label>(IFE:1440550981111)</label></h1>
-                </h1>
-            </div>
-        </div>
-    </div>
-    <br/> <br/>
-    <div class="row">
-        <div class="contenedor-campos">
-            <br/>
-             <table class="display table table-bordered TablaCuentas table-hover" 
-             		id="tblCuentas" 
-             		style="width: 100%"
-             		th:id="tablaAnotaciones">
-                        <thead>
-	                        <tr>
-	                            <th>No. Anotaci&oacute;n</th>
-	                            <th>Descripci&oacute;n</th>
-	                            <th>Tipo Anotaci&oacute;n</th>
-	                            <th>Fecha de Activaci&oacute;n</th>
-	                            <th>Prioridad</th>
-	                        </tr>
-                        </thead>
-                        <tbody>
-	                        <tr th:each="anotaciones,iterationStatus : ${Model}" th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.noanotacion} + '\',\'a\' );'">
-	                            <td th:text="${anotaciones.noanotacion}"></td>
-	                            <td th:text="${anotaciones.descr}"></td>
-	                            <td th:text="${anotaciones.tipoanotacion}"></td>
-	                            <td th:text="${anotaciones.fechactivacion}"></td>
-	                            <td th:text="${anotaciones.prioridad}"></td>
-	                        </tr>
-                        </tbody>
-                    </table>
-               
-            <div id="fadeRet" class="black_overlay"></div>
-        </div>
-    </div>
-    <br/>
-    <div class="text-center">
-    <form id="formContinuar" method="POST" th:action="@{/principalMovimientos}" class="hidden">
-    	<input id="bsfoperador" name="bsfoperador"/>
-    </form>
-	    <ul class="list-inline">
-	        <li>
-	            <button onclick="continuar();" type="button" class="btn btn-primary" style="width: 150px;">Continuar</button>
-	        </li>
-	    </ul>
-    </div>
-</div>
+	<div class="container_48">
+	    <div class="contenedor">
+	        <div class="contenedor-form">
+	            <div class="titulo centrar-objeto btn-inline-set">
+	                <button id="breadcum" name="breadcum"
+	                        class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only">
+	                    <span class="ui-button-icon-left ui-icon ui-c ui-icon-arrow-1-w"></span>
+	                    <span class="ui-button-text ui-c">ui-button</span>
+	                </button>
+	                <h1>
+	                    <label class="titulo h1" id="lblTitulo">Anotaciones de </label>
+	                    <span><h2 class="textAzul" th:text="${titular}"></h2></span>
+	                    <h1><label th:text="${txtIdPe}"></label></h1>
+	                </h1>
+	            </div>
+	        </div>
+	    </div>
+	    <br/> <br/>
+	    <div class="row">
+	        <div class="contenedor-campos">
+	            <br/>
+	             <table class="display table table-bordered TablaCuentas table-hover" 
+	             		id="tblCuentas" 
+	             		style="width: 100%"
+	             		th:id="tablaAnotaciones">
+	                        <thead>
+		                        <tr>
+		                            <th>No. Anotaci&oacute;n</th>
+		                            <th>Descripci&oacute;n</th>
+		                            <th>Tipo Anotaci&oacute;n</th>
+		                            <th>Fecha de Activaci&oacute;n</th>
+		                            <th>Prioridad</th>
+		                        </tr>
+	                        </thead>
+	                        <tbody>
+		                        <tr th:each="anotaciones,iterationStatus : ${Model.anotaciones}" 
+		                        th:onclick="'javascript:detalleConsulta(\'' + ${anotaciones.anotacion} + '\',\'' + ${anotaciones.descripcion}
+		                        			+ '\',\'' + ${anotaciones.textSubAnt}+ '\',\'' + ${anotaciones.area}  
+		                        			+ '\',\'' + ${anotaciones.codAnt} + '\',\'' + ${anotaciones.codSubAnt} + '\',\'a\' );'">
+		                            <td th:text="${anotaciones.anotacion}"></td>
+		                            <td th:text="${anotaciones.descripcion}"></td>
+		                            <td th:text="${anotaciones.tipoAnotacion}"></td>
+		                            <td th:text="${anotaciones.fechaActivacion}"></td>
+		                            <td th:text="${anotaciones.prioridad}"></td>
+		                        </tr>
+	                        </tbody>
+	                    </table>
+	               
+	            <div id="fadeRet" class="black_overlay"></div>
+	        </div>
+	    </div>
+	    <br/>
+	    <div class="text-center">
+	    <form id="formContinuar" method="POST" th:object="${cadenaDatos}" th:action="@{/principalMovimientos}" class="hidden">
+	    	<input th:field="*{bsfoperador}"/>
+	    	<input th:field="*{numAcuerdo}"/>
+	    	<input th:field="*{fechaDesde}"/>
+	    	<input th:field="*{fechaHasta}"/>
+	    	<input th:field="*{formato}"/>
+	    	<input th:field="*{idInternoPe}"/>
+	    	<input th:field="*{titCuenta}"/>
+	    	<input th:field="*{txtTipoIdentificacion}"/>
+	    	<input th:field="*{numId}"/>
+	    	<input th:field="*{verificaDigitalizacion}"/>
+	    	<input id="lstAnotaciones" name="lstAnotaciones"/>
+	    	<input id="relacion" name="relacion" th:value="${relacion}"/>
+	    </form>
+		    <ul class="list-inline">
+		        <li>
+		            <button onclick="continuar();" type="button" class="btn btn-primary" style="width: 150px;">Continuar</button>
+		        </li>
+		    </ul>
+	    </div>
+	</div>
 </body>
 </html>

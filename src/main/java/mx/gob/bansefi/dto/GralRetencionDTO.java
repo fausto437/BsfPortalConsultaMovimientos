@@ -12,24 +12,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class GralRetencionDTO {
 	@Getter @Setter
-	private String numCuenta;
-	@Getter @Setter
-	private String cliente;
-	//DATOS DE ANOTACIONES
-	@Getter @Setter
 	private String tipo;
 	@Getter @Setter
-	private String subcodigo;
+	private String estado;
 	@Getter @Setter
-	private String area;
+	private String fechaAlta;
 	@Getter @Setter
-	private String fecha;
-	@Getter	@Setter
-	private String descripcion;
-	@Getter	@Setter
-	private String codEmpleado;
-	@Getter	@Setter
-	private String nombreEmpleado;
-	@Getter	@Setter
-	private String nota;
+	private String fechaVTO;
+	@Getter @Setter
+	private String concepto;
+	@Getter @Setter
+	private String empleado;
+	@Getter @Setter
+	private String origen;
+	@Getter @Setter
+	private String importe;
 }

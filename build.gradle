@@ -43,7 +43,7 @@ dependencies {
 	compile group: 'org.json', name: 'json', version: '20170516'
 // https://mvnrepository.com/artifact/io.github.jpenren/thymeleaf-spring-data-dialect
 	compile group: 'io.github.jpenren', name: 'thymeleaf-spring-data-dialect', version: '3.3.0'
-
+//providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 }
 
 apply plugin: 'war'

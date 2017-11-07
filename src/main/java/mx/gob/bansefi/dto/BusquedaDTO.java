@@ -14,13 +14,17 @@ public class BusquedaDTO {
 	@Getter @Setter
 	private String bsfoperador;
 	@Getter @Setter
-	private String numCuenta;
+	private String numAcuerdo;
 	@Getter @Setter
 	private String titCuenta;
+	@Getter @Setter
+	private int idInternoPe;
 	@Getter @Setter
 	private String txtTipoIdentificacion;
 	@Getter @Setter
 	private String cboTipoIdentificacion;
+	@Getter @Setter
+	private String codTipoIdentificacion;
 	@Getter @Setter
 	private String numId;
 	@Getter @Setter
@@ -29,4 +33,8 @@ public class BusquedaDTO {
 	private String fechaHasta;
 	@Getter @Setter
 	private String formato;
+	@Getter @Setter
+	private String verificaDigitalizacion;
+	@Getter @Setter
+	private AltaDocumentoTCBDTO relacionDoc;
 }

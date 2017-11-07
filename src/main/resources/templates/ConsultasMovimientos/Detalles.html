@@ -6,8 +6,6 @@
     <link th:href="@{/css/primefaces.css}" rel="stylesheet"/>
     <link th:href="@{/css/base.css}" rel="stylesheet"/>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
-    <link th:href="@{/css/Wizard.css}" rel="stylesheet"/>
-    <link th:href="@{/css/PersonasMorales.css}" rel="stylesheet"/>
     <link th:href="@{/css/page/Documentos.css}" rel="stylesheet"/>
     <link th:href="@{/css/page/modalPDF.css}" rel="stylesheet"/>
     <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
@@ -23,16 +21,16 @@
     <script th:src="@{/js/bootstrap.min.js}"></script>
     <script th:src="@{/js/jquery.inputmask.bundle.js}"></script>
     <script th:src="@{/js/bootstrap-select.js}"></script>
-    <script th:src="@{/js/ConsultaMovimientos.js}"></script>
-    
+    <script th:src="@{/js/page/Detalles.js}"></script>
     <title>Consulta de Movimientos</title>
     <script th:inline="javascript">
       console.log([[${Model}]]);
+      var bsfOp= [[${bsfOperador}]];
     </script>
 </head>
 <body>
 <form id="formMasDetalles" method="POST" th:action="@{/detalles}" class="hidden">
-    <input id="bsfoperador" name="bsfoperador"/>
+    <input id="bsfOperador" name="bsfOperador"/>
     <input id="idIntPM" name="idIntPM"/>
     <input id="titulo" name="titulo"/>
     <input id="identificacionPM" name="identificacionPM"/>
@@ -47,28 +45,73 @@
                     <span class="ui-button-text ui-c">ui-button</span>
                 </button>
                 <h1>
-                    <label class="titulo h1" id="lblTitulo">Consulta <span th:text="${Model.titulo}"></span></label><h2 class="textRojo" th:if="${Model.tipo} eq 'a'">49787748</h2>
+                    <label class="titulo h1" id="lblTitulo" th:if="${Model.tipoDetalle} neq 'em'">Consulta 
+                    	<span th:text="${Model.titulo}"></span>	
+                    </label>
+                    <span th:text="${Model.titulo}" th:if="${Model.tipoDetalle} eq 'em'"></span>
+                    <h2 class="textRojo" th:if="${Model.tipoDetalle} eq 'a'" th:text="${Model.numAcuerdo}"></h2>
                 </h1>
             </div>
         </div>
     </div>
-    <br/> <br/>
-    <!--
-	===========================================================================================
-									Detalles de anotaciones
-	===========================================================================================
-	-->
-	<div class="row" th:if="${Model.tipo} eq 'a'">
-		<th:block th:include="fragments/contenedorDetalles :: anotaciones"></th:block>
-	</div>
-	<!--
-	===========================================================================================
-									Detalles de apuntes
-	===========================================================================================
-	-->
-	<div class="row" th:if="${Model.tipo} eq 'ap'">
-		<th:block th:include="fragments/contenedorDetalles :: apunte"></th:block>
-	</div>
+    <br/>
+    <br/>
+    <div class="row">
+	    <!--
+		===========================================================================================
+										Detalles de anotaciones
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'a'" th:include="fragments/contenedorDetalles :: anotaciones"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de apuntes
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'ap'" th:include="fragments/contenedorDetalles :: apunte"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de bloqueos
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'b'" th:include="fragments/contenedorDetalles :: bloqueo"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de retencion
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'r'" th:include="fragments/contenedorDetalles :: retencion"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de auditoria
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'au'" th:include="fragments/auditoria :: auditoria"></th:block>
+		<!--
+		===========================================================================================
+										Detalles de auditoria
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'dAu'" th:include="fragments/auditoria :: detallesAuditoria"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de liquidación
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'li'" th:include="fragments/origen :: liquidacion"></th:block>
+		<!--
+		===========================================================================================
+										Consulta de emision de cheque
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'em'" th:include="fragments/origen :: emision"></th:block>
+		<!--
+		===========================================================================================
+										Consulta más del apunte
+		===========================================================================================
+		-->
+		<th:block th:if="${Model.tipoDetalle} eq 'mAp'" th:include="fragments/masApunte :: masApunte"></th:block>
+    </div>
 </div>
 </body>
 </html>
