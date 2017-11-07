@@ -15,24 +15,12 @@ $(document).ready(function () {
     		$("#formBusqueda").removeClass('hidden');
     		$("#digitalizar").addClass('hidden');
     	}
-    	else{
-    		window.history.go(-1);
-    	}
-    });
-    $(".btnMenuGlobal").click(function() {
-	parent.irMenuGloblaPerderAvance();
     });
     $(".btnMenuDinamico").click(function() {
 	parent.regresarMenuFrecuente();
     });
     parent.setFrame();
 })
-
-/*function redimencionar() {
-	setTimeout(function() {
-	    parent.setFrame();
-	}, 1500);
-}*/
 
 //Función para regresar a la pantalla principal
 function realizarOtraBusqueda(){

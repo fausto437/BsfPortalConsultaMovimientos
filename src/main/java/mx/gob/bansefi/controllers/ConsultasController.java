@@ -99,10 +99,10 @@ public class ConsultasController {
     private String packageTemplates = "ConsultasMovimientos";
     public String operador;
     
-    @RequestMapping("/prueba")
+    /*@RequestMapping("/prueba")
     public ModelAndView pruaba() {
         return new ModelAndView(packageTemplates + "/pruebaPost");
-    }
+    }*/
 
     // =================================Mapping desde la ventana de datos generales===========================//
     // Mapping de datos Generales a Los otros Modulos

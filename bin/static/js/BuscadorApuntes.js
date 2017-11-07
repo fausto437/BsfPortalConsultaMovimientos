@@ -62,7 +62,7 @@ function startDB() {
             console.log('Error al acceder a la Base de datos.');
         };
     } catch (err) {
-        console.log("Ocurri&#243; un error: startDB: " + err.message);
+        console.log("Ocurrió un error: startDB: " + err.message);
     }
 }
 
